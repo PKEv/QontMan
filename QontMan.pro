@@ -15,7 +15,8 @@ TEMPLATE = app
 SOURCES +=  src\main.cpp\
             src\mainwindow.cpp \
             src\PlainDb.cpp \
-            src\datamodel.cpp
+            src\datamodel.cpp \
+    src/contact.cpp
 
 HEADERS  += src\mainwindow.h \
             src\contact.h \

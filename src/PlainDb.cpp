@@ -3,6 +3,7 @@
 
 #include <QList>
 #include <QSqlError>
+#include <QSqlQuery>
 
 static PlainDb *PlainDbInstance = nullptr;
 
@@ -70,4 +71,73 @@ QString PlainDb::getQuery()
                     "FROM contact "
                     "LEFT JOIN firm ON contact.id = firm.id "
                     "LEFT JOIN man ON contact.id = man.id ");
+}
+
+void PlainDb::addContact(Contact * con)
+{
+    QString prepQuery = QString("INSERT INTO contact (tip, timestamp, tel, fax, adres, email, http, uplevel, notes) VALUES (%1, %2, %3, '%4', '%5', '%6', '%7', '%8', '%9');")
+            .arg(con->getTip())
+            .arg(con->getDate())
+            .arg(con->getTel())
+            .arg(con->getFax())
+            .arg(con->getEmail())
+            .arg(con->getHttp())
+            .arg(con->getUpLevel())
+            .arg(con->getZametka());
+    QSqlQuery query;
+    query.exec(prepQuery);
+
+    con->setId(getId(con));
+
+    if (con->getId() == 0 )
+    {
+        addFirm(con);
+    }
+    else
+    {
+        addMan(con);
+    }
+}
+
+int PlainDb::getId(Contact* con)
+{
+    QString prepQuery = QString("SELECT id IN contact WHERE tip='%1' AND timestamp='%2' AND tel='%3' AND fax='%4' AND adres='%5' AND email='%6' AND http='%7' AND uplevel='%8' AND notes='%9';")
+            .arg(con->getTip())
+            .arg(con->getDate())
+            .arg(con->getTel())
+            .arg(con->getFax())
+            .arg(con->getEmail())
+            .arg(con->getHttp())
+            .arg(con->getUpLevel())
+            .arg(con->getZametka());
+    QSqlQuery query;
+    query.exec(prepQuery);
+    if (query.size() != 1)
+        return -1;
+    query.first();
+    return query.value(0).toInt();
+}
+
+void PlainDb::addFirm(Contact* con)
+{
+    QString prepQuery = QString("INSERT INTO firm (id, sobstv, name, shortname) VALUES (%1, %2, %3, '%4');")
+            .arg(con->getId())
+            .arg(con->getName1())
+            .arg(con->getName2())
+            .arg(con->getFullName());
+
+    QSqlQuery query;
+    query.exec(prepQuery);
+}
+
+void PlainDb::addMan(Contact* con)
+{
+    QString prepQuery = QString("INSERT INTO man (id, name, surname, patronymic, shortname) VALUES (%1, %2, %3, '%4', '%5');")
+            .arg(con->getId())
+            .arg(con->getName1())
+            .arg(con->getName2())
+            .arg(con->getName3())
+            .arg(con->getFullName());
+    QSqlQuery query;
+    query.exec(prepQuery);
 }
