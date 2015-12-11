@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView->setColumnHidden(1,true);
 
     ui->tableView->show();
+
 }
 
 MainWindow::~MainWindow()
@@ -31,3 +32,4 @@ void MainWindow::on_QuitButton_clicked()
 {
     qApp->quit();
 }
+
