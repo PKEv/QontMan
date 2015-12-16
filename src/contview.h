@@ -2,6 +2,8 @@
 #define CONTVIEW_H
 
 #include <QDialog>
+#include <QComboBox>
+#include <QSignalMapper>
 #include "contact.h"
 #include <qabstractbutton.h>
 
@@ -21,11 +23,15 @@ public:
 
 private slots:
     void on_buttonBox_clicked(QAbstractButton *button);
+    void plusButton(QWidget *comboBox);
+    void minusButton(QWidget *comboBox);
 
 private:
     Ui::ContView *ui;
     void Fill();
     Contact * cont;
+    QSignalMapper *signalMapper;
+    QSignalMapper *signalMapper2;
 };
 
 #endif // CONTVIEW_H
