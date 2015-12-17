@@ -75,8 +75,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>C:/Download/minus-red.png</normaloff>C:/Download/minus-red.png</iconset>
+        <iconset resource="../res.qrc">
+         <normaloff>:/img/pic/minus-red.png</normaloff>:/img/pic/minus-red.png</iconset>
        </property>
       </widget>
      </item>
@@ -86,8 +86,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>C:/Download/minus-red.png</normaloff>C:/Download/minus-red.png</iconset>
+        <iconset resource="../res.qrc">
+         <normaloff>:/img/pic/minus-red.png</normaloff>:/img/pic/minus-red.png</iconset>
        </property>
       </widget>
      </item>
@@ -97,8 +97,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>C:/Download/minus-red.png</normaloff>C:/Download/minus-red.png</iconset>
+        <iconset resource="../res.qrc">
+         <normaloff>:/img/pic/minus-red.png</normaloff>:/img/pic/minus-red.png</iconset>
        </property>
       </widget>
      </item>
@@ -108,8 +108,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>C:/Download/minus-red.png</normaloff>C:/Download/minus-red.png</iconset>
+        <iconset resource="../res.qrc">
+         <normaloff>:/img/pic/minus-red.png</normaloff>:/img/pic/minus-red.png</iconset>
        </property>
       </widget>
      </item>
@@ -119,8 +119,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>C:/Download/plus-red.png</normaloff>C:/Download/plus-red.png</iconset>
+        <iconset resource="../res.qrc">
+         <normaloff>:/img/pic/plus-red.png</normaloff>:/img/pic/plus-red.png</iconset>
        </property>
       </widget>
      </item>
@@ -179,8 +179,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>C:/Download/minus-red.png</normaloff>C:/Download/minus-red.png</iconset>
+        <iconset resource="../res.qrc">
+         <normaloff>:/img/pic/minus-red.png</normaloff>:/img/pic/minus-red.png</iconset>
        </property>
       </widget>
      </item>
@@ -197,8 +197,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>C:/Download/plus-red.png</normaloff>C:/Download/plus-red.png</iconset>
+        <iconset resource="../res.qrc">
+         <normaloff>:/img/pic/plus-red.png</normaloff>:/img/pic/plus-red.png</iconset>
        </property>
       </widget>
      </item>
@@ -208,8 +208,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>C:/Download/plus-red.png</normaloff>C:/Download/plus-red.png</iconset>
+        <iconset resource="../res.qrc">
+         <normaloff>:/img/pic/plus-red.png</normaloff>:/img/pic/plus-red.png</iconset>
        </property>
       </widget>
      </item>
@@ -219,8 +219,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>C:/Download/plus-red.png</normaloff>C:/Download/plus-red.png</iconset>
+        <iconset resource="../res.qrc">
+         <normaloff>:/img/pic/plus-red.png</normaloff>:/img/pic/plus-red.png</iconset>
        </property>
       </widget>
      </item>
@@ -230,8 +230,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>C:/Download/plus-red.png</normaloff>C:/Download/plus-red.png</iconset>
+        <iconset resource="../res.qrc">
+         <normaloff>:/img/pic/plus-red.png</normaloff>:/img/pic/plus-red.png</iconset>
        </property>
       </widget>
      </item>
@@ -263,6 +263,9 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="placeholderText">
+        <string>Оставьте свои заметки</string>
        </property>
       </widget>
      </item>
@@ -306,7 +309,9 @@
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

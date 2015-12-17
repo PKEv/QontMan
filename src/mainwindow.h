@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "contview.h"
 #include "contact.h"
+#include "datamodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,6 +28,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     ContView *contView;
+    dataModel *myModel;
 
 };
 

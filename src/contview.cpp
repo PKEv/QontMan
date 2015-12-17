@@ -9,7 +9,6 @@ ContView::ContView(QWidget *parent) :
     ui->setupUi(this);
     cont = new Contact;
 
-
     signalMapper = new QSignalMapper(this);
     signalMapper2 = new QSignalMapper(this);
     signalMapper->setMapping(ui->plusButton_1, ui->comboBox);
@@ -35,6 +34,8 @@ ContView::ContView(QWidget *parent) :
 
     connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(plusButton(QWidget *)));
     connect(signalMapper2, SIGNAL(mapped(QWidget*)), this, SLOT(minusButton(QWidget *)));
+
+    Fill();
 }
 
 ContView::ContView(Contact * tcont)
@@ -52,11 +53,11 @@ ContView::~ContView()
 void ContView::Fill()
 {
     ui->lineEdit->setText(cont->getFullName());
-    ui->comboBox->addItem(cont->getTel());
-    ui->comboBox_2->addItem(cont->getFax());
-    ui->comboBox_3->addItem(cont->getAdr());
-    ui->comboBox_4->addItem(cont->getEmail());
-    ui->comboBox_5->addItem(cont->getHttp());
+    SetItiems(ui->comboBox, cont->getTel());
+    SetItiems(ui->comboBox_2, cont->getFax());
+    SetItiems(ui->comboBox_3, cont->getAdr());
+    SetItiems(ui->comboBox_4, cont->getEmail());
+    SetItiems(ui->comboBox_5, cont->getHttp());
 
 }
 
@@ -68,11 +69,26 @@ Contact *ContView::getContact()
 void ContView::on_buttonBox_clicked(QAbstractButton *button)
 {
     if (ui->buttonBox->standardButton(button) == QDialogButtonBox::Ok)
-    {   // заполняем структуру для передачи
+    {
+        // если вдруг забыли нажать +
+        ui->plusButton_1->click();
+        ui->plusButton_2->click();
+        ui->plusButton_3->click();
+        ui->plusButton_4->click();
+        ui->plusButton_5->click();
+
+        // заполняем структуру для передачи
         cont->setFullName(ui->lineEdit->text());
-        cont->setTel(ui->comboBox->currentText());
-        cont->setFax(ui->comboBox_2->currentText());
-        cont->setAdr(ui->comboBox_3->currentText());
+        cont->setTel(GetItiems(ui->comboBox));
+        cont->setFax(GetItiems(ui->comboBox_2));
+        cont->setAdr(GetItiems(ui->comboBox_3));
+        cont->setEmail(GetItiems(ui->comboBox_4));
+        cont->setHttp(GetItiems(ui->comboBox_5));
+        cont->setZametka(ui->textEdit->toPlainText());
+
+        cont->setTip(0);
+        cont->setUpLevel(0);
+        cont->setDate(QDate::currentDate().toString("dd.MM.yyyy"));
     }
 }
 
@@ -94,5 +110,35 @@ void ContView::minusButton(QWidget *comboBox)
     qobject_cast<QComboBox*>(comboBox)->removeItem(qobject_cast<QComboBox*>(comboBox)->findText(temp));
     qobject_cast<QComboBox*>(comboBox)->setFocus();
 }
+
+QString ContView::GetItiems(QComboBox * comboBox)
+{
+    QString temp = "";
+    for(int i=0; i < comboBox->count(); i++)
+    {
+        temp += comboBox->itemText(i) + ";";
+    }
+    return temp;
+}
+
+void ContView::SetItiems(QComboBox * comboBox, QString str)
+{
+    int t = str.indexOf(";");
+    QString temp;
+    while (t>0)
+    {
+        temp = str;
+        temp.remove(t,temp.length());
+        comboBox->addItem(temp);
+        temp = str;
+        str.remove(0,t+1); // del ";"
+        t = str.indexOf(";");
+    }
+    if (!str.isEmpty())
+    {
+        comboBox->addItem(str);
+    }
+}
+
 
 

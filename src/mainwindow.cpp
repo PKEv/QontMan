@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 
-#include "datamodel.h"
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     PlainDb::getInstance();
 
-    dataModel *myModel = new dataModel(qApp);
+    myModel = new dataModel(qApp);
     //настраиваем отображение
     myModel->showAll();
     // подключаем модель
@@ -43,6 +43,7 @@ void MainWindow::addButton()
 }
 
 void MainWindow::update_rec()
-{
+{    
     PlainDb::getInstance()->addContact(contView->getContact());
+    myModel->refresh();
 }

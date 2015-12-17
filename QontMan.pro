@@ -29,3 +29,8 @@ FORMS    += src\mainwindow.ui \
     src/contview.ui
 
 CONFIG   += c++11
+
+DISTFILES +=
+
+RESOURCES += \
+    res.qrc

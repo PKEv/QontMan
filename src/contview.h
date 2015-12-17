@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QComboBox>
 #include <QSignalMapper>
+#include <QDate>
 #include "contact.h"
 #include <qabstractbutton.h>
 
@@ -28,7 +29,9 @@ private slots:
 
 private:
     Ui::ContView *ui;
-    void Fill();
+    void Fill();                                                // заполнение формы
+    QString GetItiems(QComboBox * comboBox);                    // чтение элемента формы в строку
+    void SetItiems(QComboBox * comboBox, QString str);          // заполнение элемента данными из строки
     Contact * cont;
     QSignalMapper *signalMapper;
     QSignalMapper *signalMapper2;
