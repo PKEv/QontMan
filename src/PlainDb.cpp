@@ -122,6 +122,31 @@ int PlainDb::getId(Contact* con)
     return query.value(0).toInt();
 }
 
+Contact PlainDb::getContById(const int id)
+{
+    QString prepQuery = QString ("SELECT contact.tip, "
+                                 "    (CASE contact.tip "
+                                 "        WHEN 0 THEN "
+                                 "            firm.shortname "
+                                 "        WHEN 1 THEN "
+                                 "            man.shortname "
+                                 "        ELSE 'bad type' "
+                                 "    END), "
+                                 "    contact.tel, contact.fax, contact.email, contact.http, contact.notes "
+                                 "FROM contact WHERE contact.id=:id "
+                                 "LEFT JOIN firm ON contact.id = firm.id "
+                                 "LEFT JOIN man ON contact.id = man.id ");
+    QSqlQuery query;
+    query.prepare(prepQuery);
+    query.bindValue(":id",id);
+    query.exec();
+
+    query.first();
+    return query.value(0).toInt();
+
+
+}
+
 void PlainDb::addFirm(Contact* con)
 {
     QString prepQuery = QString("INSERT INTO firm (id, sobstv, name, shortname) VALUES (:id, :sobstv, :name, :shortname)");

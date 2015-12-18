@@ -17,6 +17,7 @@ public:
     PlainDb(QSqlDatabase *db);
     static QString getQuery();
     void addContact(Contact * con);
+    Contact getContById(const int id);
 
     QSqlDatabase *db;
 private:

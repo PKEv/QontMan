@@ -37,3 +37,13 @@ void dataModel::refresh()
 {
     setQuery(PlainDb::getQuery(), *PlainDb::getInstance()->db);
 }
+
+int dataModel::GetContactId(int row)
+{
+    return record(row).value(0).toInt();
+}
+
+Contact* dataModel::GetContact(int id)
+{
+
+}

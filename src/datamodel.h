@@ -4,6 +4,7 @@
 #include "PlainDb.h"
 #include <QSqlQueryModel>
 #include <QString>
+#include "contact.h"
 
 class dataModel : public QSqlQueryModel
 {
@@ -13,6 +14,8 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     void refresh();
+    int GetContactId(int row);
+    Contact* GetContact(int id);
 
     void showAll();
 };

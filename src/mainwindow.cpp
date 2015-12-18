@@ -23,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView->show();
 
     connect( ui->AddButton, SIGNAL(clicked()), this, SLOT(addButton()) );
+    connect( ui->ViewButton, SIGNAL(clicked()), this, SLOT(viewButton()) );
+
 }
 
 MainWindow::~MainWindow()
@@ -46,4 +48,10 @@ void MainWindow::update_rec()
 {    
     PlainDb::getInstance()->addContact(contView->getContact());
     myModel->refresh();
+}
+
+void MainWindow::viewButton()
+{
+    int id = myModel->GetContactId(ui->tableView->currentIndex().row());
+
 }

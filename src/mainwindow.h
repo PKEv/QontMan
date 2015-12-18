@@ -23,6 +23,7 @@ public:
 private slots:
      void on_QuitButton_clicked();
      void addButton();
+     void viewButton();
      void update_rec();
 
 private:

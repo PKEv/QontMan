@@ -59,6 +59,13 @@ void ContView::Fill()
     SetItiems(ui->comboBox_4, cont->getEmail());
     SetItiems(ui->comboBox_5, cont->getHttp());
 
+    ui->name1Edit->setText(cont->getName1());
+    ui->name2Edit->setText(cont->getName2());
+    ui->name3Edit->setText(cont->getName3());
+    ui->lineEdit->setText(cont->getFullName());
+    ui->tipSlider->setValue(cont->getTip());
+    on_tipSlider_valueChanged(cont->getTip());
+    ui->lineEdit->setPlaceholderText(tr("Имя отображаемое в базе"));
 }
 
 Contact *ContView::getContact()
@@ -140,5 +147,23 @@ void ContView::SetItiems(QComboBox * comboBox, QString str)
     }
 }
 
+void ContView::on_tipSlider_valueChanged(int value)
+{
+    if (value==0)
+    {
+        ui->tipLabel->setText(tr("Фирма"));
+        ui->name3Edit->setVisible(false);
+        ui->name1Edit->setPlaceholderText(tr("Форма собственности"));
+        ui->name2Edit->setPlaceholderText(tr("Наименование"));
+    }
+    else
+    {
+        ui->tipLabel->setText(tr("Контактное лицо"));
+        ui->name3Edit->setVisible(true);
+        ui->name1Edit->setPlaceholderText(tr("Имя"));
+        ui->name2Edit->setPlaceholderText(tr("Фамилия"));
+        ui->name3Edit->setPlaceholderText(tr("Отчество"));
 
+    }
 
+}

@@ -26,6 +26,7 @@ private slots:
     void on_buttonBox_clicked(QAbstractButton *button);
     void plusButton(QWidget *comboBox);
     void minusButton(QWidget *comboBox);
+    void on_tipSlider_valueChanged(int value);
 
 private:
     Ui::ContView *ui;
