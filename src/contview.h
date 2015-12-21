@@ -31,6 +31,7 @@ private slots:
 private:
     Ui::ContView *ui;
     void Fill();                                                // заполнение формы
+    void Connect();                                             // настройка связей
     QString GetItiems(QComboBox * comboBox);                    // чтение элемента формы в строку
     void SetItiems(QComboBox * comboBox, QString str);          // заполнение элемента данными из строки
     Contact * cont;

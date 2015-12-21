@@ -15,7 +15,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     void refresh();
     int GetContactId(int row);
-    Contact* GetContact(int id);
+    Contact GetContact(int id);
 
     void showAll();
 };

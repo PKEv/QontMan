@@ -2,13 +2,19 @@
 #include "contview.h"
 #include "ui_contview.h"
 
+
 ContView::ContView(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ContView)
 {
     ui->setupUi(this);
     cont = new Contact;
+    Connect();
+    Fill();
+}
 
+void ContView::Connect()
+{
     signalMapper = new QSignalMapper(this);
     signalMapper2 = new QSignalMapper(this);
     signalMapper->setMapping(ui->plusButton_1, ui->comboBox);
@@ -34,13 +40,14 @@ ContView::ContView(QWidget *parent) :
 
     connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(plusButton(QWidget *)));
     connect(signalMapper2, SIGNAL(mapped(QWidget*)), this, SLOT(minusButton(QWidget *)));
-
-    Fill();
 }
 
-ContView::ContView(Contact * tcont)
+ContView::ContView(Contact * tcont): ui(new Ui::ContView)
 {
-    cont = tcont;
+    ui->setupUi(this);
+    cont = new Contact(*tcont);
+    Connect();
+    Fill();
 }
 
 
@@ -63,8 +70,10 @@ void ContView::Fill()
     ui->name2Edit->setText(cont->getName2());
     ui->name3Edit->setText(cont->getName3());
     ui->lineEdit->setText(cont->getFullName());
+    ui->textEdit->setText(cont->getZametka());
     ui->tipSlider->setValue(cont->getTip());
     on_tipSlider_valueChanged(cont->getTip());
+    ui->label_8->setText(cont->getDate());
     ui->lineEdit->setPlaceholderText(tr("Имя отображаемое в базе"));
 }
 
@@ -92,10 +101,12 @@ void ContView::on_buttonBox_clicked(QAbstractButton *button)
         cont->setEmail(GetItiems(ui->comboBox_4));
         cont->setHttp(GetItiems(ui->comboBox_5));
         cont->setZametka(ui->textEdit->toPlainText());
-
-        cont->setTip(0);
-        cont->setUpLevel(0);
+        cont->setName1(ui->name1Edit->text());
+        cont->setName2(ui->name2Edit->text());
+        cont->setName3(ui->name3Edit->text());
+        cont->setTip(ui->tipSlider->value());
         cont->setDate(QDate::currentDate().toString("dd.MM.yyyy"));
+        cont->setUpLevel(0);
     }
 }
 
@@ -163,7 +174,5 @@ void ContView::on_tipSlider_valueChanged(int value)
         ui->name1Edit->setPlaceholderText(tr("Имя"));
         ui->name2Edit->setPlaceholderText(tr("Фамилия"));
         ui->name3Edit->setPlaceholderText(tr("Отчество"));
-
     }
-
 }

@@ -43,7 +43,7 @@ int dataModel::GetContactId(int row)
     return record(row).value(0).toInt();
 }
 
-Contact* dataModel::GetContact(int id)
+Contact dataModel::GetContact(int id)
 {
-
+    return PlainDb::getInstance()->getContById(id);
 }

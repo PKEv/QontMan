@@ -46,7 +46,14 @@ void MainWindow::addButton()
 
 void MainWindow::update_rec()
 {    
-    PlainDb::getInstance()->addContact(contView->getContact());
+    if (contView->getContact()->getId()==NULL)
+    {
+        PlainDb::getInstance()->addContact(contView->getContact());
+    }
+    else
+    {
+        PlainDb::getInstance()->updateContact(contView->getContact());
+    }
     myModel->refresh();
 }
 
@@ -54,4 +61,8 @@ void MainWindow::viewButton()
 {
     int id = myModel->GetContactId(ui->tableView->currentIndex().row());
 
+    Contact tcont = myModel->GetContact(id);
+    contView = new ContView(&tcont);
+    contView->show();
+    connect(contView, SIGNAL(accepted()), this, SLOT(update_rec()));
 }
