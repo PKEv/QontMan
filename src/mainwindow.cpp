@@ -24,7 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect( ui->AddButton, SIGNAL(clicked()), this, SLOT(addButton()) );
     connect( ui->ViewButton, SIGNAL(clicked()), this, SLOT(viewButton()) );
-
+    connect( ui->DeleteButton, SIGNAL(clicked()), this, SLOT(deleteButton()) );
+    connect(ui->clearSearchButton, SIGNAL(clicked()),this, SLOT(clearSeachString()) );
+    connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -46,23 +48,48 @@ void MainWindow::addButton()
 
 void MainWindow::update_rec()
 {    
-    if (contView->getContact()->getId()==NULL)
-    {
-        PlainDb::getInstance()->addContact(contView->getContact());
-    }
-    else
-    {
-        PlainDb::getInstance()->updateContact(contView->getContact());
-    }
     myModel->refresh();
 }
 
 void MainWindow::viewButton()
 {
+    if (ui->tableView->currentIndex().row()==-1)
+        return;
     int id = myModel->GetContactId(ui->tableView->currentIndex().row());
 
     Contact tcont = myModel->GetContact(id);
     contView = new ContView(&tcont);
     contView->show();
+
     connect(contView, SIGNAL(accepted()), this, SLOT(update_rec()));
+}
+
+void MainWindow::deleteButton()
+{
+    if (ui->tableView->currentIndex().row()==-1)
+        return;
+    myModel->deleteContact(ui->tableView->currentIndex().row());
+    myModel->refresh();
+}
+
+void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
+{
+    int id = myModel->GetContactId(index.row());
+
+    Contact tcont = myModel->GetContact(id);
+    contView = new ContView(&tcont);
+    contView->show();
+
+    connect(contView, SIGNAL(accepted()), this, SLOT(update_rec()));
+}
+
+void MainWindow::clearSeachString()
+{
+    ui->SeachString->clear();
+}
+
+void MainWindow::setSeachString(QString str)
+{
+    myModel->setSeachString(str);
+    myModel->refresh();
 }

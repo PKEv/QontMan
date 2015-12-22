@@ -18,7 +18,6 @@ public:
 
     void setFullName(QString tname);
     QString getFullName();
-    QString autoFullName();
 
     void setTip(int ttip);
     int getTip();
@@ -55,21 +54,21 @@ public:
 
 
 private:
-    int id;
-    QString date;
-    QString fullName;
-    int tip;
-    QString tel;
-    QString fax;
-    QString adres;
-    QString email;
-    QString http;
-    int upLevel;
-    QString zametka;
+    int id{0};
+    QString date{""};
+    QString fullName{""};
+    int tip{0};
+    QString tel{""};
+    QString fax{""};
+    QString adres{""};
+    QString email{""};
+    QString http{""};
+    int upLevel{0};
+    QString zametka{""};
 
-    QString name1;
-    QString name2;
-    QString name3;
+    QString name1{""};
+    QString name2{""};
+    QString name3{""};
 };
 
 #endif // CONTACT_H

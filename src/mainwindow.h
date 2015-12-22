@@ -20,11 +20,16 @@ public:
 
 
 
+
 private slots:
      void on_QuitButton_clicked();
      void addButton();
      void viewButton();
      void update_rec();
+     void deleteButton();
+     void on_tableView_doubleClicked(const QModelIndex &index);
+     void clearSeachString();
+     void setSeachString(QString str);
 
 private:
     Ui::MainWindow *ui;

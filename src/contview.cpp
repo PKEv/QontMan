@@ -1,6 +1,7 @@
 
 #include "contview.h"
 #include "ui_contview.h"
+#include "PlainDb.h"
 
 
 ContView::ContView(QWidget *parent) :
@@ -40,6 +41,7 @@ void ContView::Connect()
 
     connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(plusButton(QWidget *)));
     connect(signalMapper2, SIGNAL(mapped(QWidget*)), this, SLOT(minusButton(QWidget *)));
+    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(autoFullName()));
 }
 
 ContView::ContView(Contact * tcont): ui(new Ui::ContView)
@@ -73,7 +75,6 @@ void ContView::Fill()
     ui->textEdit->setText(cont->getZametka());
     ui->tipSlider->setValue(cont->getTip());
     on_tipSlider_valueChanged(cont->getTip());
-    ui->label_8->setText(cont->getDate());
     ui->lineEdit->setPlaceholderText(tr("Имя отображаемое в базе"));
 }
 
@@ -86,6 +87,9 @@ void ContView::on_buttonBox_clicked(QAbstractButton *button)
 {
     if (ui->buttonBox->standardButton(button) == QDialogButtonBox::Ok)
     {
+        bool tipChanged {false};
+        if ((cont->getTip() != ui->tipSlider->value()) && cont->getId()!=0)
+            tipChanged = true;
         // если вдруг забыли нажать +
         ui->plusButton_1->click();
         ui->plusButton_2->click();
@@ -107,6 +111,24 @@ void ContView::on_buttonBox_clicked(QAbstractButton *button)
         cont->setTip(ui->tipSlider->value());
         cont->setDate(QDate::currentDate().toString("dd.MM.yyyy"));
         cont->setUpLevel(0);
+        if (tipChanged == false)
+        {
+            if (cont->getId()==0)
+            {
+                PlainDb::getInstance()->addContact(cont);
+            }
+            else
+            {
+                PlainDb::getInstance()->updateContact(cont);
+            }
+        }
+        else
+        {
+            PlainDb::getInstance()->changeContactTip(cont);
+
+        }
+
+
     }
 }
 
@@ -134,7 +156,8 @@ QString ContView::GetItiems(QComboBox * comboBox)
     QString temp = "";
     for(int i=0; i < comboBox->count(); i++)
     {
-        temp += comboBox->itemText(i) + ";";
+        if (!comboBox->itemText(i).isEmpty())
+            temp += comboBox->itemText(i) + ";";
     }
     return temp;
 }
@@ -174,5 +197,21 @@ void ContView::on_tipSlider_valueChanged(int value)
         ui->name1Edit->setPlaceholderText(tr("Имя"));
         ui->name2Edit->setPlaceholderText(tr("Фамилия"));
         ui->name3Edit->setPlaceholderText(tr("Отчество"));
+    }
+}
+
+void ContView::autoFullName()
+{
+    auto name1 = ui->name1Edit->text();
+    auto name2 = ui->name2Edit->text();
+    auto name3 = ui->name3Edit->text();
+
+    if (ui->tipSlider->value()==0) // фирма
+    {
+        ui->lineEdit->setText(name2 + ", " + name1);
+    }
+    else //физ лицо
+    {
+        ui->lineEdit->setText(name1 + " " + name2 + " " + name3);
     }
 }

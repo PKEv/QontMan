@@ -15,10 +15,14 @@ public:
     static PlainDb* getInstance();
     static void resetInstance();
     PlainDb(QSqlDatabase *db);
-    static QString getQuery();
+    QString getQuery();
+
     void addContact(Contact * con);
     void updateContact(Contact * con);
+    void changeContactTip(Contact * con);
+    void deleteContact(Contact * con);
     Contact getContById(const int id);
+    void setSeachString(QString str);
 
     QSqlDatabase *db;
 private:
@@ -32,6 +36,10 @@ private:
 
     void updateFirm(Contact *con);
     void updateMan(Contact* con);
+
+    void deleteFirm(Contact *con);
+    void deleteMan(Contact *con);
+    QString SeachString;
 };
 
 #endif // PlainDb_H

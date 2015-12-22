@@ -70,7 +70,10 @@ QString PlainDb::getQuery()
                     "    contact.tel, contact.fax, contact.email, contact.http, contact.notes "
                     "FROM contact "
                     "LEFT JOIN firm ON contact.id = firm.id "
-                    "LEFT JOIN man ON contact.id = man.id ");
+                    "LEFT JOIN man ON contact.id = man.id "
+                    "WHERE UPPER(contact.tel) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.fax) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.email) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.http) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.notes) LIKE ('%"+SeachString.toUpper()+"%')"
+                           "OR UPPER(firm.sobstv) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(firm.name) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(firm.shortname) LIKE ('%"+SeachString.toUpper()+"%') "
+                           "OR UPPER(man.name) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.surname) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.patronymic) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.shortname) LIKE ('%"+SeachString.toUpper()+"%')");
 }
 
 void PlainDb::addContact(Contact * con)
@@ -151,7 +154,7 @@ int PlainDb::getId(Contact* con)
 
 Contact PlainDb::getContById(const int id)
 {
-    QString prepQuery = QString ("SELECT tip, timestamp, tel, fax, email, http, notes "
+    QString prepQuery = QString ("SELECT tip, adres, timestamp, tel, fax, email, http, notes "
                                  "FROM contact WHERE contact.id=:id ");
     QSqlQuery query;
     query.prepare(prepQuery);
@@ -163,6 +166,7 @@ Contact PlainDb::getContById(const int id)
     tCont.setId(id);
     tCont.setTip(query.record().value("tip").toInt());
     tCont.setTel(query.record().value("tel").toString());
+    tCont.setAdr(query.record().value("adres").toString());
     tCont.setFax(query.record().value("fax").toString());
     tCont.setEmail(query.record().value("email").toString());
     tCont.setHttp(query.record().value("http").toString());
@@ -254,4 +258,73 @@ void PlainDb::updateMan(Contact* con)
     query.bindValue(":patronymic",con->getName3());
     query.bindValue(":shortname",con->getFullName());
     query.exec();
+}
+
+void PlainDb::changeContactTip(Contact * con)
+{
+    QString prepQuery = QString("UPDATE contact SET tip=:tip, timestamp=:timestamp, tel=:tel, fax=:fax, adres=:adres, email=:email, http=:http, uplevel=:uplevel, notes=:notes WHERE id =:id");
+    QSqlQuery query;
+    query.prepare(prepQuery);
+    query.bindValue(":tip",con->getTip());
+    query.bindValue(":timestamp",con->getDate());
+    query.bindValue(":tel",con->getTel());
+    query.bindValue(":fax",con->getFax());
+    query.bindValue(":adres",con->getAdr());
+    query.bindValue(":email",con->getEmail());
+    query.bindValue(":http",con->getHttp());
+    query.bindValue(":uplevel",con->getUpLevel());
+    query.bindValue(":notes",con->getZametka());
+    query.bindValue(":id",con->getId());
+    query.exec();
+    if (con->getTip()==0)
+    {
+        deleteMan(con);
+        addFirm(con);
+    }
+    else
+    {
+        deleteFirm(con);
+        addMan(con);
+    }
+
+}
+
+void PlainDb::deleteFirm(Contact *con)
+{
+    QString prepQuery = QString("DELETE FROM firm WHERE id=:id ");
+    QSqlQuery query;
+    query.prepare(prepQuery);
+    query.bindValue(":id",con->getId());
+    query.exec();
+}
+
+void PlainDb::deleteMan(Contact *con)
+{
+    QString prepQuery = QString("DELETE FROM man WHERE id=:id ");
+    QSqlQuery query;
+    query.prepare(prepQuery);
+    query.bindValue(":id",con->getId());
+    query.exec();
+}
+
+void PlainDb::deleteContact(Contact * con)
+{
+    QString prepQuery = QString("DELETE FROM contact WHERE id=:id ");
+    QSqlQuery query;
+    query.prepare(prepQuery);
+    query.bindValue(":id",con->getId());
+    query.exec();
+    if (con->getTip()==0)
+    {
+        deleteFirm(con);
+    }
+    else
+    {
+        deleteMan(con);
+    }
+}
+
+void PlainDb::setSeachString(QString str)
+{
+    SeachString = str;
 }

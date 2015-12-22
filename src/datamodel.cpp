@@ -25,7 +25,7 @@ QVariant dataModel::data(const QModelIndex &index, int role) const
 
 void dataModel::showAll()
 {
-    setQuery(PlainDb::getQuery(), *PlainDb::getInstance()->db);
+    setQuery(PlainDb::getInstance()->getQuery(), *PlainDb::getInstance()->db);
 
     setHeaderData(2, Qt::Horizontal, QObject::tr("Short Name"));
 //    setHeaderData(1, Qt::Horizontal, QObject::tr(""));
@@ -35,7 +35,7 @@ void dataModel::showAll()
 
 void dataModel::refresh()
 {
-    setQuery(PlainDb::getQuery(), *PlainDb::getInstance()->db);
+    setQuery(PlainDb::getInstance()->getQuery(), *PlainDb::getInstance()->db);
 }
 
 int dataModel::GetContactId(int row)
@@ -46,4 +46,15 @@ int dataModel::GetContactId(int row)
 Contact dataModel::GetContact(int id)
 {
     return PlainDb::getInstance()->getContById(id);
+}
+
+void dataModel::deleteContact(int row)
+{
+    Contact con = GetContact(GetContactId(row));
+    PlainDb::getInstance()->deleteContact(&con);
+}
+
+void dataModel::setSeachString(QString str)
+{
+    PlainDb::getInstance()->setSeachString(str);
 }

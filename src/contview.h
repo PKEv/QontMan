@@ -27,6 +27,7 @@ private slots:
     void plusButton(QWidget *comboBox);
     void minusButton(QWidget *comboBox);
     void on_tipSlider_valueChanged(int value);
+    void autoFullName();
 
 private:
     Ui::ContView *ui;
@@ -36,7 +37,7 @@ private:
     void SetItiems(QComboBox * comboBox, QString str);          // заполнение элемента данными из строки
     Contact * cont;
     QSignalMapper *signalMapper;
-    QSignalMapper *signalMapper2;
+    QSignalMapper *signalMapper2;    
 };
 
 #endif // CONTVIEW_H

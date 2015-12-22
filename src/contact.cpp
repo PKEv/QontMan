@@ -40,18 +40,6 @@ QString Contact::getFullName()
     return fullName;
 }
 
-QString Contact::autoFullName()
-{
-    if (tip==0) // фирма
-    {
-        return name2 + ", " + name1;
-    }
-    else //физ лицо
-    {
-        return name1 + " " + name2 + " " + name3;
-    }
-}
-
 void Contact::setTip(int ttip)
 {
     tip = ttip;
