@@ -328,3 +328,32 @@ void PlainDb::setSeachString(QString str)
 {
     SeachString = str;
 }
+
+void PlainDb::GetAcsList(std::vector<QString> &vec, const int selfId)
+{
+    vec.clear();
+    QString prep = QString("SELECT contact.id, contact.tip, "
+                    "    (CASE contact.tip "
+                    "        WHEN 0 THEN "
+                    "            firm.shortname "
+                    "        WHEN 1 THEN "
+                    "            man.shortname "
+                    "        ELSE 'bad type' "
+                    "    END) "
+                    "FROM contact "
+                    "LEFT JOIN firm ON contact.id = firm.id "
+                    "LEFT JOIN man ON contact.id = man.id " //);
+                    "WHERE contact.id <> :id");
+
+    QSqlQuery query;
+    query.prepare(prep);
+    query.bindValue(":id",selfId);
+    query.exec();
+
+    while(query.next())
+    {
+        int id = query.record().value(0).toInt();
+        QString name = query.record().value(2).toString();
+        vec.push_back(QString("%1:" + name).arg(id));
+    }
+}

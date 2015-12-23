@@ -24,6 +24,8 @@ public:
     Contact getContById(const int id);
     void setSeachString(QString str);
 
+    void GetAcsList(std::vector<QString> &vec, const int selfId);
+
     QSqlDatabase *db;
 private:
     int getId(Contact* con);

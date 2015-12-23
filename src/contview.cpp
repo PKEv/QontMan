@@ -76,6 +76,24 @@ void ContView::Fill()
     ui->tipSlider->setValue(cont->getTip());
     on_tipSlider_valueChanged(cont->getTip());
     ui->lineEdit->setPlaceholderText(tr("Имя отображаемое в базе"));
+
+    ui->accessoryComboBox->clear();
+    ui->accessoryComboBox->addItem("0:нет");                          // нулевой
+    std::vector<QString> vec;
+    PlainDb::getInstance()->GetAcsList(vec, cont->getId());
+    for(auto iter = vec.begin(); iter!=vec.end(); ++iter)
+    {
+        ui->accessoryComboBox->addItem(*iter);
+    }
+    if (cont->getUpLevel()==0)
+    {
+        ui->accessoryComboBox->setCurrentIndex(1);
+    }
+    else
+    {
+        for(QString pr :ui->accessoryComboBox->it)
+    }
+
 }
 
 Contact *ContView::getContact()
