@@ -38,6 +38,8 @@ private:
     Contact * cont;
     QSignalMapper *signalMapper;
     QSignalMapper *signalMapper2;    
+    void SetupUpLevel();
+    int GetUpLevel();
 };
 
 #endif // CONTVIEW_H

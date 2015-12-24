@@ -34,11 +34,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_QuitButton_clicked()
-{
-    qApp->quit();
-}
-
 void MainWindow::addButton()
 {
     contView = new ContView();

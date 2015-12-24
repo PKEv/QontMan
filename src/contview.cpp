@@ -76,7 +76,11 @@ void ContView::Fill()
     ui->tipSlider->setValue(cont->getTip());
     on_tipSlider_valueChanged(cont->getTip());
     ui->lineEdit->setPlaceholderText(tr("Имя отображаемое в базе"));
+    SetupUpLevel();
+}
 
+void ContView::SetupUpLevel()
+{
     ui->accessoryComboBox->clear();
     ui->accessoryComboBox->addItem("0:нет");                          // нулевой
     std::vector<QString> vec;
@@ -85,15 +89,29 @@ void ContView::Fill()
     {
         ui->accessoryComboBox->addItem(*iter);
     }
-    if (cont->getUpLevel()==0)
+    if (cont->getUpLevel() == 0)
     {
-        ui->accessoryComboBox->setCurrentIndex(1);
+        ui->accessoryComboBox->setCurrentIndex(0);
     }
     else
     {
-        for(QString pr :ui->accessoryComboBox->it)
+        int i = 1;
+        for(; i < ui->accessoryComboBox->count(); i++)
+        {
+            if (ui->accessoryComboBox->itemText(i).indexOf(cont->getUpLevel()+":")!=0)
+            {
+                ui->accessoryComboBox->setCurrentIndex(i);
+                break;
+            }
+        }
     }
+}
 
+int ContView::GetUpLevel()
+{
+    QString temp = ui->accessoryComboBox->currentText();
+    int i = temp.indexOf(":");
+    return temp.mid(0,i).toInt();
 }
 
 Contact *ContView::getContact()
@@ -128,7 +146,8 @@ void ContView::on_buttonBox_clicked(QAbstractButton *button)
         cont->setName3(ui->name3Edit->text());
         cont->setTip(ui->tipSlider->value());
         cont->setDate(QDate::currentDate().toString("dd.MM.yyyy"));
-        cont->setUpLevel(0);
+
+        cont->setUpLevel(GetUpLevel());
         if (tipChanged == false)
         {
             if (cont->getId()==0)
@@ -145,8 +164,6 @@ void ContView::on_buttonBox_clicked(QAbstractButton *button)
             PlainDb::getInstance()->changeContactTip(cont);
 
         }
-
-
     }
 }
 

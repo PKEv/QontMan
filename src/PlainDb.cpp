@@ -154,7 +154,7 @@ int PlainDb::getId(Contact* con)
 
 Contact PlainDb::getContById(const int id)
 {
-    QString prepQuery = QString ("SELECT tip, adres, timestamp, tel, fax, email, http, notes "
+    QString prepQuery = QString ("SELECT tip, adres, timestamp, tel, fax, email, http, notes, uplevel "
                                  "FROM contact WHERE contact.id=:id ");
     QSqlQuery query;
     query.prepare(prepQuery);
@@ -172,6 +172,7 @@ Contact PlainDb::getContById(const int id)
     tCont.setHttp(query.record().value("http").toString());
     tCont.setZametka(query.record().value("notes").toString());
     tCont.setDate(query.record().value("timestamp").toString());
+    tCont.setUpLevel(query.record().value("uplevel").toInt());
     if (tCont.getTip()==0)
     {
         getFirm(tCont);
