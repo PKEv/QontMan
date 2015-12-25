@@ -358,3 +358,24 @@ void PlainDb::GetAcsList(std::vector<QString> &vec, const int selfId)
         vec.push_back(QString("%1:" + name).arg(id));
     }
 }
+
+void PlainDb::GetContactsListByUplevel(std::vector<Contact> &vec, const int uplevel)
+{
+    vec.clear();
+    QString prep = QString("SELECT contact.id "
+                    "FROM contact "
+                    "WHERE contact.uplevel <> :uplevel");
+
+    QSqlQuery query;
+    query.prepare(prep);
+    query.bindValue(":uplevel",uplevel);
+    query.exec();
+
+    while(query.next())
+    {
+        int id = query.record().value(0).toInt();
+        Contact temp = getContById(id);
+        vec.push_back(temp);
+    }
+
+}

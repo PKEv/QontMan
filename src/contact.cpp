@@ -149,3 +149,10 @@ QString Contact::getName3()
 {
     return name3;
 }
+
+bool Contact::operator ==(Contact& another)
+{
+    if (this->getId() == another.getId() && this->id !=0)
+        return true;
+    return false;
+}

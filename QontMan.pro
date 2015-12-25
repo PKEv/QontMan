@@ -17,13 +17,17 @@ SOURCES +=  src\main.cpp\
             src\PlainDb.cpp \
             src\datamodel.cpp \
     src/contact.cpp \
-    src/contview.cpp
+    src/contview.cpp \
+    src/treemodel.cpp \
+    src/nodeinfo.cpp
 
 HEADERS  += src\mainwindow.h \
             src\contact.h \
             src\PlainDb.h \
             src\datamodel.h \
-    src/contview.h
+    src/contview.h \
+    src/treemodel.h \
+    src/nodeinfo.h
 
 FORMS    += src\mainwindow.ui \
     src/contview.ui

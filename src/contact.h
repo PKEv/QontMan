@@ -52,6 +52,8 @@ public:
     void setName3(QString tName3);
     QString getName3();
 
+    bool operator ==(Contact &another);
+
 
 private:
     int id{0};

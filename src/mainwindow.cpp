@@ -22,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->tableView->show();
 
+    myTreeModel = new TreeModel();
+    ui->treeView->setModel(myTreeModel);
+    ui->treeView->show();
+
     connect( ui->AddButton, SIGNAL(clicked()), this, SLOT(addButton()) );
     connect( ui->ViewButton, SIGNAL(clicked()), this, SLOT(viewButton()) );
     connect( ui->DeleteButton, SIGNAL(clicked()), this, SLOT(deleteButton()) );

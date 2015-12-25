@@ -5,6 +5,7 @@
 #include "contview.h"
 #include "contact.h"
 #include "datamodel.h"
+#include "treemodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +35,7 @@ private:
     Ui::MainWindow *ui;
     ContView *contView;
     dataModel *myModel;
+    TreeModel *myTreeModel;
 
 };
 
