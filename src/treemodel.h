@@ -21,11 +21,16 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
 
+    bool canFetchMore(const QModelIndex &parent) const;
+    void fetchMore(const QModelIndex &parent);
+
     bool hasChildren(const QModelIndex &parent) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 private:
     typedef QVector<NodeInfo> NodeInfoList;
     NodeInfoList _nodes;
+    Contact *head;
 
     void fetchRootDirectory();
     int findRow(const NodeInfo* nodeInfo) const;

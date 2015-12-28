@@ -15,7 +15,7 @@ void Contact::setId(int tid)
     id = tid;
 }
 
-int Contact::getId()
+int Contact::getId() const
 {
     return id;
 }
@@ -105,7 +105,7 @@ void Contact::setUpLevel(int tuplevel)
     upLevel = tuplevel;
 }
 
-int Contact::getUpLevel()
+int Contact::getUpLevel() const
 {
     return upLevel;
 }
@@ -150,7 +150,7 @@ QString Contact::getName3()
     return name3;
 }
 
-bool Contact::operator ==(Contact& another)
+bool Contact::operator ==(const Contact& another) const
 {
     if (this->getId() == another.getId() && this->id !=0)
         return true;

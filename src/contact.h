@@ -11,7 +11,7 @@ public:
     ~Contact();
 
     void setId(int tid);
-    int getId();
+    int getId() const;
 
     void setDate(QString tdate);
     QString getDate();
@@ -38,7 +38,7 @@ public:
     QString getHttp();
 
     void setUpLevel(int tuplevel);
-    int getUpLevel();
+    int getUpLevel() const;
 
     void setZametka(QString tzametka);
     QString getZametka();
@@ -52,7 +52,7 @@ public:
     void setName3(QString tName3);
     QString getName3();
 
-    bool operator ==(Contact &another);
+    bool operator ==(const Contact &another) const;
 
 
 private:

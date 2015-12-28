@@ -14,7 +14,7 @@ public:
     {};
     ~NodeInfo();
 
-    bool operator ==(NodeInfo& another)
+    bool operator ==(const NodeInfo& another) const
     {
         bool r = this->cont == another.cont;
         Q_ASSERT(!r || this->parent == another.parent);

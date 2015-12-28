@@ -364,7 +364,7 @@ void PlainDb::GetContactsListByUplevel(std::vector<Contact> &vec, const int uple
     vec.clear();
     QString prep = QString("SELECT contact.id "
                     "FROM contact "
-                    "WHERE contact.uplevel <> :uplevel");
+                    "WHERE contact.uplevel = :uplevel");
 
     QSqlQuery query;
     query.prepare(prep);
