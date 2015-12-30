@@ -8,7 +8,7 @@ TreeModel::TreeModel(QObject *parent) : QAbstractItemModel(parent)
 
 TreeModel::~TreeModel()
 {
-
+ delete head;
 }
 
 QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) const
@@ -62,9 +62,8 @@ int TreeModel::rowCount(const QModelIndex &parent) const
 
 int TreeModel::columnCount(const QModelIndex &parent) const
 {
-    if (!parent.isValid())
-            return 1;
-    return 0;
+    Q_UNUSED(parent);
+    return 1;
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const
@@ -108,15 +107,15 @@ bool TreeModel::hasChildren(const QModelIndex &parent) const
 
 void TreeModel::fetchRootDirectory()
 {
-    /*
+
     _nodes.clear();
     head = new Contact();
     head->setId(0);
     head->setFullName(tr("Все"));
     //head->parent = nullptr;
     _nodes.push_back(NodeInfo(*head));
-*/
-
+//*/
+/*
     std::vector<Contact> vec;
     PlainDb::getInstance()->GetContactsListByUplevel(vec, 0);
     for(unsigned int i=0; i < vec.size() ; i++)
@@ -130,6 +129,10 @@ int TreeModel::findRow(const NodeInfo* nodeInfo) const
 {
     Q_ASSERT(nodeInfo != 0);
     const NodeInfoList& parentInfoChildren = nodeInfo->parent != 0 ? nodeInfo->parent->children: _nodes;
+    if (nodeInfo->cont.getId() == head->getId()) // особенности функции сравнения
+    {
+        return 0; // корневой узел у нас точно нулевой, мы его сами сделали в функции fetchRootDirectory
+    }
     NodeInfoList::const_iterator position = qFind(parentInfoChildren, *nodeInfo);
     Q_ASSERT(position != parentInfoChildren.end());
     return std::distance(parentInfoChildren.begin(), position);
