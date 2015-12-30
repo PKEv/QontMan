@@ -34,14 +34,16 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) con
 
 QModelIndex TreeModel::parent(const QModelIndex &child) const
 {
-    if (!child.isValid()) {
+    if (!child.isValid())
+    {
         return QModelIndex();
     }
 
     NodeInfo* childInfo = static_cast<NodeInfo*>(child.internalPointer());
     Q_ASSERT(childInfo != 0);
     NodeInfo* parentInfo = childInfo->parent;
-    if (parentInfo != 0) {
+    if (parentInfo != 0)
+    {
         return createIndex(findRow(parentInfo), 1, parentInfo);
     }
     else {
@@ -51,7 +53,8 @@ QModelIndex TreeModel::parent(const QModelIndex &child) const
 
 int TreeModel::rowCount(const QModelIndex &parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid())
+    {
         return _nodes.size();
     }
     const NodeInfo* parentInfo = static_cast<const NodeInfo*>(parent.internalPointer());
@@ -68,7 +71,8 @@ int TreeModel::columnCount(const QModelIndex &parent) const
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid()) {
+    if (!index.isValid())
+    {
         return QVariant();
     }
 
@@ -107,22 +111,12 @@ bool TreeModel::hasChildren(const QModelIndex &parent) const
 
 void TreeModel::fetchRootDirectory()
 {
-
     _nodes.clear();
     head = new Contact();
     head->setId(0);
     head->setFullName(tr("Все"));
     //head->parent = nullptr;
     _nodes.push_back(NodeInfo(*head));
-//*/
-/*
-    std::vector<Contact> vec;
-    PlainDb::getInstance()->GetContactsListByUplevel(vec, 0);
-    for(unsigned int i=0; i < vec.size() ; i++)
-    {
-        _nodes.push_back(NodeInfo(vec.at(i)));
-    }
-  //  */
 }
 
 int TreeModel::findRow(const NodeInfo* nodeInfo) const
@@ -140,7 +134,8 @@ int TreeModel::findRow(const NodeInfo* nodeInfo) const
 
 bool TreeModel::canFetchMore(const QModelIndex &parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid())
+    {
         return false;
     }
 
@@ -161,10 +156,12 @@ void TreeModel::fetchMore(const QModelIndex &parent)
     int insrtCnt = children.size();
 
     beginInsertRows(parent, 0, insrtCnt);
-    for (const Contact& entry: children) {
+    for (const Contact& entry: children)
+    {
         NodeInfo nodeInfo(entry, parentInfo);
         nodeInfo.mapped = false;
-        parentInfo->children.push_back(std::move(nodeInfo));
+        if (PlainDb::getInstance()->HasChildByUplevel( nodeInfo.cont.getId())) // исключаем узлы без детей
+            parentInfo->children.push_back(std::move(nodeInfo));
     }
     parentInfo->mapped = true;
     endInsertRows();
@@ -173,7 +170,8 @@ void TreeModel::fetchMore(const QModelIndex &parent)
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     const QStringList headers = {"Имя"};
-    if (orientation == Qt::Horizontal && role == Qt::DisplayRole && section < headers.size()) {
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole && section < headers.size())
+    {
         return headers[section];
     }
     return QVariant();

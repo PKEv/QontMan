@@ -24,6 +24,7 @@ public:
     Contact getContById(const int id);
     void setSeachString(QString str);
     void GetContactsListByUplevel(std::vector<Contact> &vec, const int uplevel);
+    bool HasChildByUplevel(const int uplevel);
 
     void GetAcsList(std::vector<QString> &vec, const int selfId);
 

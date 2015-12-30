@@ -379,3 +379,16 @@ void PlainDb::GetContactsListByUplevel(std::vector<Contact> &vec, const int uple
     }
 
 }
+
+bool PlainDb::HasChildByUplevel(const int uplevel)
+{
+    QString prep = QString("SELECT contact.id "
+                    "FROM contact "
+                    "WHERE contact.uplevel = :uplevel");
+
+    QSqlQuery query;
+    query.prepare(prep);
+    query.bindValue(":uplevel", uplevel);
+    query.exec();
+    return query.first();
+}
