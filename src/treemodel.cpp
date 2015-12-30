@@ -98,9 +98,7 @@ bool TreeModel::hasChildren(const QModelIndex &parent) const
         {
             std::vector<Contact> vec;
             PlainDb::getInstance()->GetContactsListByUplevel(vec, parentInfo->cont.getId());
-            if (vec.size() == 0)
-                return false;//QDir(parentInfo->fileInfo.absoluteFilePath()).count() > 0;
-            else
+            if (vec.size() > 0)
                 return true;
         }        
     }
@@ -110,21 +108,22 @@ bool TreeModel::hasChildren(const QModelIndex &parent) const
 
 void TreeModel::fetchRootDirectory()
 {
+    /*
     _nodes.clear();
     head = new Contact();
     head->setId(0);
     head->setFullName(tr("Все"));
     //head->parent = nullptr;
     _nodes.push_back(NodeInfo(*head));
+*/
 
-    /*
     std::vector<Contact> vec;
     PlainDb::getInstance()->GetContactsListByUplevel(vec, 0);
     for(unsigned int i=0; i < vec.size() ; i++)
     {
         _nodes.push_back(NodeInfo(vec.at(i)));
     }
-    */
+  //  */
 }
 
 int TreeModel::findRow(const NodeInfo* nodeInfo) const
