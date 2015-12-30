@@ -71,9 +71,10 @@ QString PlainDb::getQuery()
                     "FROM contact "
                     "LEFT JOIN firm ON contact.id = firm.id "
                     "LEFT JOIN man ON contact.id = man.id "
-                    "WHERE UPPER(contact.tel) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.fax) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.email) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.http) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.notes) LIKE ('%"+SeachString.toUpper()+"%')"
+                    "WHERE (UPPER(contact.tel) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.fax) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.email) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.http) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.notes) LIKE ('%"+SeachString.toUpper()+"%')"
                            "OR UPPER(firm.sobstv) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(firm.name) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(firm.shortname) LIKE ('%"+SeachString.toUpper()+"%') "
-                           "OR UPPER(man.name) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.surname) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.patronymic) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.shortname) LIKE ('%"+SeachString.toUpper()+"%')");
+                           "OR UPPER(man.name) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.surname) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.patronymic) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.shortname) LIKE ('%"+SeachString.toUpper()+"%') )")
+            + SeachString2;
 }
 
 void PlainDb::addContact(Contact * con)
@@ -391,4 +392,19 @@ bool PlainDb::HasChildByUplevel(const int uplevel)
     query.bindValue(":uplevel", uplevel);
     query.exec();
     return query.first();
+}
+
+void PlainDb::SetFilterByListId(QStringList & list)
+{
+    SeachString2.clear();
+    if (list.isEmpty())
+        return;
+    SeachString2 = " AND (";
+    for (const QString& entry: list)
+    {
+        if (entry != list.first())
+            SeachString2 += " OR ";
+        SeachString2 += QString("contact.id=%1").arg(entry);
+    }
+    SeachString2 += ")";
 }

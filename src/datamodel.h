@@ -18,6 +18,7 @@ public:
     Contact GetContact(int id);
     void deleteContact(int row);
     void setSeachString(QString str);
+    void SetFilterByListId(QStringList &list);
 
     void showAll();
 };

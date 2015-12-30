@@ -176,3 +176,26 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int rol
     }
     return QVariant();
 }
+
+QStringList TreeModel::getDescListId(const QModelIndex &index)
+{
+    QStringList list;
+    NodeInfo* nodeInfo = static_cast<NodeInfo*>(index.internalPointer());
+    if (nodeInfo->cont.getId()==0)
+        return list;
+    list << QString::number(nodeInfo->cont.getId());
+    getListId(list, nodeInfo->cont);
+    return list;
+}
+
+void TreeModel::getListId(QStringList &list, const Contact &upLevel)
+{
+    std::vector<Contact> children;
+    PlainDb::getInstance()->GetContactsListByUplevel(children, upLevel.getId());
+    for (const Contact& entry: children)
+    {
+        list << QString::number(entry.getId());
+        getListId(list, entry);
+    }
+}
+

@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect( ui->DeleteButton, SIGNAL(clicked()), this, SLOT(deleteButton()) );
     connect(ui->clearSearchButton, SIGNAL(clicked()),this, SLOT(clearSeachString()) );
     connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
+    connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(filterByTree(QModelIndex)));
+
 }
 
 MainWindow::~MainWindow()
@@ -92,3 +94,11 @@ void MainWindow::setSeachString(QString str)
     myModel->setSeachString(str);
     myModel->refresh();
 }
+void MainWindow::filterByTree(const QModelIndex & index)
+{
+    QStringList list =  myTreeModel->getDescListId(index);
+    myModel->SetFilterByListId(list);
+    myModel->refresh();
+}
+
+

@@ -19,9 +19,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-
-
-
 private slots:
      void addButton();
      void viewButton();
@@ -30,6 +27,7 @@ private slots:
      void on_tableView_doubleClicked(const QModelIndex &index);
      void clearSeachString();
      void setSeachString(QString str);
+     void filterByTree(const QModelIndex & index);
 
 private:
     Ui::MainWindow *ui;

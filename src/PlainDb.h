@@ -22,9 +22,13 @@ public:
     void changeContactTip(Contact * con);
     void deleteContact(Contact * con);
     Contact getContById(const int id);
+
     void setSeachString(QString str);
+
     void GetContactsListByUplevel(std::vector<Contact> &vec, const int uplevel);
     bool HasChildByUplevel(const int uplevel);
+
+    void SetFilterByListId(QStringList & list);
 
     void GetAcsList(std::vector<QString> &vec, const int selfId);
 
@@ -44,6 +48,7 @@ private:
     void deleteFirm(Contact *con);
     void deleteMan(Contact *con);
     QString SeachString;
+    QString SeachString2;
 };
 
 #endif // PlainDb_H

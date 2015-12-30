@@ -58,3 +58,7 @@ void dataModel::setSeachString(QString str)
 {
     PlainDb::getInstance()->setSeachString(str);
 }
+void dataModel::SetFilterByListId(QStringList &list)
+{
+    PlainDb::getInstance()->SetFilterByListId(list);
+}

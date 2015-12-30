@@ -27,6 +27,8 @@ public:
     bool hasChildren(const QModelIndex &parent) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
+    QStringList getDescListId(const QModelIndex &parent);
+
 private:
     typedef QVector<NodeInfo> NodeInfoList;
     NodeInfoList _nodes;
@@ -35,6 +37,7 @@ private:
     void fetchRootDirectory();
     int findRow(const NodeInfo* nodeInfo) const;
     QVariant nameData(Contact& fileInfo, int role);
+    void getListId(QStringList &list, const Contact &upLevel); // рекурсивная
 };
 
 #endif // TREEMODEL_H
