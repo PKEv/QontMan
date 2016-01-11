@@ -6,6 +6,7 @@
 #include "contact.h"
 #include "datamodel.h"
 #include "treemodel.h"
+#include "diagram.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,13 +29,14 @@ private slots:
      void clearSeachString();
      void setSeachString(QString str);
      void filterByTree(const QModelIndex & index);
+     void showDiagram();
 
 private:
     Ui::MainWindow *ui;
     ContView *contView;
     dataModel *myModel;
     TreeModel *myTreeModel;
-
+    Diagram *myDia;
 };
 
 #endif // MAINWINDOW_H

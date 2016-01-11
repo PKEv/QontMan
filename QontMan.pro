@@ -19,7 +19,11 @@ SOURCES +=  src\main.cpp\
     src/contact.cpp \
     src/contview.cpp \
     src/treemodel.cpp \
-    src/nodeinfo.cpp
+    src/nodeinfo.cpp \
+    src/diagram.cpp \
+    src/dia/edge.cpp \
+    src/dia/graphwidget.cpp \
+    src/dia/node.cpp
 
 HEADERS  += src\mainwindow.h \
             src\contact.h \
@@ -27,10 +31,15 @@ HEADERS  += src\mainwindow.h \
             src\datamodel.h \
     src/contview.h \
     src/treemodel.h \
-    src/nodeinfo.h
+    src/nodeinfo.h \
+    src/diagram.h \
+    src/dia/edge.h \
+    src/dia/graphwidget.h \
+    src/dia/node.h
 
 FORMS    += src\mainwindow.ui \
-    src/contview.ui
+    src/contview.ui \
+    src/diagram.ui
 
 CONFIG   += c++11
 

@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     myTreeModel = new TreeModel();
     ui->treeView->setModel(myTreeModel);
     ui->treeView->show();
+    ui->toolBar->addAction(QIcon(),tr("Диаграмма"),this,SLOT(showDiagram()));
 
     connect( ui->AddButton, SIGNAL(clicked()), this, SLOT(addButton()) );
     connect( ui->ViewButton, SIGNAL(clicked()), this, SLOT(viewButton()) );
@@ -101,4 +102,9 @@ void MainWindow::filterByTree(const QModelIndex & index)
     myModel->refresh();
 }
 
+void MainWindow::showDiagram()
+{
+    myDia = new Diagram;
+    myDia->show();
+}
 
