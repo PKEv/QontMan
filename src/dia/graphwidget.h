@@ -56,7 +56,7 @@ public:
     void itemMoved();
 
 public slots:
-    void shuffle();
+   // void shuffle();
     void zoomIn();
     void zoomOut();
 

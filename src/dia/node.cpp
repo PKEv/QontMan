@@ -77,7 +77,7 @@ void Node::calculateForces()
     if (!scene() || scene()->mouseGrabberItem() == this) {
         newPos = pos();
         return;
-    }
+    }/*
 //! [2]
 
 //! [3]
@@ -124,6 +124,7 @@ void Node::calculateForces()
     newPos = pos() + QPointF(xvel, yvel);
     newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + 10), sceneRect.right() - 10));
     newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + 10), sceneRect.bottom() - 10));
+*/
 }
 //! [6]
 
@@ -182,6 +183,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 //! [11]
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+
     switch (change) {
     case ItemPositionHasChanged:
         foreach (Edge *edge, edgeList)
