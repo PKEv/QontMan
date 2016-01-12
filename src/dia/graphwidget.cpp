@@ -48,7 +48,7 @@
 
 //! [0]
 GraphWidget::GraphWidget(QWidget *parent)
-    : QGraphicsView(parent)//, timerId(0)
+    : QGraphicsView(parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -105,36 +105,10 @@ GraphWidget::GraphWidget(QWidget *parent)
     node8->setPos(0, 50);
     node9->setPos(50, 50);
 }
-//! [1]
 
-//! [2]
-
-/*
-void GraphWidget::itemMoved()
-{
-    if (!timerId)
-        timerId = startTimer(1000 / 25);
-}*/
-//! [2]
-
-//! [3]
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
-    /*
-    case Qt::Key_Up:
-        centerNode->moveBy(0, -20);
-        break;
-    case Qt::Key_Down:
-        centerNode->moveBy(0, 20);
-        break;
-    case Qt::Key_Left:
-        centerNode->moveBy(-20, 0);
-        break;
-    case Qt::Key_Right:
-        centerNode->moveBy(20, 0);
-        break;
-        */
     case Qt::Key_Plus:
         zoomIn();
         break;
@@ -142,55 +116,19 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         zoomOut();
         break;
     case Qt::Key_Space:
-        /*
-    case Qt::Key_Enter:
-        shuffle();
-        break;
-        */
     default:
         QGraphicsView::keyPressEvent(event);
     }
 }
-//! [3]
-
-//! [4]
-/*
-void GraphWidget::timerEvent(QTimerEvent *event)
-{
-    Q_UNUSED(event);
-
-    QList<Node *> nodes;
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (Node *node = qgraphicsitem_cast<Node *>(item))
-            nodes << node;
-    }
-
-    foreach (Node *node, nodes)
-        node->calculateForces();
-
-    bool itemsMoved = false;
-    foreach (Node *node, nodes) {
-        if (node->advance())
-            itemsMoved = true;
-    }
-
-    if (!itemsMoved) {
-        killTimer(timerId);
-        timerId = 0;
-    }
-}*/
-//! [4]
 
 #ifndef QT_NO_WHEELEVENT
-//! [5]
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {
     scaleView(pow((double)2, -event->delta() / 240.0));
 }
-//! [5]
 #endif
 
-//! [6]
+
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
@@ -232,9 +170,7 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawText(textRect, message);
     */
 }
-//! [6]
 
-//! [7]
 void GraphWidget::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
@@ -243,16 +179,7 @@ void GraphWidget::scaleView(qreal scaleFactor)
 
     scale(scaleFactor, scaleFactor);
 }
-//! [7]
-/*
-void GraphWidget::shuffle()
-{
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (qgraphicsitem_cast<Node *>(item))
-            item->setPos(-150 + qrand() % 300, -150 + qrand() % 300);
-    }
-}
-*/
+
 void GraphWidget::zoomIn()
 {
     scaleView(qreal(1.2));

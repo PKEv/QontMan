@@ -45,7 +45,6 @@
 
 class Node;
 
-//! [0]
 class GraphWidget : public QGraphicsView
 {
     Q_OBJECT
@@ -53,16 +52,13 @@ class GraphWidget : public QGraphicsView
 public:
     GraphWidget(QWidget *parent = 0);
 
-    //void itemMoved();
-
 public slots:
-   // void shuffle();
+
     void zoomIn();
     void zoomOut();
 
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-    //void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
@@ -71,9 +67,8 @@ protected:
     void scaleView(qreal scaleFactor);
 
 private:
-    //int timerId;
     Node *centerNode;
 };
-//! [0]
+
 
 #endif // GRAPHWIDGET_H
