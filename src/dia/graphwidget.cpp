@@ -48,7 +48,7 @@
 
 //! [0]
 GraphWidget::GraphWidget(QWidget *parent)
-    : QGraphicsView(parent), timerId(0)
+    : QGraphicsView(parent)//, timerId(0)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -109,12 +109,12 @@ GraphWidget::GraphWidget(QWidget *parent)
 
 //! [2]
 
-
+/*
 void GraphWidget::itemMoved()
 {
     if (!timerId)
         timerId = startTimer(1000 / 25);
-}
+}*/
 //! [2]
 
 //! [3]
@@ -154,7 +154,7 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
 //! [3]
 
 //! [4]
-
+/*
 void GraphWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
@@ -178,7 +178,7 @@ void GraphWidget::timerEvent(QTimerEvent *event)
         killTimer(timerId);
         timerId = 0;
     }
-}
+}*/
 //! [4]
 
 #ifndef QT_NO_WHEELEVENT

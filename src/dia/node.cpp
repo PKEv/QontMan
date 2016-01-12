@@ -131,7 +131,7 @@ void Node::calculateForces()
 //! [7]
 bool Node::advance()
 {
-    if (newPos == pos())
+    if ((newPos == pos()) || (newPos==QPointF(0,0)))
         return false;
 
     setPos(newPos);
@@ -188,7 +188,7 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
     case ItemPositionHasChanged:
         foreach (Edge *edge, edgeList)
             edge->adjust();
-        graph->itemMoved();
+        //graph->itemMoved();
         break;
     default:
         break;

@@ -53,7 +53,7 @@ class GraphWidget : public QGraphicsView
 public:
     GraphWidget(QWidget *parent = 0);
 
-    void itemMoved();
+    //void itemMoved();
 
 public slots:
    // void shuffle();
@@ -62,7 +62,7 @@ public slots:
 
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-    void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
+    //void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
@@ -71,7 +71,7 @@ protected:
     void scaleView(qreal scaleFactor);
 
 private:
-    int timerId;
+    //int timerId;
     Node *centerNode;
 };
 //! [0]
