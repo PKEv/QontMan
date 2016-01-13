@@ -42,8 +42,10 @@
 #define GRAPHWIDGET_H
 
 #include <QGraphicsView>
+#include <QVector>
+#include "node.h"
 
-class Node;
+//class Node;
 
 class GraphWidget : public QGraphicsView
 {
@@ -52,6 +54,7 @@ class GraphWidget : public QGraphicsView
 public:
     GraphWidget(QWidget *parent = 0);
 
+    QVector <Node> nodes;
 public slots:
 
     void zoomIn();
@@ -67,7 +70,8 @@ protected:
     void scaleView(qreal scaleFactor);
 
 private:
-    Node *centerNode;
+    //Node *centerNode;
+    void fillNodes();
 };
 
 

@@ -43,6 +43,7 @@
 
 #include <QGraphicsItem>
 #include <QList>
+#include "../nodeinfo.h"
 
 class Edge;
 class GraphWidget;
@@ -50,7 +51,6 @@ QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE
 
-//! [0]
 class Node : public QGraphicsItem
 {
 public:
@@ -68,6 +68,9 @@ public:
     QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
 
+    NodeInfo node;  // информация по узлу
+    int urov;       // уровень в стуктуре
+
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) Q_DECL_OVERRIDE;
 
@@ -79,6 +82,5 @@ private:
     QPointF newPos;
     GraphWidget *graph;
 };
-//! [0]
 
 #endif // NODE_H

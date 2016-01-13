@@ -46,10 +46,8 @@
 #include <QPainter>
 
 static const double Pi = 3.14159265358979323846264338327950288419717;
-static double TwoPi = 2.0 * Pi;
 
 Edge::Edge(Node *sourceNode, Node *destNode)
-    : arrowSize(10)
 {
     setAcceptedMouseButtons(0);
     source = sourceNode;
@@ -94,7 +92,7 @@ QRectF Edge::boundingRect() const
         return QRectF();
 
     qreal penWidth = 1;
-    qreal extra = (penWidth + arrowSize) / 2.0;
+    qreal extra = penWidth / 2.0;
 
     return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                       destPoint.y() - sourcePoint.y()))

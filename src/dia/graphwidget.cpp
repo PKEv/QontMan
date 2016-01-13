@@ -60,15 +60,13 @@ GraphWidget::GraphWidget(QWidget *parent)
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
     setMinimumSize(400, 400);
-    setWindowTitle(tr("Elastic Nodes"));
-//! [0]
 
-//! [1]
+
     Node *node1 = new Node(this);
     Node *node2 = new Node(this);
     Node *node3 = new Node(this);
     Node *node4 = new Node(this);
-    centerNode = new Node(this);
+    Node *node5 = new Node(this);
     Node *node6 = new Node(this);
     Node *node7 = new Node(this);
     Node *node8 = new Node(this);
@@ -77,19 +75,19 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(node2);
     scene->addItem(node3);
     scene->addItem(node4);
-    scene->addItem(centerNode);
+    scene->addItem(node5);
     scene->addItem(node6);
     scene->addItem(node7);
     scene->addItem(node8);
     scene->addItem(node9);
     scene->addItem(new Edge(node1, node2));
     scene->addItem(new Edge(node2, node3));
-    scene->addItem(new Edge(node2, centerNode));
+    scene->addItem(new Edge(node2, node5));
     scene->addItem(new Edge(node3, node6));
     scene->addItem(new Edge(node4, node1));
-    scene->addItem(new Edge(node4, centerNode));
-    scene->addItem(new Edge(centerNode, node6));
-    scene->addItem(new Edge(centerNode, node8));
+    scene->addItem(new Edge(node4, node5));
+    scene->addItem(new Edge(node5, node6));
+    scene->addItem(new Edge(node5, node8));
     scene->addItem(new Edge(node6, node9));
     scene->addItem(new Edge(node7, node4));
     scene->addItem(new Edge(node8, node7));
@@ -99,7 +97,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     node2->setPos(0, -50);
     node3->setPos(50, -50);
     node4->setPos(-50, 0);
-    centerNode->setPos(0, 0);
+    node5->setPos(0, 0);
     node6->setPos(50, 0);
     node7->setPos(-50, 50);
     node8->setPos(0, 50);
