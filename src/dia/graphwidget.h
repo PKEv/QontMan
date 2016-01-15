@@ -44,6 +44,8 @@
 #include <QGraphicsView>
 #include <QVector>
 #include "node.h"
+#include "../nodeinfo.h"
+
 
 //class Node;
 
@@ -54,7 +56,9 @@ class GraphWidget : public QGraphicsView
 public:
     GraphWidget(QWidget *parent = 0);
 
-    QVector <Node> nodes;
+    QVector <Node*> nodes;
+    QVector <NodeInfo> nodesInfo;  // информация по узлу
+
 public slots:
 
     void zoomIn();
@@ -62,16 +66,19 @@ public slots:
 
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-#ifndef QT_NO_WHEELEVENT
+
+    #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
-#endif
+    #endif
+
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
 
     void scaleView(qreal scaleFactor);
 
 private:
-    //Node *centerNode;
     void fillNodes();
+    std::vector<NodeInfo> GetChildrens(NodeInfo & node);
+   // Node * findNode(NodeInfo & nodeInfo);
 };
 
 

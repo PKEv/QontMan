@@ -40,8 +40,7 @@
 
 #include "graphwidget.h"
 #include "edge.h"
-#include "node.h"
-
+#include "../PlainDb.h"
 #include <math.h>
 
 #include <QKeyEvent>
@@ -61,6 +60,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     scale(qreal(0.8), qreal(0.8));
     setMinimumSize(400, 400);
 
+    fillNodes();
 
     Node *node1 = new Node(this);
     Node *node2 = new Node(this);
@@ -187,3 +187,54 @@ void GraphWidget::zoomOut()
 {
     scaleView(1 / qreal(1.2));
 }
+
+void GraphWidget::fillNodes()
+{
+    std::vector<Contact> cont;
+    PlainDb::getInstance()->GetContactsListByUplevel(cont,0);
+    foreach (Contact pCont, cont)
+    {
+        NodeInfo node;
+        node.cont = pCont;
+        node.children.fromStdVector(GetChildrens(node));
+        nodesInfo.push_back(node);
+    }
+
+    for(int i=0; i<nodesInfo.size();i++)
+    {
+        Node *pNode = new Node(this);
+        pNode->nodeInfo = nodesInfo.at(i);
+        nodes.push_back(pNode);
+    }
+}
+
+std::vector <NodeInfo> GraphWidget::GetChildrens(NodeInfo & node)
+{
+   std::vector <NodeInfo> ret;
+   std::vector <Contact> cont;
+   PlainDb::getInstance()->GetContactsListByUplevel(cont, node.cont.getId());
+
+   foreach (Contact pCont, cont)
+   {
+       NodeInfo nodInfo(pCont, &node);
+       nodInfo.children.fromStdVector(GetChildrens(nodInfo));
+       nodesInfo.push_back(nodInfo);
+       ret.push_back(nodInfo);
+   }
+   return ret;
+}
+
+/*
+Node * GraphWidget::findNode(NodeInfo & nodeInfo)
+{
+       foreach (Node pNode, nodes)
+       {
+           if (pNode.nodeInfo == nodeInfo)
+               return Node;
+       }
+
+       Node * newNode = new Node();
+       newNode->nodeInfo = &nodeInfo;
+       return newNode;
+}
+*/

@@ -45,6 +45,7 @@
 #include <QList>
 #include "../nodeinfo.h"
 
+
 class Edge;
 class GraphWidget;
 QT_BEGIN_NAMESPACE
@@ -64,12 +65,13 @@ public:
 
     bool advance();
 
+    NodeInfo *nodeInfo;
+
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
 
-    NodeInfo node;  // информация по узлу
-    int urov;       // уровень в стуктуре
+
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) Q_DECL_OVERRIDE;
@@ -81,6 +83,10 @@ private:
     QList<Edge *> edgeList;
     QPointF newPos;
     GraphWidget *graph;
+
+    int urov;       // уровень в стуктуре
+
+
 };
 
 #endif // NODE_H

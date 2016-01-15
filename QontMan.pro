@@ -19,7 +19,6 @@ SOURCES +=  src\main.cpp\
     src/contact.cpp \
     src/contview.cpp \
     src/treemodel.cpp \
-    src/nodeinfo.cpp \
     src/diagram.cpp \
     src/dia/edge.cpp \
     src/dia/graphwidget.cpp \

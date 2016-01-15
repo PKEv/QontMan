@@ -9,10 +9,12 @@ class NodeInfo
 public:
     NodeInfo():parent(0), mapped(false)
     {};
+
     NodeInfo(const Contact & cont, NodeInfo * parent=0):
         cont(cont), parent(parent), mapped(false)
     {};
-    ~NodeInfo();
+
+    //~NodeInfo();
 
     bool operator ==(const NodeInfo& another) const
     {
