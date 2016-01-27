@@ -77,8 +77,7 @@ protected:
 
 private:
     void fillNodes();
-    std::vector<NodeInfo> GetChildrens(NodeInfo & node);
-   // Node * findNode(NodeInfo & nodeInfo);
+
 };
 
 
