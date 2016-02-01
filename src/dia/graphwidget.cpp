@@ -102,6 +102,19 @@ GraphWidget::GraphWidget(QWidget *parent)
     node7->setPos(-50, 50);
     node8->setPos(0, 50);
     node9->setPos(50, 50);
+
+    // отображаем собранную информацию по узлам
+    Node *node;
+    foreach (node, nodes)
+    {
+        scene->addItem(node);
+    }
+
+    Edge *edge;
+    foreach (edge, edges)
+    {
+        scene->addItem(edge);
+    }
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
@@ -197,19 +210,17 @@ void GraphWidget::fillNodes()
     foreach (cont, vec)
     {
         NodeInfo * node = new NodeInfo(cont, 0);
-        recursivNodesInfo(node);
+        Node * g_node = new Node(this);
+        g_node->nodeInfo = node;
+        recursivNodesInfo(node, g_node);
         nodesInfo.push_back(node);
+
+
+        nodes.push_back(g_node);
     }
-
-    // заполняем NODE
-
-
-
-    // заполняем Edge
-
 }
 
-void GraphWidget::recursivNodesInfo(NodeInfo *parent )
+void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
 {
     std::vector<Contact> vec;
     Contact cont;
@@ -217,10 +228,15 @@ void GraphWidget::recursivNodesInfo(NodeInfo *parent )
     foreach (cont, vec)
     {
         NodeInfo * node = new NodeInfo(cont, parent);
-        recursivNodesInfo(node);
+        Node * g_node = new Node(this);
+        g_node->nodeInfo = node;
+        recursivNodesInfo(node, g_node);
         parent->children.push_back(*node);
+
+        nodes.push_back(g_node);
+
+        Edge *edge = new Edge(g_node, parentNode);
+        edges.push_back(edge);
     }
-
-
 }
 
