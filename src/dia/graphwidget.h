@@ -57,7 +57,7 @@ public:
     GraphWidget(QWidget *parent = 0);
 
     QVector <Node*> nodes;
-    QVector <NodeInfo> nodesInfo;  // информация по узлу
+    QVector <NodeInfo*> nodesInfo;  // информация по узлу
 
 public slots:
 
@@ -77,6 +77,7 @@ protected:
 
 private:
     void fillNodes();
+    void recursivNodesInfo(NodeInfo *parent );
 
 };
 

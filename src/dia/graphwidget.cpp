@@ -190,6 +190,36 @@ void GraphWidget::zoomOut()
 
 void GraphWidget::fillNodes()
 {
+    // заполняем nodesInfo
+    std::vector<Contact> vec;
+    Contact cont;
+    PlainDb::getInstance()->GetContactsListByUplevel(vec, 0);
+    foreach (cont, vec)
+    {
+        NodeInfo * node = new NodeInfo(cont, 0);
+        recursivNodesInfo(node);
+        nodesInfo.push_back(node);
+    }
+
+    // заполняем NODE
+
+
+
+    // заполняем Edge
+
+}
+
+void GraphWidget::recursivNodesInfo(NodeInfo *parent )
+{
+    std::vector<Contact> vec;
+    Contact cont;
+    PlainDb::getInstance()->GetContactsListByUplevel(vec, parent->cont.getId());
+    foreach (cont, vec)
+    {
+        NodeInfo * node = new NodeInfo(cont, parent);
+        recursivNodesInfo(node);
+        parent->children.push_back(*node);
+    }
 
 
 }
