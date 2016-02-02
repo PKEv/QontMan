@@ -78,23 +78,33 @@ bool Node::advance()
 
 QRectF Node::boundingRect() const
 {
-    qreal adjust = 2;
-    return QRectF( -10 - adjust, -10 - adjust, 23 + adjust, 23 + adjust);
-}
 
+    QFont font("Arial", 18);
+    font.setBold(true);
+    QFontMetrics fm(font);
+
+    QRectF rec = fm.boundingRect(nodeInfo->cont.getFullName());
+    return rec;
+    /*
+    qreal adjust = 2;
+    return QRectF( -10 - adjust, -10 - adjust, 23 + adjust, 23 + adjust);*/
+}
+/*
 QPainterPath Node::shape() const
 {
     QPainterPath path;
     path.addEllipse(-10, -10, 20, 20);
     return path;
-}
+}*/
 
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
+    /* тень
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::darkGray);
     painter->drawEllipse(-7, -7, 20, 20);
-
+    */
+    /*
     QRadialGradient gradient(-3, -3, 10);
     if (option->state & QStyle::State_Sunken) {
         gradient.setCenter(3, 3);
@@ -105,10 +115,45 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
         gradient.setColorAt(0, Qt::yellow);
         gradient.setColorAt(1, Qt::darkYellow);
     }
-    painter->setBrush(gradient);
 
-    painter->setPen(QPen(Qt::black, 0));
-    painter->drawEllipse(-10, -10, 20, 20);
+    painter->setBrush(gradient);
+    */
+    //QFont font=painter->font() ;
+    //font.setPointSize ( 18 );
+    //painter->setFont(font);
+    painter->setPen(QPen(Qt::black));
+    //painter->drawRoundRect(QRect(-10, -10, 20, 20), 3, 3);
+    //painter->drawText(QRect(0,0,200,500),nodeInfo->cont.getFullName());
+    //painter->drawText(0,0, nodeInfo->cont.getFullName());
+
+    QFont font("Arial", 18);
+    font.setBold(true);
+    painter->setFont(font);
+
+
+    QFontMetrics fm(font);
+    QRectF rec = fm.boundingRect(nodeInfo->cont.getFullName());
+
+   // QRectF rec = painter->boundingRect(QRect(),nodeInfo->cont.getFullName(),QTextOption().alignment());
+/*    QTextOption textOption(Qt::AlignCenter);
+    textOption.setFlags(QTextOption::IncludeTrailingSpaces);
+    painter->drawText(rec,QString(nodeInfo->cont.getFullName()), textOption);*/
+    if (option->state & QStyle::State_Sunken)
+    {
+         painter->fillRect(rec,Qt::lightGray);
+    }
+    else
+    {
+        if (nodeInfo->cont.getTip()==1)
+            painter->fillRect(rec,Qt::green);
+        else
+            painter->fillRect(rec,Qt::darkGreen);
+    }
+
+    painter->drawText(rec, Qt::AlignLeft, QString(nodeInfo->cont.getFullName()));
+    painter->drawRoundedRect(rec,2,2);
+
+    //painter->drawEllipse(-10, -10, 20, 20);
 }
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)

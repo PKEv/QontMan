@@ -22,7 +22,8 @@ SOURCES +=  src\main.cpp\
     src/diagram.cpp \
     src/dia/edge.cpp \
     src/dia/graphwidget.cpp \
-    src/dia/node.cpp
+    src/dia/node.cpp \
+    src/dia/gnodeinfo.cpp
 
 HEADERS  += src\mainwindow.h \
             src\contact.h \
@@ -34,7 +35,8 @@ HEADERS  += src\mainwindow.h \
     src/diagram.h \
     src/dia/edge.h \
     src/dia/graphwidget.h \
-    src/dia/node.h
+    src/dia/node.h \
+    src/dia/gnodeinfo.h
 
 FORMS    += src\mainwindow.ui \
     src/contview.ui \

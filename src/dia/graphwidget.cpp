@@ -61,7 +61,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     setMinimumSize(400, 400);
 
     fillNodes();
-
+/*
     Node *node1 = new Node(this);
     Node *node2 = new Node(this);
     Node *node3 = new Node(this);
@@ -102,7 +102,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     node7->setPos(-50, 50);
     node8->setPos(0, 50);
     node9->setPos(50, 50);
-
+*/
     // отображаем собранную информацию по узлам
     Node *node;
     foreach (node, nodes)
@@ -115,6 +115,8 @@ GraphWidget::GraphWidget(QWidget *parent)
     {
         scene->addItem(edge);
     }
+
+    setupScene();
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
@@ -209,7 +211,7 @@ void GraphWidget::fillNodes()
     PlainDb::getInstance()->GetContactsListByUplevel(vec, 0);
     foreach (cont, vec)
     {
-        NodeInfo * node = new NodeInfo(cont, 0);
+        GNodeInfo * node = new GNodeInfo(cont, 0);
         Node * g_node = new Node(this);
         g_node->nodeInfo = node;
         recursivNodesInfo(node, g_node);
@@ -220,14 +222,14 @@ void GraphWidget::fillNodes()
     }
 }
 
-void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
+void GraphWidget::recursivNodesInfo(GNodeInfo *parent, Node *parentNode )
 {
     std::vector<Contact> vec;
     Contact cont;
     PlainDb::getInstance()->GetContactsListByUplevel(vec, parent->cont.getId());
     foreach (cont, vec)
     {
-        NodeInfo * node = new NodeInfo(cont, parent);
+        GNodeInfo * node = new GNodeInfo(cont, parent);
         Node * g_node = new Node(this);
         g_node->nodeInfo = node;
         recursivNodesInfo(node, g_node);
@@ -240,3 +242,7 @@ void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
     }
 }
 
+void GraphWidget::setupScene()
+{
+
+}

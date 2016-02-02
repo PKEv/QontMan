@@ -44,7 +44,7 @@
 #include <QGraphicsView>
 #include <QVector>
 #include "node.h"
-#include "../nodeinfo.h"
+#include "gnodeinfo.h"
 
 
 //class Node;
@@ -58,7 +58,7 @@ public:
 
     QVector <Node*> nodes;
     QVector <Edge*> edges;
-    QVector <NodeInfo*> nodesInfo;  // информация по узлу
+    QVector <GNodeInfo*> nodesInfo;  // информация по узлу
 
 public slots:
 
@@ -78,7 +78,8 @@ protected:
 
 private:
     void fillNodes();
-    void recursivNodesInfo(NodeInfo *parent , Node *parentNode);
+    void recursivNodesInfo(GNodeInfo *parent , Node *parentNode);
+    void setupScene();
 
 };
 
