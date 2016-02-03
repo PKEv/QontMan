@@ -209,16 +209,21 @@ void GraphWidget::fillNodes()
     std::vector<Contact> vec;
     Contact cont;
     PlainDb::getInstance()->GetContactsListByUplevel(vec, 0);
+    int group = 0;
     foreach (cont, vec)
     {
         GNodeInfo * node = new GNodeInfo(cont, 0);
+        node->group = group;
+        node->level = 0;
         Node * g_node = new Node(this);
         g_node->nodeInfo = node;
+        node->g_node = g_node;
         recursivNodesInfo(node, g_node);
         nodesInfo.push_back(node);
 
 
         nodes.push_back(g_node);
+        group++;
     }
 }
 
@@ -231,10 +236,12 @@ void GraphWidget::recursivNodesInfo(GNodeInfo *parent, Node *parentNode )
     {
         GNodeInfo * node = new GNodeInfo(cont, parent);
         Node * g_node = new Node(this);
+        node->group = parent->group;
+        node->level = parent->level + 1;
         g_node->nodeInfo = node;
         recursivNodesInfo(node, g_node);
         parent->children.push_back(*node);
-
+        node->g_node = g_node;
         nodes.push_back(g_node);
 
         Edge *edge = new Edge(g_node, parentNode);
@@ -244,5 +251,12 @@ void GraphWidget::recursivNodesInfo(GNodeInfo *parent, Node *parentNode )
 
 void GraphWidget::setupScene()
 {
+    GNodeInfo *node;
+    foreach (node, nodesInfo)
+    {
+        if (node->level != 0)
+            continue;
+
+    }
 
 }

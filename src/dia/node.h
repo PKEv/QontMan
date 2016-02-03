@@ -45,7 +45,6 @@
 #include <QList>
 #include "../nodeinfo.h"
 
-
 class Edge;
 class GraphWidget;
 QT_BEGIN_NAMESPACE
