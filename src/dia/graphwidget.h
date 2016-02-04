@@ -44,7 +44,7 @@
 #include <QGraphicsView>
 #include <QVector>
 #include "node.h"
-#include "gnodeinfo.h"
+#include "../nodeinfo.h"
 
 
 //class Node;
@@ -58,7 +58,7 @@ public:
 
     QVector <Node*> nodes;
     QVector <Edge*> edges;
-    QVector <GNodeInfo*> nodesInfo;  // информация по узлу
+    QVector <NodeInfo*> nodesInfo;  // информация по узлу
 
 public slots:
 
@@ -72,14 +72,25 @@ protected:
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
     #endif
 
+    void mouseMoveEvent(QMouseEvent * event) Q_DECL_OVERRIDE;
+
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
 
     void scaleView(qreal scaleFactor);
 
 private:
     void fillNodes();
-    void recursivNodesInfo(GNodeInfo *parent , Node *parentNode);
+    void recursivNodesInfo(NodeInfo *parent , Node *parentNode);
     void setupScene();
+    struct
+    {
+        int x;
+        int y;
+
+    } fieldSize;
+    // шаг между элементами на диаграмме
+    const int g_step = 200;
+    const int v_step = 100;
 
 };
 

@@ -65,6 +65,8 @@ public:
     bool advance();
 
     NodeInfo *nodeInfo;
+    int x;
+    int y;
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
    // QPainterPath shape() const Q_DECL_OVERRIDE;

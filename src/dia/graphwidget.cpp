@@ -59,6 +59,8 @@ GraphWidget::GraphWidget(QWidget *parent)
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
     setMinimumSize(400, 400);
+    setDragMode(QGraphicsView::ScrollHandDrag);
+
 
     fillNodes();
 /*
@@ -108,6 +110,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     foreach (node, nodes)
     {
         scene->addItem(node);
+        node->setPos(node->y * g_step, node->x * v_step );
     }
 
     Edge *edge;
@@ -117,6 +120,19 @@ GraphWidget::GraphWidget(QWidget *parent)
     }
 
     setupScene();
+}
+
+void GraphWidget::mouseMoveEvent(QMouseEvent * event)
+{
+    if(!this->fixedPoint.isNull())
+    {
+            QPointF offset = this->fixedPoint - pos;             // вычисляем разность, на которую мышь подвинулась, между начальной точкой и конечной
+
+            centerOn(center-offset);
+            //this->setCenter(this->getCenter() - offset);       // находим новую точку-центр, в которую надо передвинуть сцену, и передаем
+
+            this->scene()->update();
+    }
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
@@ -148,8 +164,9 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
     Q_UNUSED(painter);
 
     // Shadow
-    /*
+/*
     QRectF sceneRect = this->sceneRect();
+
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
     QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
     if (rightShadow.intersects(rect) || rightShadow.contains(rect))
@@ -158,14 +175,14 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
         painter->fillRect(bottomShadow, Qt::darkGray);
     */
     // Fill
-    /*
-    QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
+
+    QLinearGradient gradient(rect.topLeft(), rect.bottomRight());
     gradient.setColorAt(0, Qt::white);
     gradient.setColorAt(1, Qt::lightGray);
-    painter->fillRect(rect.intersected(sceneRect), gradient);
+    painter->fillRect(rect.intersected(rect), gradient);
     painter->setBrush(Qt::NoBrush);
-    painter->drawRect(sceneRect);
-    */
+    painter->drawRect(rect);
+    //*/
     // Text
     /*
     QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
@@ -209,54 +226,62 @@ void GraphWidget::fillNodes()
     std::vector<Contact> vec;
     Contact cont;
     PlainDb::getInstance()->GetContactsListByUplevel(vec, 0);
-    int group = 0;
+
+    int x=0, y=0;
     foreach (cont, vec)
     {
-        GNodeInfo * node = new GNodeInfo(cont, 0);
-        node->group = group;
-        node->level = 0;
+        NodeInfo * node = new NodeInfo(cont, 0);
         Node * g_node = new Node(this);
         g_node->nodeInfo = node;
-        node->g_node = g_node;
+        g_node->x = x;
+        g_node->y = y;
         recursivNodesInfo(node, g_node);
         nodesInfo.push_back(node);
-
-
         nodes.push_back(g_node);
-        group++;
+
+        // подсчитываем размер поля для отображения
+        if (int(fieldSize.x) < x)
+            fieldSize.x = x;
+        if (fieldSize.y < y)
+            fieldSize.y = y;
+        y++;
     }
 }
 
-void GraphWidget::recursivNodesInfo(GNodeInfo *parent, Node *parentNode )
+void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
 {
     std::vector<Contact> vec;
     Contact cont;
     PlainDb::getInstance()->GetContactsListByUplevel(vec, parent->cont.getId());
+    int y = parentNode->y;
+    int x = parentNode->x +1;
     foreach (cont, vec)
     {
-        GNodeInfo * node = new GNodeInfo(cont, parent);
+        NodeInfo * node = new NodeInfo(cont, parent);
         Node * g_node = new Node(this);
-        node->group = parent->group;
-        node->level = parent->level + 1;
         g_node->nodeInfo = node;
+        g_node->x = x;
+        g_node->y = y;
         recursivNodesInfo(node, g_node);
         parent->children.push_back(*node);
-        node->g_node = g_node;
         nodes.push_back(g_node);
 
         Edge *edge = new Edge(g_node, parentNode);
         edges.push_back(edge);
+
+        // подсчитываем размер поля для отображения
+        if (fieldSize.y < x)
+            fieldSize.x = x;
+        if (fieldSize.y < y)
+            fieldSize.y = y;
+
+        y++;
+
     }
 }
 
 void GraphWidget::setupScene()
 {
-    GNodeInfo *node;
-    foreach (node, nodesInfo)
-    {
-        if (node->level != 0)
-            continue;
 
-    }
 
 }
