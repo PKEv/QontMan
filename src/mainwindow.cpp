@@ -38,6 +38,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete myDia;
+    delete myTreeModel;
+    delete myModel;
+    delete contView;
     delete ui;
 }
 

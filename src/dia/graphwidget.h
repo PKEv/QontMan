@@ -55,6 +55,7 @@ class GraphWidget : public QGraphicsView
 
 public:
     GraphWidget(QWidget *parent = 0);
+    ~GraphWidget();
 
     QVector <Node*> nodes;
     QVector <Edge*> edges;
@@ -67,12 +68,13 @@ public slots:
 
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
+    //void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
     #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
     #endif
 
-    void mouseMoveEvent(QMouseEvent * event) Q_DECL_OVERRIDE;
+    //void mouseMoveEvent(QMouseEvent * event) Q_DECL_OVERRIDE;
 
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
 

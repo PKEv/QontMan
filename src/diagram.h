@@ -2,6 +2,7 @@
 #define DIAGRAM_H
 
 #include <QDialog>
+#include <QVBoxLayout>
 #include "dia/graphwidget.h"
 
 namespace Ui {
@@ -19,6 +20,7 @@ public:
 private:
     Ui::Diagram *ui;
     GraphWidget *widget;
+    QVBoxLayout *mainLayout;
 };
 
 #endif // DIAGRAM_H

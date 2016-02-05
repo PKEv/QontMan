@@ -95,10 +95,10 @@ void ContView::SetupUpLevel()
     }
     else
     {
-        int i = 1;
-        for(; i < ui->accessoryComboBox->count(); i++)
+        for(int i = 1; i < ui->accessoryComboBox->count(); i++)
         {
-            if (ui->accessoryComboBox->itemText(i).indexOf(cont->getUpLevel()+":")!=0)
+            QString find = QString::number(cont->getUpLevel()) + ":";
+            if (ui->accessoryComboBox->itemText(i).indexOf(find) != -1)
             {
                 ui->accessoryComboBox->setCurrentIndex(i);
                 break;

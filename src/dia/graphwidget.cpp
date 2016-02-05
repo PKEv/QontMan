@@ -51,15 +51,16 @@ GraphWidget::GraphWidget(QWidget *parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-200, -200, 400, 400);
+   // scene->setSceneRect(-200, -200, 400, 400);
     setScene(scene);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
-    setTransformationAnchor(AnchorUnderMouse);
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
     setMinimumSize(400, 400);
     setDragMode(QGraphicsView::ScrollHandDrag);
+
 
 
     fillNodes();
@@ -122,6 +123,17 @@ GraphWidget::GraphWidget(QWidget *parent)
     setupScene();
 }
 
+GraphWidget::~GraphWidget()
+{
+    qDeleteAll(nodes.begin(), nodes.end());
+    qDeleteAll(edges.begin(), edges.end());
+    qDeleteAll(nodesInfo.begin(), nodesInfo.end());
+    nodes.clear();
+    edges.clear();
+    nodesInfo.clear();
+}
+
+/*
 void GraphWidget::mouseMoveEvent(QMouseEvent * event)
 {
     if(!this->fixedPoint.isNull())
@@ -134,10 +146,13 @@ void GraphWidget::mouseMoveEvent(QMouseEvent * event)
             this->scene()->update();
     }
 }
+*/
+
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
-    switch (event->key()) {
+    switch (event->key())
+    {
     case Qt::Key_Plus:
         zoomIn();
         break;
@@ -148,12 +163,28 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
     default:
         QGraphicsView::keyPressEvent(event);
     }
+
 }
 
 #ifndef QT_NO_WHEELEVENT
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {
-    scaleView(pow((double)2, -event->delta() / 240.0));
+   scaleView(pow((double)2, -event->delta() / 240.0));
+   /*
+    // Scale the view / do the zoom
+        const double scaleFactor = 1.15;
+        if(event->delta() > 0)
+        {
+            // Zoom in
+            scale(scaleFactor, scaleFactor);
+        }
+        else
+        {
+            // Zooming out
+            scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+        }
+*/
+   this->scene()->update();
 }
 #endif
 
@@ -175,13 +206,14 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
         painter->fillRect(bottomShadow, Qt::darkGray);
     */
     // Fill
-
+/*
     QLinearGradient gradient(rect.topLeft(), rect.bottomRight());
     gradient.setColorAt(0, Qt::white);
     gradient.setColorAt(1, Qt::lightGray);
     painter->fillRect(rect.intersected(rect), gradient);
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(rect);
+    this->scene()->update();
     //*/
     // Text
     /*
@@ -208,6 +240,7 @@ void GraphWidget::scaleView(qreal scaleFactor)
         return;
 
     scale(scaleFactor, scaleFactor);
+
 }
 
 void GraphWidget::zoomIn()
@@ -270,7 +303,7 @@ void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
         edges.push_back(edge);
 
         // подсчитываем размер поля для отображения
-        if (fieldSize.y < x)
+        if (fieldSize.x < x)
             fieldSize.x = x;
         if (fieldSize.y < y)
             fieldSize.y = y;
@@ -282,6 +315,14 @@ void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
 
 void GraphWidget::setupScene()
 {
+    int w =  fieldSize.x*v_step;
+    int h =  fieldSize.y*g_step;
+    //viewport()->geometry()
+    setSceneRect(-h, -w, h*3, w*3);
+    scale(1, 1);
+
+    //setSceneRect(viewport()->geometry());
+    //centerOn(w/2,h/2);
 
 
 }
