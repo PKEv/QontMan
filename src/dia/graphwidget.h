@@ -83,7 +83,6 @@ protected:
 private:
     void fillNodes();
     void recursivNodesInfo(NodeInfo *parent , Node *parentNode);
-    void setupScene();
     struct
     {
         int x;

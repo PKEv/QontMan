@@ -51,6 +51,14 @@ Contact dataModel::GetContact(int id)
 void dataModel::deleteContact(int row)
 {
     Contact con = GetContact(GetContactId(row));
+    // Проверка наличия у контакта подчиненных узлов
+    std::vector <Contact> conts;
+    PlainDb::getInstance()->GetContactsListByUplevel(conts, con.getId());
+    foreach (Contact cont, conts)
+    { // настраиваем узлы аналогично удаляемому
+        cont.setUpLevel(con.getUpLevel());
+        PlainDb::getInstance()->updateContact(&cont);
+    }
     PlainDb::getInstance()->deleteContact(&con);
 }
 

@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
-
-
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -33,12 +31,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->clearSearchButton, SIGNAL(clicked()),this, SLOT(clearSeachString()) );
     connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
     connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(filterByTree(QModelIndex)));
-
 }
 
 MainWindow::~MainWindow()
 {
-    delete myDia;
+    if (myDia != nullptr)
+        delete myDia;
     delete myTreeModel;
     delete myModel;
     delete contView;
@@ -73,6 +71,13 @@ void MainWindow::viewButton()
 void MainWindow::deleteButton()
 {
     if (ui->tableView->currentIndex().row()==-1)
+        return;
+    QMessageBox msgBox(QMessageBox::Question,
+                       tr("Подтверждение"),
+                       tr("Вы уверены что хотите удалить?"),
+                       QMessageBox::Yes | QMessageBox::No );
+    msgBox.exec();
+    if (msgBox.result() == QMessageBox::No )
         return;
     myModel->deleteContact(ui->tableView->currentIndex().row());
     myModel->refresh();
@@ -109,6 +114,6 @@ void MainWindow::filterByTree(const QModelIndex & index)
 void MainWindow::showDiagram()
 {
     myDia = new Diagram;
-    myDia->show();
+    myDia->exec();
 }
 

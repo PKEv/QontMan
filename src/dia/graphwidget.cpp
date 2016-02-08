@@ -120,7 +120,11 @@ GraphWidget::GraphWidget(QWidget *parent)
         scene->addItem(edge);
     }
 
-    setupScene();
+    int w =  fieldSize.x*v_step;
+    int h =  fieldSize.y*g_step;
+    //viewport()->geometry()
+    setSceneRect(-h, -w, h*3, w*3);
+    scale(1, 1);
 }
 
 GraphWidget::~GraphWidget()
@@ -311,18 +315,4 @@ void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
         y++;
 
     }
-}
-
-void GraphWidget::setupScene()
-{
-    int w =  fieldSize.x*v_step;
-    int h =  fieldSize.y*g_step;
-    //viewport()->geometry()
-    setSceneRect(-h, -w, h*3, w*3);
-    scale(1, 1);
-
-    //setSceneRect(viewport()->geometry());
-    //centerOn(w/2,h/2);
-
-
 }

@@ -32,11 +32,11 @@ private slots:
      void showDiagram();
 
 private:
-    Ui::MainWindow *ui;
-    ContView *contView;
-    dataModel *myModel;
-    TreeModel *myTreeModel;
-    Diagram *myDia;
+    Ui::MainWindow *ui = nullptr;
+    ContView *contView = nullptr;
+    dataModel *myModel = nullptr;
+    TreeModel *myTreeModel = nullptr;
+    Diagram *myDia = nullptr;
 };
 
 #endif // MAINWINDOW_H
