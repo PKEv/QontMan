@@ -40,16 +40,16 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QLineEdit" name="name1Edit">
+           <widget class="QLineEdit" name="name2Edit">
             <property name="placeholderText">
-             <string>Имя</string>
+             <string>Фамилия</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="name2Edit">
+           <widget class="QLineEdit" name="name1Edit">
             <property name="placeholderText">
-             <string>Фамилия</string>
+             <string>Имя</string>
             </property>
            </widget>
           </item>

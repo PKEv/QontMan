@@ -237,9 +237,9 @@ void ContView::on_tipSlider_valueChanged(int value)
 
 void ContView::autoFullName()
 {
-    auto name1 = ui->name1Edit->text();
-    auto name2 = ui->name2Edit->text();
-    auto name3 = ui->name3Edit->text();
+    auto name1 = ui->name1Edit->text().trimmed();
+    auto name2 = ui->name2Edit->text().trimmed();
+    auto name3 = ui->name3Edit->text().trimmed();
 
     if (ui->tipSlider->value()==0) // фирма
     {
@@ -247,6 +247,6 @@ void ContView::autoFullName()
     }
     else //физ лицо
     {
-        ui->lineEdit->setText(name1 + " " + name2 + " " + name3);
+        ui->lineEdit->setText(name2 + ", "+name1 + " " + name3);
     }
 }
