@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>444</width>
+    <width>660</width>
     <height>363</height>
    </rect>
   </property>
@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../res.qrc">
-    <normaloff>:/img/pic/icon.png</normaloff>:/img/pic/icon.png</iconset>
+    <normaloff>:/img/pic/tel.png</normaloff>:/img/pic/tel.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
@@ -136,7 +136,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>444</width>
+     <width>660</width>
      <height>21</height>
     </rect>
    </property>

@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../res.qrc">
-    <normaloff>:/img/pic/icon.png</normaloff>:/img/pic/icon.png</iconset>
+    <normaloff>:/img/pic/tel.png</normaloff>:/img/pic/tel.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="1" column="0">
@@ -450,6 +450,31 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tipSlider</tabstop>
+  <tabstop>name2Edit</tabstop>
+  <tabstop>name1Edit</tabstop>
+  <tabstop>name3Edit</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>plusButton_1</tabstop>
+  <tabstop>minusButton_1</tabstop>
+  <tabstop>comboBox_2</tabstop>
+  <tabstop>plusButton_2</tabstop>
+  <tabstop>minusButton_2</tabstop>
+  <tabstop>comboBox_3</tabstop>
+  <tabstop>plusButton_3</tabstop>
+  <tabstop>minusButton_3</tabstop>
+  <tabstop>comboBox_4</tabstop>
+  <tabstop>plusButton_4</tabstop>
+  <tabstop>minusButton_4</tabstop>
+  <tabstop>comboBox_5</tabstop>
+  <tabstop>plusButton_5</tabstop>
+  <tabstop>minusButton_5</tabstop>
+  <tabstop>textEdit</tabstop>
+  <tabstop>accessoryComboBox</tabstop>
+ </tabstops>
  <resources>
   <include location="../res.qrc"/>
  </resources>

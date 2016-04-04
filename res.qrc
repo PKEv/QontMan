@@ -2,6 +2,7 @@
     <qresource prefix="/img">
         <file>pic/minus-red.png</file>
         <file>pic/plus-red.png</file>
-        <file>pic/icon.png</file>
+        <file>pic/dia.png</file>
+        <file>pic/tel.png</file>
     </qresource>
 </RCC>
