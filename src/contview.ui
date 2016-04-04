@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>Контактная информация</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../res.qrc">
+    <normaloff>:/img/pic/icon.png</normaloff>:/img/pic/icon.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
