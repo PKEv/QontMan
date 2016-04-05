@@ -244,7 +244,6 @@ void GraphWidget::scaleView(qreal scaleFactor)
         return;
 
     scale(scaleFactor, scaleFactor);
-
 }
 
 void GraphWidget::zoomIn()
@@ -279,8 +278,8 @@ void GraphWidget::fillNodes()
         // подсчитываем размер поля для отображения
         if (int(fieldSize.x) < x)
             fieldSize.x = x;
-        if (fieldSize.y < y)
-            fieldSize.y = y;
+
+        y = fieldSize.y;
         y++;
     }
 }
@@ -291,12 +290,17 @@ void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
     Contact cont;
     PlainDb::getInstance()->GetContactsListByUplevel(vec, parent->cont.getId());
     int y = parentNode->y;
+    if (y < fieldSize.y)
+        y = fieldSize.y;
+
     int x = parentNode->x +1;
     foreach (cont, vec)
     {
         NodeInfo * node = new NodeInfo(cont, parent);
         Node * g_node = new Node(this);
         g_node->nodeInfo = node;
+        if (y < fieldSize.y)
+            y = fieldSize.y;
         g_node->x = x;
         g_node->y = y;
         recursivNodesInfo(node, g_node);
@@ -309,10 +313,8 @@ void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
         // подсчитываем размер поля для отображения
         if (fieldSize.x < x)
             fieldSize.x = x;
+        y++;
         if (fieldSize.y < y)
             fieldSize.y = y;
-
-        y++;
-
     }
 }
