@@ -7,6 +7,7 @@
 #include "datamodel.h"
 #include "treemodel.h"
 #include "diagram.h"
+#include <QSystemTrayIcon>
 
 namespace Ui {
 class MainWindow;
@@ -37,6 +38,12 @@ private:
     dataModel *myModel = nullptr;
     TreeModel *myTreeModel = nullptr;
     Diagram *myDia = nullptr;
+
+    void createTrayIcon();
+    QAction *quitAction;
+
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
 };
 
 #endif // MAINWINDOW_H

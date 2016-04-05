@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     PlainDb::getInstance();
+    createTrayIcon();
+    trayIcon->show();
 
     myModel = new dataModel(qApp);
     //настраиваем отображение
@@ -117,3 +119,22 @@ void MainWindow::showDiagram()
     myDia->exec();
 }
 
+void MainWindow::createTrayIcon()
+{
+
+    quitAction = new QAction(tr("&Quit"), this);
+    connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+
+
+    trayIconMenu = new QMenu(this);
+
+    trayIconMenu->addAction(quitAction);
+
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
+
+    QIcon icon = QIcon(":/img/pic/tel.png");
+    trayIcon->setIcon(icon);
+
+    trayIcon->setToolTip("Телефонная книга");
+}
