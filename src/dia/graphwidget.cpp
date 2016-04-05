@@ -61,8 +61,6 @@ GraphWidget::GraphWidget(QWidget *parent)
     setMinimumSize(400, 400);
     setDragMode(QGraphicsView::ScrollHandDrag);
 
-
-
     fillNodes();
 /*
     Node *node1 = new Node(this);
