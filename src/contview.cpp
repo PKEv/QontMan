@@ -64,9 +64,9 @@ void ContView::Fill()
     ui->lineEdit->setText(cont->getFullName());
     SetItiems(ui->comboBox, cont->getTel());
     SetItiems(ui->comboBox_2, cont->getFax());
-    SetItiems(ui->comboBox_3, cont->getAdr());
-    SetItiems(ui->comboBox_4, cont->getEmail());
-    SetItiems(ui->comboBox_5, cont->getHttp());
+    SetItiems(ui->comboBox_3, cont->getEmail());
+    SetItiems(ui->comboBox_4, cont->getHttp());
+    SetItiems(ui->comboBox_5, cont->getAdr());
 
     ui->name1Edit->setText(cont->getName1());
     ui->name2Edit->setText(cont->getName2());
@@ -137,9 +137,9 @@ void ContView::on_buttonBox_clicked(QAbstractButton *button)
         cont->setFullName(ui->lineEdit->text());
         cont->setTel(GetItiems(ui->comboBox));
         cont->setFax(GetItiems(ui->comboBox_2));
-        cont->setAdr(GetItiems(ui->comboBox_3));
-        cont->setEmail(GetItiems(ui->comboBox_4));
-        cont->setHttp(GetItiems(ui->comboBox_5));
+        cont->setEmail(GetItiems(ui->comboBox_3));
+        cont->setHttp(GetItiems(ui->comboBox_4));
+        cont->setAdr(GetItiems(ui->comboBox_5));
         cont->setZametka(ui->textEdit->toPlainText());
         cont->setName1(ui->name1Edit->text());
         cont->setName2(ui->name2Edit->text());
