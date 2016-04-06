@@ -199,6 +199,10 @@ QString ContView::GetItiems(QComboBox * comboBox)
 
 void ContView::SetItiems(QComboBox * comboBox, QString str)
 {
+
+    QStringList temp = str.split(";",QString::SkipEmptyParts);
+    comboBox->addItems(temp);
+    /*
     int t = str.indexOf(";");
     QString temp;
     while (t>0)
@@ -213,7 +217,7 @@ void ContView::SetItiems(QComboBox * comboBox, QString str)
     if (!str.isEmpty())
     {
         comboBox->addItem(str);
-    }
+    }*/
 }
 
 void ContView::on_tipSlider_valueChanged(int value)

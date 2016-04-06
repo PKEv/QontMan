@@ -61,10 +61,11 @@ void passport::fill()
 
     if (!cont->getTel().isEmpty())
     {
-        telTitle = new QLabel("тел.:");
+        telTitle = new QLabel(tr("тел.:"));
+        telTitle->setAlignment(Qt::AlignRight);
         QString end;
         QString str = cont->getTel();
-        end = str.replace(";","<br>");
+        end = str.split(";",QString::SkipEmptyParts).join("<br>");
         telValue = new QLabel(end);
         telValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
         cardLayout->addWidget(telTitle,1,1);
@@ -72,10 +73,11 @@ void passport::fill()
     }
     if (!cont->getFax().isEmpty())
     {
-        faxTitle = new QLabel("факс.:");
+        faxTitle = new QLabel(tr("факс.:"));
+        faxTitle->setAlignment(Qt::AlignRight);
         QString end;
         QString str = cont->getFax();
-        end = str.replace(";","<br>");
+        end = str.split(";",QString::SkipEmptyParts).join("<br>");;
         faxValue = new QLabel(end);
         faxValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
         cardLayout->addWidget(faxTitle,2,1);
@@ -83,10 +85,11 @@ void passport::fill()
     }
     if (!cont->getHttp().isEmpty())
     {
-        httpTitle = new QLabel("web:");
+        httpTitle = new QLabel(tr("web:"));
+        httpTitle->setAlignment(Qt::AlignRight);
         QString end;
         QString str = cont->getHttp();
-        end = str.replace(";","<br>");
+        end = str.split(";",QString::SkipEmptyParts).join("<br>");
         httpValue = new QLabel(end);
         httpValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
         httpValue->setTextFormat(Qt::RichText);
@@ -96,10 +99,11 @@ void passport::fill()
     }
     if (!cont->getEmail().isEmpty())
     {
-        emlTitle = new QLabel("email:");
+        emlTitle = new QLabel(tr("email:"));
+        emlTitle->setAlignment(Qt::AlignRight);
         QString end;
         QString str = cont->getEmail();
-        end = str.replace(";","<br>");
+        end = str.split(";",QString::SkipEmptyParts).join("<br>");
         emlValue = new QLabel(end);
         emlValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
         emlValue->setOpenExternalLinks(true);
@@ -109,10 +113,11 @@ void passport::fill()
     }
     if (!cont->getAdr().isEmpty())
     {
-        adrTitle = new QLabel("Адрес:");
+        adrTitle = new QLabel(tr("Адрес:"));
+        adrTitle->setAlignment(Qt::AlignRight);
         QString end;
         QString str = cont->getAdr();
-        end = str.replace(";","<br>");
+        end = str.split(";",QString::SkipEmptyParts).join("<br>");
         adrValue = new QLabel(end);
         adrValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
         cardLayout->addWidget(adrTitle,5,1);
@@ -120,11 +125,9 @@ void passport::fill()
     }
     if (!cont->getZametka().isEmpty())
     {
-        zamTitle = new QLabel("Заметка:");
-
-        QString end;
-        QString str = cont->getZametka();
-        end = str.replace(";","<br>");
+        zamTitle = new QLabel(tr("Заметка:"));
+        zamTitle->setAlignment(Qt::AlignRight);
+        QString end = cont->getZametka();
         zamValue = new QLabel(end);
         zamValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
         cardLayout->addWidget(zamTitle,6,1);
