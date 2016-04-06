@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     PlainDb::getInstance();
+    //настройка отображения трея
     createTrayIcon();
     trayIcon->show();
 
@@ -28,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolBar->addAction(QIcon(),tr("Диаграмма"),this,SLOT(showDiagram()));
 
     connect( ui->AddButton, SIGNAL(clicked()), this, SLOT(addButton()) );
-    connect( ui->ViewButton, SIGNAL(clicked()), this, SLOT(viewButton()) );
+    connect( ui->ViewButton, SIGNAL(clicked()), this, SLOT(showPass()) );   //SLOT(viewButton()) );
     connect( ui->DeleteButton, SIGNAL(clicked()), this, SLOT(deleteButton()) );
     connect(ui->clearSearchButton, SIGNAL(clicked()),this, SLOT(clearSeachString()) );
     connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
@@ -43,6 +44,7 @@ MainWindow::~MainWindow()
     delete myModel;
     delete contView;
     delete ui;
+    delete passView;
 }
 
 void MainWindow::addButton()
@@ -55,6 +57,18 @@ void MainWindow::addButton()
 void MainWindow::update_rec()
 {    
     myModel->refresh();
+}
+void MainWindow::showPass()
+{
+    if (ui->tableView->currentIndex().row()==-1)
+        return;
+    int id = myModel->GetContactId(ui->tableView->currentIndex().row());
+
+    Contact tcont = myModel->GetContact(id);
+    passView = new passport(&tcont);
+    passView->show();
+
+
 }
 
 void MainWindow::viewButton()

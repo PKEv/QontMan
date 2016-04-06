@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "contview.h"
+#include "passport.h"
 #include "contact.h"
 #include "datamodel.h"
 #include "treemodel.h"
@@ -24,6 +25,7 @@ public:
 private slots:
      void addButton();
      void viewButton();
+     void showPass();
      void update_rec();
      void deleteButton();
      void on_tableView_doubleClicked(const QModelIndex &index);
@@ -38,6 +40,7 @@ private:
     dataModel *myModel = nullptr;
     TreeModel *myTreeModel = nullptr;
     Diagram *myDia = nullptr;
+    passport *passView = nullptr;
 
     void createTrayIcon();
     QAction *quitAction;
