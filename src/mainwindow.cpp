@@ -36,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
     connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(filterByTree(QModelIndex)));
     connect(trayIcon, &QSystemTrayIcon::activated, this, iconActivated);
+
+    setWindowTitle(tr("Телефонная книга"));
 }
 
 MainWindow::~MainWindow()
