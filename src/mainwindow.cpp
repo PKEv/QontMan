@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->clearSearchButton, SIGNAL(clicked()),this, SLOT(clearSeachString()) );
     connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
     connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(filterByTree(QModelIndex)));
+    connect(trayIcon, &QSystemTrayIcon::activated, this, iconActivated);
 }
 
 MainWindow::~MainWindow()
@@ -46,6 +47,20 @@ MainWindow::~MainWindow()
     delete contView;
     delete ui;
     delete passView;
+}
+
+void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    if (reason == QSystemTrayIcon::Trigger)
+    {
+        if (!this->isVisible())
+        {
+            this->showNormal();
+            this->activateWindow();
+        }
+        else
+            this->hide();
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

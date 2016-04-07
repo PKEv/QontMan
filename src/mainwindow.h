@@ -29,6 +29,7 @@ protected:
 
 private slots:
      void addButton();
+     void iconActivated(QSystemTrayIcon::ActivationReason reason);
      void viewButton();
      void showPass();
      void update_rec();
