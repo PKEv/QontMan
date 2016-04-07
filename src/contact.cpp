@@ -156,3 +156,13 @@ bool Contact::operator ==(const Contact& another) const
         return true;
     return false;
 }
+
+void Contact::setIcon(QPixmap &pixmap)
+{
+    icon = pixmap;
+}
+
+QIcon Contact::getIcon()
+{
+    return icon;
+}

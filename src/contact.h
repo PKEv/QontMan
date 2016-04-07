@@ -2,6 +2,7 @@
 #define CONTACT_H
 
 #include <QString>
+#include <QIcon>
 #include <QDateTime>
 
 class Contact
@@ -52,6 +53,9 @@ public:
     void setName3(QString tName3);
     QString getName3();
 
+    void setIcon(QPixmap &pixmap);
+    QIcon getIcon();
+
     bool operator ==(const Contact &another) const;
 
 
@@ -71,6 +75,7 @@ private:
     QString name1{""};
     QString name2{""};
     QString name3{""};
+    QIcon icon;
 };
 
 #endif // CONTACT_H

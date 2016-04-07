@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QLabel>
+#include <QIcon>
 
 #include "contact.h"
 
@@ -36,6 +37,7 @@ private:
     QLabel *adrValue = nullptr;
     QLabel *zamTitle = nullptr;
     QLabel *zamValue = nullptr;
+    QLabel   *icon = nullptr;
 
 };
 

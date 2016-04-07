@@ -83,6 +83,7 @@ void passport::fill()
         end = str.split(";",QString::SkipEmptyParts).join("<br>");
         telValue = new QLabel(end);
         telValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        telValue->setAlignment(Qt::AlignLeft);
         cardLayout->addWidget(telTitle,1,1);
         cardLayout->addWidget(telValue,1,2);
     }
@@ -95,6 +96,7 @@ void passport::fill()
         end = str.split(";",QString::SkipEmptyParts).join("<br>");;
         faxValue = new QLabel(end);
         faxValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        faxValue->setAlignment(Qt::AlignLeft);
         cardLayout->addWidget(faxTitle,2,1);
         cardLayout->addWidget(faxValue,2,2);
     }
@@ -109,6 +111,7 @@ void passport::fill()
         httpValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
         httpValue->setTextFormat(Qt::RichText);
         httpValue->setOpenExternalLinks(true);
+        httpValue->setAlignment(Qt::AlignLeft);
         cardLayout->addWidget(httpTitle,3,1);
         cardLayout->addWidget(httpValue,3,2);
     }
@@ -123,6 +126,7 @@ void passport::fill()
         emlValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
         emlValue->setOpenExternalLinks(true);
         emlValue->setTextFormat(Qt::RichText);
+        emlValue->setAlignment(Qt::AlignLeft);
         cardLayout->addWidget(emlTitle,4,1);
         cardLayout->addWidget(emlValue,4,2);
     }
@@ -135,6 +139,7 @@ void passport::fill()
         end = str.split(";",QString::SkipEmptyParts).join("<br>");
         adrValue = new QLabel(end);
         adrValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        adrValue->setAlignment(Qt::AlignLeft);
         cardLayout->addWidget(adrTitle,5,1);
         cardLayout->addWidget(adrValue,5,2);
     }
@@ -146,7 +151,24 @@ void passport::fill()
         zamValue = new QLabel(end);
         zamValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
         zamValue->setWordWrap(true);
+        zamValue->setAlignment(Qt::AlignLeft);
         cardLayout->addWidget(zamTitle,6,1);
         cardLayout->addWidget(zamValue,6,2);
     }
+    if (cont->getIcon().isNull())
+    {
+        icon = new QLabel();
+        QPixmap pic;
+        if (cont->getTip()!=0)
+            pic.load(":/img/pic/avatar/index.png");
+        else
+            pic.load(":/img/pic/avatar/index2.png");
+
+        pic = pic.scaled(80,80,Qt::IgnoreAspectRatio, Qt::FastTransformation);
+        icon->setPixmap(pic);
+        icon->setAlignment(Qt::AlignCenter);
+        //icon->setScaledContents(true);
+        cardLayout->addWidget(icon,1,0,6,1);
+    }
+
 }
