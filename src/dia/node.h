@@ -43,7 +43,9 @@
 
 #include <QGraphicsItem>
 #include <QList>
+#include "../datamodel.h"
 #include "../nodeinfo.h"
+#include "../passport.h"
 
 class Edge;
 class GraphWidget;
@@ -55,6 +57,8 @@ class Node : public QGraphicsItem
 {
 public:
     Node(GraphWidget *graphWidget);
+
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
 
     void addEdge(Edge *edge);
     QList<Edge *> edges() const;
@@ -86,6 +90,8 @@ private:
     GraphWidget *graph;
 
     int urov;       // уровень в стуктуре
+    passport *passView = nullptr;
+    dataModel *myModel = nullptr;
 
 
 };

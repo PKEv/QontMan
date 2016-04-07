@@ -42,6 +42,9 @@
 #include "node.h"
 #include "graphwidget.h"
 
+#include "../mainwindow.h"
+
+
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
@@ -54,6 +57,15 @@ Node::Node(GraphWidget *graphWidget)
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
+}
+
+void Node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event);
+    int id = nodeInfo->cont.getId();
+    Contact tcont = myModel->GetContact(id);
+    passView = new passport(&tcont);
+    passView->show();
 }
 
 void Node::addEdge(Edge *edge)
