@@ -65,6 +65,7 @@ void dataModel::deleteContact(int row)
 void dataModel::setSeachString(QString str)
 {
     PlainDb::getInstance()->setSeachString(str);
+
 }
 void dataModel::SetFilterByListId(QStringList &list)
 {

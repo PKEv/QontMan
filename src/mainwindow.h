@@ -28,7 +28,6 @@ private slots:
      void showPass();
      void update_rec();
      void deleteButton();
-     void on_tableView_doubleClicked(const QModelIndex &index);
      void clearSeachString();
      void setSeachString(QString str);
      void filterByTree(const QModelIndex & index);

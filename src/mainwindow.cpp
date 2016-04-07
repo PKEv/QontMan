@@ -29,8 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolBar->addAction(QIcon(),tr("Диаграмма"),this,SLOT(showDiagram()));
 
     connect( ui->AddButton, SIGNAL(clicked()), this, SLOT(addButton()) );
-    connect( ui->ViewButton, SIGNAL(clicked()), this, SLOT(showPass()) );   //SLOT(viewButton()) );
+    connect( ui->ViewButton, SIGNAL(clicked()), this, SLOT(viewButton()) );
     connect( ui->DeleteButton, SIGNAL(clicked()), this, SLOT(deleteButton()) );
+    connect( ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showPass())) ;
     connect(ui->clearSearchButton, SIGNAL(clicked()),this, SLOT(clearSeachString()) );
     connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
     connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(filterByTree(QModelIndex)));
@@ -67,8 +68,6 @@ void MainWindow::showPass()
     Contact tcont = myModel->GetContact(id);
     passView = new passport(&tcont);
     passView->show();
-
-
 }
 
 void MainWindow::viewButton()
@@ -97,17 +96,6 @@ void MainWindow::deleteButton()
         return;
     myModel->deleteContact(ui->tableView->currentIndex().row());
     myModel->refresh();
-}
-
-void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
-{
-    int id = myModel->GetContactId(index.row());
-
-    Contact tcont = myModel->GetContact(id);
-    contView = new ContView(&tcont);
-    contView->show();
-
-    connect(contView, SIGNAL(accepted()), this, SLOT(update_rec()));
 }
 
 void MainWindow::clearSeachString()

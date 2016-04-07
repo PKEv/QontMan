@@ -115,7 +115,7 @@
        <item>
         <widget class="QPushButton" name="ViewButton">
          <property name="text">
-          <string>View</string>
+          <string>Редактировать</string>
          </property>
         </widget>
        </item>
