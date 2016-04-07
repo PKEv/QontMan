@@ -9,6 +9,7 @@
 #include "treemodel.h"
 #include "diagram.h"
 #include <QSystemTrayIcon>
+#include <QCloseEvent>
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +22,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+protected:
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
      void addButton();
@@ -43,6 +47,7 @@ private:
 
     void createTrayIcon();
     QAction *quitAction;
+    QAction *restoreAction;
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;

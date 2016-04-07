@@ -48,6 +48,15 @@ MainWindow::~MainWindow()
     delete passView;
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (trayIcon->isVisible())
+    {
+        hide();
+        event->ignore();
+    }
+}
+
 void MainWindow::addButton()
 {
     contView = new ContView();
@@ -124,12 +133,17 @@ void MainWindow::showDiagram()
 void MainWindow::createTrayIcon()
 {
 
-    quitAction = new QAction(tr("&Quit"), this);
+    quitAction = new QAction(tr("Выход"), this);
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+
+    restoreAction = new QAction(tr("Открыть"), this);
+    connect(restoreAction, &QAction::triggered, this, &QWidget::showNormal);
 
 
     trayIconMenu = new QMenu(this);
 
+    trayIconMenu->addAction(restoreAction);
+    trayIconMenu->addSeparator();
     trayIconMenu->addAction(quitAction);
 
     trayIcon = new QSystemTrayIcon(this);

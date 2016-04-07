@@ -17,8 +17,6 @@ passport::passport(Contact * tcont)
     fill();
 
     QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    //sizePolicy.setHorizontalStretch(0);
-    //sizePolicy.setVerticalStretch(0);
     this->setSizePolicy(sizePolicy);  //QWidget::minimumSizeHint()
     setMinimumSize(QWidget::minimumSizeHint());
     adjustSize();
@@ -170,5 +168,4 @@ void passport::fill()
         //icon->setScaledContents(true);
         cardLayout->addWidget(icon,1,0,6,1);
     }
-
 }
