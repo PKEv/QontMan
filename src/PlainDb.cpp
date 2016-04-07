@@ -59,7 +59,7 @@ PlainDb * PlainDb::getInstance()
 
 QString PlainDb::getQuery()
 {
-    return QString ("SELECT contact.id, contact.tip, "
+    QString temp =  QString ("SELECT contact.id, contact.tip, "
                     "    (CASE contact.tip "
                     "        WHEN 0 THEN "
                     "            firm.shortname "
@@ -71,10 +71,21 @@ QString PlainDb::getQuery()
                     "FROM contact "
                     "LEFT JOIN firm ON contact.id = firm.id "
                     "LEFT JOIN man ON contact.id = man.id "
-                    "WHERE (UPPER(contact.tel) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.fax) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.email) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.http) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(contact.notes) LIKE ('%"+SeachString.toUpper()+"%')"
-                           "OR UPPER(firm.sobstv) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(firm.name) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(firm.shortname) LIKE ('%"+SeachString.toUpper()+"%') "
-                           "OR UPPER(man.name) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.surname) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.patronymic) LIKE ('%"+SeachString.toUpper()+"%') OR UPPER(man.shortname) LIKE ('%"+SeachString.toUpper()+"%') )")
+                    "WHERE (contact.tel         LIKE '%"+SeachString+"%' "
+                             "OR contact.fax     LIKE '%"+SeachString+"%' "
+                             "OR contact.email   LIKE '%"+SeachString+"%' "
+                             "OR contact.http    LIKE '%"+SeachString+"%' "
+                             "OR contact.notes   LIKE '%"+SeachString+"%' "
+                             "OR firm.sobstv     LIKE '%"+SeachString+"%' "
+                             "OR firm.name       LIKE '%"+SeachString+"%' "
+                             "OR firm.shortname  LIKE '%"+SeachString+"%' "
+                             "OR man.name        LIKE '%"+SeachString+"%' "
+                             "OR man.surname     LIKE '%"+SeachString+"%' "
+                             "OR man.patronymic  LIKE '%"+SeachString+"%' "
+                             "OR man.shortname   LIKE '%"+SeachString+"%' ) ")
             + SeachString2;
+
+    return temp;
 }
 
 void PlainDb::addContact(Contact * con)
