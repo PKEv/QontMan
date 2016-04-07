@@ -24,6 +24,10 @@ passport::passport(Contact * tcont)
     adjustSize();
 
     this->setWindowTitle("Паспорт контакта");
+
+    setWindowModality(Qt::ApplicationModal);
+    Qt::WindowFlags flags = windowFlags();
+    setWindowFlags(flags ^ Qt::WindowContextHelpButtonHint);
 }
 
 passport::~passport()
@@ -31,19 +35,30 @@ passport::~passport()
     delete ui;
     delete cont;
     delete shotNameLabel;
-    delete telTitle;
-    delete telValue;
-    delete faxTitle;
-    delete faxValue;
-    delete httpTitle;
-    delete httpValue;
-    delete emlTitle;
-    delete emlValue;
-    delete adrTitle;
-    delete adrValue;
-    delete zamTitle;
-    delete zamValue;
-
+    if (telTitle)
+        delete telTitle;
+    if (telValue)
+        delete telValue;
+    if (faxTitle)
+        delete faxTitle;
+    if (faxValue)
+        delete faxValue;
+    if (httpTitle)
+        delete httpTitle;
+    if (httpValue)
+        delete httpValue;
+    if (emlTitle)
+        delete emlTitle;
+    if (emlValue)
+        delete emlValue;
+    if (adrTitle)
+        delete adrTitle;
+    if (adrValue)
+        delete adrValue;
+    if (zamTitle)
+        delete zamTitle;
+    if (zamValue)
+        delete zamValue;
 }
 
 void passport::fill()
@@ -127,12 +142,11 @@ void passport::fill()
     {
         zamTitle = new QLabel(tr("Заметка:"));
         zamTitle->setAlignment(Qt::AlignRight);
-        QString end = cont->getZametka();
+        QString end = cont->getZametka().trimmed();
         zamValue = new QLabel(end);
         zamValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        zamValue->setWordWrap(true);
         cardLayout->addWidget(zamTitle,6,1);
         cardLayout->addWidget(zamValue,6,2);
     }
-
-
 }

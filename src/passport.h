@@ -23,19 +23,19 @@ private:
     void fill();
     Ui::passport *ui;
     Contact * cont;
-    QLabel *shotNameLabel;
-    QLabel *telTitle;
-    QLabel *telValue;
-    QLabel *faxTitle;
-    QLabel *faxValue;
-    QLabel *httpTitle;
-    QLabel *httpValue;
-    QLabel *emlTitle;
-    QLabel *emlValue;
-    QLabel *adrTitle;
-    QLabel *adrValue;
-    QLabel *zamTitle;
-    QLabel *zamValue;
+    QLabel *shotNameLabel = nullptr;
+    QLabel *telTitle = nullptr;
+    QLabel *telValue = nullptr;
+    QLabel *faxTitle = nullptr;
+    QLabel *faxValue = nullptr;
+    QLabel *httpTitle = nullptr;
+    QLabel *httpValue = nullptr;
+    QLabel *emlTitle = nullptr;
+    QLabel *emlValue = nullptr;
+    QLabel *adrTitle = nullptr;
+    QLabel *adrValue = nullptr;
+    QLabel *zamTitle = nullptr;
+    QLabel *zamValue = nullptr;
 
 };
 
