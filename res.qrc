@@ -4,5 +4,7 @@
         <file>pic/plus-red.png</file>
         <file>pic/dia.png</file>
         <file>pic/tel.png</file>
+        <file>pic/avatar/index.png</file>
+        <file>pic/avatar/index2.png</file>
     </qresource>
 </RCC>
