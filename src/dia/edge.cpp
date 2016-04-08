@@ -72,13 +72,14 @@ void Edge::adjust()
     if (!source || !dest)
         return;
 
-    QLineF line(mapFromItem(source, 0, 0), mapFromItem(dest, 0, 0));
+    QLineF line( mapFromItem(source, source->boundingRect().width() / 2, source->boundingRect().height() / 2),
+                mapFromItem(dest, dest->boundingRect().width() / 2, dest->boundingRect().height() / 2) );
     qreal length = line.length();
 
     prepareGeometryChange();
 
     if (length > qreal(20.)) {
-        QPointF edgeOffset((line.dx() * 10) / length, (line.dy() * 10) / length);
+        QPointF edgeOffset((line.dx() * source->boundingRect().width()/2) / length, (line.dy() * dest->boundingRect().height() / 2) / length);
         sourcePoint = line.p1() + edgeOffset;
         destPoint = line.p2() - edgeOffset;
     } else {
