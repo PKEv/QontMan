@@ -95,6 +95,4 @@ private:
     const int v_step = 100; // вертикаль
 
 };
-
-
 #endif // GRAPHWIDGET_H

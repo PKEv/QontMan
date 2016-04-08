@@ -110,7 +110,8 @@ GraphWidget::GraphWidget(QWidget *parent)
     foreach (node, nodes)
     {
         scene->addItem(node);
-        node->setPos(node->y * g_step, node->x * v_step );
+        node->setPos(node->y * node->boundingRect().height() * 2,
+                     node->x * node->boundingRect().width() * 2);
     }
 
     Edge *edge;
@@ -118,9 +119,9 @@ GraphWidget::GraphWidget(QWidget *parent)
     {
         scene->addItem(edge);
     }
-
-    int w =  fieldSize.x*v_step;
-    int h =  fieldSize.y*g_step;
+    // Размер сцены
+    int w =  fieldSize.x * node->boundingRect().width() * 2;
+    int h =  fieldSize.y * node->boundingRect().width() * 2;
     //viewport()->geometry()
     setSceneRect(-h, -w, h*3, w*3);
     scale(1, 1);

@@ -95,7 +95,8 @@ QRectF Node::boundingRect() const
     font.setBold(true);
     QFontMetrics fm(font);
 
-    QRectF rec = fm.boundingRect(nodeInfo->cont.getFullName());
+    //QRectF rec = fm.boundingRect(nodeInfo->cont.getFullName());
+    QRectF rec = QRectF(0, 0, 250, 150);
     return rec;
     /*
     qreal adjust = 2;
@@ -144,8 +145,8 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 
     QFontMetrics fm(font);
-    QRectF rec = fm.boundingRect(nodeInfo->cont.getFullName());
-
+    //QRectF rec = fm.boundingRect(nodeInfo->cont.getFullName());
+    QRectF rec = boundingRect();
    // QRectF rec = painter->boundingRect(QRect(),nodeInfo->cont.getFullName(),QTextOption().alignment());
 /*    QTextOption textOption(Qt::AlignCenter);
     textOption.setFlags(QTextOption::IncludeTrailingSpaces);
@@ -162,7 +163,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
             painter->fillRect(rec,Qt::darkGreen);
     }
 
-    painter->drawText(rec, Qt::AlignLeft, QString(nodeInfo->cont.getFullName()));
+    painter->drawText(rec, Qt::AlignCenter | Qt::TextWordWrap , QString(nodeInfo->cont.getFullName()));
     painter->drawRoundedRect(rec,2,2);
 
     //painter->drawEllipse(-10, -10, 20, 20);
