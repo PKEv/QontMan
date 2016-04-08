@@ -82,6 +82,8 @@ protected:
 private:
     void fillNodes();
     void recursivNodesInfo(NodeInfo *parent , Node *parentNode);
+    void optimizNodePos();
+    Node * findNodeByPos(int x, int y);
     struct
     {
         int x;
@@ -89,8 +91,8 @@ private:
 
     } fieldSize;
     // шаг между элементами на диаграмме
-    const int g_step = 200;
-    const int v_step = 100;
+    const int g_step = 300; // горизонт
+    const int v_step = 100; // вертикаль
 
 };
 

@@ -62,6 +62,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     setDragMode(QGraphicsView::ScrollHandDrag);
 
     fillNodes();
+    optimizNodePos();
 /*
     Node *node1 = new Node(this);
     Node *node2 = new Node(this);
@@ -123,6 +124,9 @@ GraphWidget::GraphWidget(QWidget *parent)
     //viewport()->geometry()
     setSceneRect(-h, -w, h*3, w*3);
     scale(1, 1);
+    centerOn(h/2,w/2);
+    fitInView(-h, -w, h*3, w*3,Qt::KeepAspectRatio);
+    setAlignment(Qt::AlignLeft | Qt::AlignTop);
 }
 
 GraphWidget::~GraphWidget()
@@ -274,7 +278,7 @@ void GraphWidget::fillNodes()
         nodes.push_back(g_node);
 
         // подсчитываем размер поля для отображения
-        if (int(fieldSize.x) < x)
+        if (fieldSize.x < x)
             fieldSize.x = x;
 
         y = fieldSize.y;
@@ -315,4 +319,60 @@ void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
         if (fieldSize.y < y)
             fieldSize.y = y;
     }
+}
+
+void GraphWidget::optimizNodePos()
+{
+    int matrix [fieldSize.x+1][fieldSize.y+1];
+
+    for ( int i = 0; i < fieldSize.x+1; ++i )
+               for ( int j = 0; j < fieldSize.y+1; ++j )
+                   matrix[ i ][ j ] = 0;
+
+    Node *node;
+    foreach (node, nodes)
+    {
+        matrix[int(node->x)][int(node->y)]=1;
+    }
+
+    for ( int i = 0; i < fieldSize.x+1; ++i )
+        for ( int j = 0; j < fieldSize.y+1; ++j )
+        {
+            if (matrix[ i ][ j ] == 1)
+            {
+                int jj = j+1;
+                for ( ; jj < fieldSize.y+1; ++jj )
+                {
+                    if (matrix[ i ][ jj ] == 1)
+                        break;
+                }
+                //исключаем движение крайних элементов и лишние вычисление при фактическом отсутствии движения
+                if (! ( (jj == j + 1) || (jj == fieldSize.y+1) ) )
+                {
+                    Node* node = findNodeByPos(i,j);
+                    node->y = ((jj-j)/2+j);
+                }
+                /*
+                if ( i>0 )
+                {
+                    Node* node = findNodeByPos(i,j);
+                    if (j % 2==0)
+                        node->x = (i+0.5);
+                    else
+                        node->x = (i-0.5);
+                }
+                  */
+            }
+        }
+}
+
+Node * GraphWidget::findNodeByPos(int x, int y)
+{
+    Node *node;
+    foreach (node, nodes)
+    {
+        if (node->x == x && node->y == y)
+            return node;
+    }
+    return nullptr;
 }
