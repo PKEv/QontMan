@@ -18,9 +18,9 @@ public:
     ~Diagram();
 
 private:
-    Ui::Diagram *ui;
-    GraphWidget *widget;
-    QVBoxLayout *mainLayout;
+    Ui::Diagram *ui = nullptr;
+    GraphWidget *widget = nullptr;
+    QVBoxLayout *mainLayout = nullptr;
 };
 
 #endif // DIAGRAM_H

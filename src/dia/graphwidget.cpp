@@ -42,6 +42,7 @@
 #include "edge.h"
 #include "../PlainDb.h"
 #include <math.h>
+#include <QDebug>
 
 #include <QKeyEvent>
 
@@ -57,7 +58,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    scale(qreal(0.8), qreal(0.8));
+    //scale(qreal(2), qreal(2));
     setMinimumSize(400, 400);
     setDragMode(QGraphicsView::ScrollHandDrag);
 
@@ -123,11 +124,13 @@ GraphWidget::GraphWidget(QWidget *parent)
     int w =  fieldSize.x * node->boundingRect().width() * 2;
     int h =  fieldSize.y * node->boundingRect().width() * 2;
     //viewport()->geometry()
-    setSceneRect(-h, -w, h*3, w*3);
-    scale(1, 1);
+    //setSceneRect(-h, -w, h*3, w*3);
+    //scale(0.2, 0.2);
     centerOn(h/2,w/2);
     fitInView(-h, -w, h*3, w*3,Qt::KeepAspectRatio);
-    setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    setAlignment(Qt::AlignLeft | Qt::AlignHCenter);
+
+    qDebug() << "GraphWidget constr";
 }
 
 GraphWidget::~GraphWidget()
@@ -138,6 +141,8 @@ GraphWidget::~GraphWidget()
     nodes.clear();
     edges.clear();
     nodesInfo.clear();
+    qDebug() << "GraphWidget destr";
+
 }
 
 /*
@@ -243,7 +248,7 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
 void GraphWidget::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.07 || factor > 100)
+    if (factor < 0.01 || factor > 100)
         return;
 
     scale(scaleFactor, scaleFactor);
@@ -251,12 +256,12 @@ void GraphWidget::scaleView(qreal scaleFactor)
 
 void GraphWidget::zoomIn()
 {
-    scaleView(qreal(1.2));
+    scaleView(qreal(2));
 }
 
 void GraphWidget::zoomOut()
 {
-    scaleView(1 / qreal(1.2));
+    scaleView(1 / qreal(2));
 }
 
 void GraphWidget::fillNodes()

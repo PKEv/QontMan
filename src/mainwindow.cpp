@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(trayIcon, &QSystemTrayIcon::activated, this, iconActivated);
 
     setWindowTitle(tr("Телефонная книга"));
+    qDebug() << "MainWindow constr";
 }
 
 MainWindow::~MainWindow()
@@ -143,8 +145,9 @@ void MainWindow::filterByTree(const QModelIndex & index)
 
 void MainWindow::showDiagram()
 {
-    myDia = new Diagram;
+    myDia = new Diagram();
     myDia->exec();
+    qDebug() << "Diagram show";
 }
 
 void MainWindow::createTrayIcon()
