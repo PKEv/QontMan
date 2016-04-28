@@ -8,10 +8,10 @@ Diagram::Diagram(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Diagram)
 {
-    qDebug() << "Diagram constr begin";
     ui->setupUi(this);
 
     setWindowTitle(tr("Диаграмма контактов"));
+
 
     widget = new GraphWidget();
     resize(QApplication::desktop()->availableGeometry().width()/2,
@@ -19,7 +19,6 @@ Diagram::Diagram(QWidget *parent) :
     mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(widget);
 
-    qDebug() << "Diagram constr";
 }
 
 Diagram::~Diagram()
@@ -27,6 +26,4 @@ Diagram::~Diagram()
     delete widget;
     delete mainLayout;
     delete ui;
-    qDebug() << "Diagram destr";
-
 }

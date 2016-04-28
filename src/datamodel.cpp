@@ -1,5 +1,6 @@
 #include "datamodel.h"
 #include "PlainDb.cpp"
+#include <QDebug>
 
 dataModel::dataModel(QObject *parent) :
     QSqlQueryModel(parent)

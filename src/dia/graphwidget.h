@@ -45,6 +45,7 @@
 #include <QVector>
 #include "node.h"
 #include "../nodeinfo.h"
+#include <QDebug>
 
 
 //class Node;
@@ -86,8 +87,8 @@ private:
     Node * findNodeByPos(int x, int y);
     struct
     {
-        int x;
-        int y;
+        int x=0;
+        int y=0;
 
     } fieldSize;
     // шаг между элементами на диаграмме

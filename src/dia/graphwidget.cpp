@@ -62,6 +62,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     setMinimumSize(400, 400);
     setDragMode(QGraphicsView::ScrollHandDrag);
 
+
     fillNodes();
     optimizNodePos();
 /*
@@ -129,8 +130,6 @@ GraphWidget::GraphWidget(QWidget *parent)
     centerOn(h/2,w/2);
     fitInView(-h, -w, h*3, w*3,Qt::KeepAspectRatio);
     setAlignment(Qt::AlignLeft | Qt::AlignHCenter);
-
-    qDebug() << "GraphWidget constr";
 }
 
 GraphWidget::~GraphWidget()
@@ -141,8 +140,6 @@ GraphWidget::~GraphWidget()
     nodes.clear();
     edges.clear();
     nodesInfo.clear();
-    qDebug() << "GraphWidget destr";
-
 }
 
 /*
