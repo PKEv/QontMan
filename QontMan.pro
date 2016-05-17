@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,7 +23,8 @@ SOURCES +=  src\main.cpp\
     src/dia/edge.cpp \
     src/dia/graphwidget.cpp \
     src/dia/node.cpp \
-    src/passport.cpp
+    src/passport.cpp \
+    src/settings.cpp
 
 HEADERS  += src\mainwindow.h \
             src\contact.h \
@@ -36,7 +37,8 @@ HEADERS  += src\mainwindow.h \
     src/dia/edge.h \
     src/dia/graphwidget.h \
     src/dia/node.h \
-    src/passport.h
+    src/passport.h \
+    src/settings.h
 
 FORMS    += src\mainwindow.ui \
     src/contview.ui \
@@ -49,3 +51,4 @@ DISTFILES +=
 
 RESOURCES += \
     res.qrc
+RC_FILE     += resources.rc
