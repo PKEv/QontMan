@@ -108,7 +108,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     node9->setPos(50, 50);
 */
     // отображаем собранную информацию по узлам
-    Node *node;
+    Node *node = nullptr;
     foreach (node, nodes)
     {
         scene->addItem(node);
@@ -122,13 +122,16 @@ GraphWidget::GraphWidget(QWidget *parent)
         scene->addItem(edge);
     }
     // Размер сцены
-    int w =  fieldSize.x * node->boundingRect().width() * 2;
-    int h =  fieldSize.y * node->boundingRect().width() * 2;
-    //viewport()->geometry()
-    //setSceneRect(-h, -w, h*3, w*3);
-    //scale(0.2, 0.2);
-    centerOn(h/2,w/2);
-    fitInView(-h, -w, h*3, w*3,Qt::KeepAspectRatio);
+    if (node != nullptr)
+    {
+        int w =  fieldSize.x * node->boundingRect().width() * 2;
+        int h =  fieldSize.y * node->boundingRect().width() * 2;
+        //viewport()->geometry()
+        //setSceneRect(-h, -w, h*3, w*3);
+        //scale(0.2, 0.2);
+        centerOn(h/2,w/2);
+        fitInView(-h, -w, h*3, w*3,Qt::KeepAspectRatio);
+    }
     setAlignment(Qt::AlignLeft | Qt::AlignHCenter);
 }
 

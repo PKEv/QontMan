@@ -42,8 +42,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(trayIcon, SIGNAL(&QSystemTrayIcon::activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
     setWindowTitle(tr("Телефонная книга"));
-    qDebug() << "MainWindow constr";
-
 }
 
 MainWindow::~MainWindow()
