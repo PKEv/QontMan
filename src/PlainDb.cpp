@@ -5,6 +5,8 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
+#include "settings.h"
+
 static PlainDb *PlainDbInstance = nullptr;
 
 PlainDb::PlainDb()
@@ -36,8 +38,10 @@ PlainDb * PlainDb::getInstance()
         QSqlDatabase *datab = new QSqlDatabase();
         *datab = QSqlDatabase::addDatabase("QSQLITE");
         datab->setConnectOptions("QSQLITE_ENABLE_SHARED_CACHE=1");
+        Settings sett;
 
-        QString db_name = qApp->applicationDirPath() + "//test.db";
+        QString db_name = qApp->applicationDirPath() + "//" + sett.getDbPuth();
+        //QString db_name = qApp->applicationDirPath() + "//test.db";
         datab->setDatabaseName(db_name);
 
         if (!datab->open())

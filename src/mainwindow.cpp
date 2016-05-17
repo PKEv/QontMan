@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
+#include "settings.h"
+
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -8,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     PlainDb::getInstance();
     //настройка отображения трея
     createTrayIcon();
@@ -40,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowTitle(tr("Телефонная книга"));
     qDebug() << "MainWindow constr";
+
 }
 
 MainWindow::~MainWindow()
