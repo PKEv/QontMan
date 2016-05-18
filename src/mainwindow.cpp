@@ -19,6 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
     myModel = new dataModel(qApp);
     //настраиваем отображение
     myModel->showAll();
+    // наименования
+    myModel->setHeaderData(2, Qt::Horizontal, tr("Имя"), Qt::DisplayRole);
+    myModel->setHeaderData(3, Qt::Horizontal, tr("Телефон"), Qt::DisplayRole);
+    myModel->setHeaderData(4, Qt::Horizontal, tr("Факс"), Qt::DisplayRole);
+    myModel->setHeaderData(5, Qt::Horizontal, tr("Эл.почта"), Qt::DisplayRole);
+    myModel->setHeaderData(6, Qt::Horizontal, tr("Сайт"), Qt::DisplayRole);
+    myModel->setHeaderData(7, Qt::Horizontal, tr("Заметка"), Qt::DisplayRole);
     // подключаем модель
     ui->tableView->setModel( myModel );
     // скрываем служебные колонки
@@ -39,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->clearSearchButton, SIGNAL(clicked()),this, SLOT(clearSeachString()) );
     connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
     connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(filterByTree(QModelIndex)));
-    connect(trayIcon, SIGNAL(&QSystemTrayIcon::activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
     setWindowTitle(tr("Телефонная книга"));
 }
@@ -98,6 +105,7 @@ void MainWindow::showPass()
     Contact tcont = myModel->GetContact(id);
     passView = new passport(&tcont);
     passView->show();
+    setFocus();
 }
 
 void MainWindow::viewButton()
