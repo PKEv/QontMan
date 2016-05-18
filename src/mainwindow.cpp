@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     myModel = new dataModel(qApp);
     //настраиваем отображение
     myModel->showAll();
-    // наименования
+    // наименования столбцов
     myModel->setHeaderData(2, Qt::Horizontal, tr("Имя"), Qt::DisplayRole);
     myModel->setHeaderData(3, Qt::Horizontal, tr("Телефон"), Qt::DisplayRole);
     myModel->setHeaderData(4, Qt::Horizontal, tr("Факс"), Qt::DisplayRole);
@@ -182,5 +182,5 @@ void MainWindow::createTrayIcon()
     QIcon icon = QIcon(":/img/pic/tel.png");
     trayIcon->setIcon(icon);
 
-    trayIcon->setToolTip("Телефонная книга");
+    trayIcon->setToolTip(tr("Телефонная книга"));
 }
