@@ -10,8 +10,18 @@ passport::passport(QWidget *parent) :
     ui->setupUi(this);
 }
 
-passport::passport(Contact * tcont)
+passport::passport(Contact * tcont, QWidget *parent):
+    QDialog(parent),
+    ui(new Ui::passport)
 {
+    this->setWindowFlags(Qt::Window
+                         | Qt::WindowCloseButtonHint
+                         | Qt::WindowSystemMenuHint
+                         | Qt::CustomizeWindowHint
+                         | Qt::WindowStaysOnTopHint
+                         | Qt::WindowContextHelpButtonHint);
+
+
     ui->setupUi(this);
     cont = new Contact(*tcont);
     fill();
@@ -24,8 +34,6 @@ passport::passport(Contact * tcont)
     this->setWindowTitle("Паспорт контакта");
 
     setWindowModality(Qt::ApplicationModal);
-    Qt::WindowFlags flags = windowFlags();
-    setWindowFlags(flags ^ Qt::WindowContextHelpButtonHint);
 }
 
 passport::~passport()

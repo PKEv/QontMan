@@ -55,6 +55,9 @@ void MainWindow::setupMenu()
     editAction = new QAction(QIcon(":/img/pic/edit.ico"), tr("Редактировать"), this);
     remAction = new QAction(QIcon(":/img/pic/rem.ico"), tr("Удалить"), this);
 
+    diaAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_D));
+    addAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_N));
+
     //соединяем
     connect(diaAction, SIGNAL(triggered()), this, SLOT(showDiagram()));
     connect(addAction, SIGNAL(triggered()), this, SLOT(addButton()));
@@ -205,6 +208,7 @@ void MainWindow::showDiagram()
 void MainWindow::createTrayIcon()
 {
     quitAction = new QAction(QIcon(), tr("Выход"), this);
+    quitAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_Q));
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 
     restoreAction = new QAction(QIcon(), tr("Открыть"), this);

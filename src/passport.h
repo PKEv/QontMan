@@ -17,7 +17,7 @@ class passport : public QDialog
 
 public:
     explicit passport(QWidget *parent = 0);
-    passport(Contact * tcont);
+    passport(Contact * tcont, QWidget *parent = 0);
     ~passport();
 
 private:
