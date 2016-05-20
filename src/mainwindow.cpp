@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 void MainWindow::setupMenu()
 {
-    diaAction = new QAction(QIcon(":/img/pic/dia.ico"), tr("Выход"), this);
+    diaAction = new QAction(QIcon(":/img/pic/dia.ico"), tr("Диаграмма"), this);
     addAction = new QAction(QIcon(":/img/pic/add.ico"), tr("Добавить"), this);
     editAction = new QAction(QIcon(":/img/pic/edit.ico"), tr("Редактировать"), this);
     remAction = new QAction(QIcon(":/img/pic/rem.ico"), tr("Удалить"), this);
