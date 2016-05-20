@@ -29,19 +29,25 @@ MainWindow::MainWindow(QWidget *parent) :
     // подключаем модель
     ui->tableView->setModel( myModel );
     // скрываем служебные колонки
-    ui->tableView->setColumnHidden(0,true);
-    ui->tableView->setColumnHidden(1,true);
+    ui->tableView->setColumnHidden(0, true);
+    ui->tableView->setColumnHidden(1, true);
 
     ui->tableView->show();
 
     myTreeModel = new TreeModel();
     ui->treeView->setModel(myTreeModel);
     ui->treeView->show();
-    ui->toolBar->addAction(QIcon(),tr("Диаграмма"),this,SLOT(showDiagram()));
+    ui->toolBar->addAction(QIcon(":/img/pic/dia.ico"), tr("Диаграмма"),this,SLOT(showDiagram()));
+    ui->toolBar->addSeparator();
+    ui->toolBar->addAction(QIcon(":/img/pic/add.ico"), tr("Добавить"),this,SLOT(addButton()));
+    ui->toolBar->addAction(QIcon(":/img/pic/edit.ico"), tr("Редактировать"),this,SLOT(viewButton()));
+    ui->toolBar->addAction(QIcon(":/img/pic/rem.ico"), tr("Удалить"),this,SLOT(deleteButton()));
 
+/*
     connect( ui->AddButton, SIGNAL(clicked()), this, SLOT(addButton()) );
     connect( ui->ViewButton, SIGNAL(clicked()), this, SLOT(viewButton()) );
     connect( ui->DeleteButton, SIGNAL(clicked()), this, SLOT(deleteButton()) );
+*/
     connect( ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showPass())) ;
     connect(ui->clearSearchButton, SIGNAL(clicked()),this, SLOT(clearSeachString()) );
     connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
@@ -162,7 +168,6 @@ void MainWindow::showDiagram()
 
 void MainWindow::createTrayIcon()
 {
-
     quitAction = new QAction(tr("Выход"), this);
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 

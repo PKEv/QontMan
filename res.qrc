@@ -6,5 +6,9 @@
         <file>pic/tel.png</file>
         <file>pic/avatar/index.png</file>
         <file>pic/avatar/index2.png</file>
+        <file>pic/add.ico</file>
+        <file>pic/dia.ico</file>
+        <file>pic/edit.ico</file>
+        <file>pic/rem.ico</file>
     </qresource>
 </RCC>
