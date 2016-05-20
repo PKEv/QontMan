@@ -40,6 +40,7 @@ private slots:
      void showDiagram();
 
 private:
+    void setupMenu();
     Ui::MainWindow *ui = nullptr;
     ContView *contView = nullptr;
     dataModel *myModel = nullptr;
@@ -50,7 +51,10 @@ private:
     void createTrayIcon();
     QAction *quitAction;
     QAction *restoreAction;
-
+    QAction *diaAction;
+    QAction *addAction;
+    QAction *editAction;
+    QAction *remAction;
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;

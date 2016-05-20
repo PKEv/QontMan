@@ -37,17 +37,9 @@ MainWindow::MainWindow(QWidget *parent) :
     myTreeModel = new TreeModel();
     ui->treeView->setModel(myTreeModel);
     ui->treeView->show();
-    ui->toolBar->addAction(QIcon(":/img/pic/dia.ico"), tr("Диаграмма"),this,SLOT(showDiagram()));
-    ui->toolBar->addSeparator();
-    ui->toolBar->addAction(QIcon(":/img/pic/add.ico"), tr("Добавить"),this,SLOT(addButton()));
-    ui->toolBar->addAction(QIcon(":/img/pic/edit.ico"), tr("Редактировать"),this,SLOT(viewButton()));
-    ui->toolBar->addAction(QIcon(":/img/pic/rem.ico"), tr("Удалить"),this,SLOT(deleteButton()));
 
-/*
-    connect( ui->AddButton, SIGNAL(clicked()), this, SLOT(addButton()) );
-    connect( ui->ViewButton, SIGNAL(clicked()), this, SLOT(viewButton()) );
-    connect( ui->DeleteButton, SIGNAL(clicked()), this, SLOT(deleteButton()) );
-*/
+    setupMenu();
+
     connect( ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showPass())) ;
     connect(ui->clearSearchButton, SIGNAL(clicked()),this, SLOT(clearSeachString()) );
     connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
@@ -55,6 +47,44 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
     setWindowTitle(tr("Телефонная книга"));
+}
+void MainWindow::setupMenu()
+{
+    diaAction = new QAction(QIcon(":/img/pic/dia.ico"), tr("Выход"), this);
+    addAction = new QAction(QIcon(":/img/pic/add.ico"), tr("Добавить"), this);
+    editAction = new QAction(QIcon(":/img/pic/edit.ico"), tr("Редактировать"), this);
+    remAction = new QAction(QIcon(":/img/pic/rem.ico"), tr("Удалить"), this);
+
+    //соединяем
+    connect(diaAction, SIGNAL(triggered()), this, SLOT(showDiagram()));
+    connect(addAction, SIGNAL(triggered()), this, SLOT(addButton()));
+    connect(editAction, SIGNAL(triggered()), this, SLOT(viewButton()));
+    connect(remAction, SIGNAL(triggered()), this, SLOT(deleteButton()));
+
+    //настройка панели
+    ui->toolBar->addAction(diaAction);
+    ui->toolBar->addSeparator();
+    ui->toolBar->addAction(addAction);
+    ui->toolBar->addAction(editAction);
+    ui->toolBar->addAction(remAction);
+
+    //настройка меню
+    QMenu *fileMenu = new QMenu(tr("Меню"));
+    fileMenu->addAction(quitAction);
+
+    QMenu *actionMenu = new QMenu( tr("Операции") );
+    actionMenu->addAction(addAction);
+    actionMenu->addAction(editAction);
+    actionMenu->addAction(remAction);
+
+    QMenu *diaMenu = new QMenu( tr("Диаграмма") );
+    diaMenu->addAction(diaAction);
+
+    //отображаем
+    ui->menuBar->addMenu(fileMenu);
+    ui->menuBar->addMenu(actionMenu);
+    ui->menuBar->addMenu(diaMenu);
+
 }
 
 MainWindow::~MainWindow()
@@ -66,6 +96,12 @@ MainWindow::~MainWindow()
     delete contView;
     delete ui;
     delete passView;
+    delete quitAction;
+    delete restoreAction;
+    delete diaAction;
+    delete addAction;
+    delete editAction;
+    delete remAction;
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -168,15 +204,14 @@ void MainWindow::showDiagram()
 
 void MainWindow::createTrayIcon()
 {
-    quitAction = new QAction(tr("Выход"), this);
+    quitAction = new QAction(QIcon(), tr("Выход"), this);
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 
-    restoreAction = new QAction(tr("Открыть"), this);
+    restoreAction = new QAction(QIcon(), tr("Открыть"), this);
     connect(restoreAction, &QAction::triggered, this, &QWidget::showNormal);
 
-
+    // cоставляем меню
     trayIconMenu = new QMenu(this);
-
     trayIconMenu->addAction(restoreAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(quitAction);
@@ -184,6 +219,7 @@ void MainWindow::createTrayIcon()
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setContextMenu(trayIconMenu);
 
+    //иконка
     QIcon icon = QIcon(":/img/pic/tel.png");
     trayIcon->setIcon(icon);
 
