@@ -1,4 +1,5 @@
 IDI_ICON1 ICON "tel.ico"
+IDI_ICON2 ICON "tel1.ico"
 
 #include <windows.h>
 

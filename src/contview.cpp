@@ -133,6 +133,10 @@ void ContView::on_buttonBox_clicked(QAbstractButton *button)
         ui->plusButton_4->click();
         ui->plusButton_5->click();
 
+        //Проверяем что заполнено поле Представления контакта
+        if (ui->lineEdit->text().trimmed().isEmpty())
+            ui->pushButton->click();
+
         // заполняем структуру для передачи
         cont->setFullName(ui->lineEdit->text());
         cont->setTel(GetItiems(ui->comboBox));
@@ -247,10 +251,23 @@ void ContView::autoFullName()
 
     if (ui->tipSlider->value()==0) // фирма
     {
-        ui->lineEdit->setText(name2 + ", " + name1);
+        if (!name1.isEmpty() && !name2.isEmpty())
+            ui->lineEdit->setText(name2 + ", " + name1);
+        else if (!name1.isEmpty() && name2.isEmpty())
+            ui->lineEdit->setText(name2);
+        else
+            ui->lineEdit->setText(tr("Не введено!!!"));
     }
     else //физ лицо
     {
-        ui->lineEdit->setText(name2 + ", "+name1 + " " + name3);
+        if (!name1.isEmpty() && !name2.isEmpty() && !name3.isEmpty())
+            ui->lineEdit->setText(name2 + ", "+name1 + " " + name3);
+        else if (name2.isEmpty() && !name1.isEmpty() && !name3.isEmpty())
+                ui->lineEdit->setText(name1 + " " + name3);
+        else if (name1.isEmpty() && !name1.isEmpty() && name3.isEmpty())
+                ui->lineEdit->setText(name1);
+        else
+             ui->lineEdit->setText((name2 + " "+name1 + " " + name3).trimmed());
+
     }
 }
