@@ -161,7 +161,7 @@ void MainWindow::viewButton()
 
     Contact tcont = myModel->GetContact(id);
     contView = new ContView(&tcont);
-    contView->show();
+    contView->exec();
 
     connect(contView, SIGNAL(accepted()), this, SLOT(update_rec()));
 }

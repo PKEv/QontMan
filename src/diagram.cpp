@@ -8,6 +8,11 @@ Diagram::Diagram(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Diagram)
 {
+    this->setWindowFlags(Qt::Window
+                         | Qt::WindowCloseButtonHint
+                         | Qt::WindowSystemMenuHint
+                         | Qt::CustomizeWindowHint
+                         | Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
 
     setWindowTitle(tr("Диаграмма контактов"));

@@ -9,6 +9,11 @@ ContView::ContView(QWidget *parent) :
     ui(new Ui::ContView)
 {
     ui->setupUi(this);
+    this->setWindowFlags(Qt::Window
+                         | Qt::WindowCloseButtonHint
+                         | Qt::WindowSystemMenuHint
+                         | Qt::CustomizeWindowHint
+                         | Qt::WindowStaysOnTopHint);
     cont = new Contact;
     Connect();
     Fill();
