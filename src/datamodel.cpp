@@ -28,7 +28,7 @@ void dataModel::showAll()
 {
     setQuery(PlainDb::getInstance()->getQuery(), *PlainDb::getInstance()->db);
 
-    setHeaderData(2, Qt::Horizontal, QObject::tr("Short Name"));
+//    setHeaderData(2, Qt::Horizontal, QObject::tr("Short Name"));
 //    setHeaderData(1, Qt::Horizontal, QObject::tr(""));
 //    setHeaderData(2, Qt::Horizontal, QObject::tr("Last name"));
 

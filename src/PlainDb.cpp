@@ -4,6 +4,7 @@
 #include <QList>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QDebug>
 
 #include "settings.h"
 
@@ -28,34 +29,23 @@ PlainDb * PlainDb::getInstance()
 {
     if (PlainDbInstance == nullptr)
     {
-        QList<QString> initLst;
-        initLst.push_back(QString("CREATE TABLE IF NOT EXISTS contact (id INTEGER PRIMARY KEY AUTOINCREMENT, tip INTEGER, timestamp INTEGER NOT NULL, ") +
-                          QString("tel  TEXT, fax TEXT, adres TEXT, email TEXT, http TEXT, uplevel TEXT, notes TEXT);"));
-        initLst.push_back(QString("CREATE TABLE IF NOT EXISTS firm (id INTEGER NOT NULL, sobstv TEXT, name TEXT, shortname TEXT);"));
-        initLst.push_back(QString("CREATE TABLE IF NOT EXISTS man (id INTEGER NOT NULL, name TEXT, surname TEXT, patronymic TEXT, shortname TEXT);"));
-        initLst.push_back(QString("CREATE TABLE IF NOT EXISTS avatar (id INTEGER NOT NULL, img BLOB);"));
+        qDebug() << QSqlDatabase::drivers ();
 
         QSqlDatabase *datab = new QSqlDatabase();
-        *datab = QSqlDatabase::addDatabase("QSQLITE");
-        datab->setConnectOptions("QSQLITE_ENABLE_SHARED_CACHE=1");
-        Settings sett;
+         *datab = QSqlDatabase::addDatabase("QIBASE");
+        datab->setHostName("localhost");
+        datab->setDatabaseName("c:/test.fdb");
+        datab->setUserName("SYSDBA");
+        datab->setPassword("masterkey");
 
-        QString db_name = qApp->applicationDirPath() + "//" + sett.getDbPuth();
-        //QString db_name = qApp->applicationDirPath() + "//test.db";
-        datab->setDatabaseName(db_name);
 
         if (!datab->open())
         {
-            qWarning() << QString("Can't open file: %1").arg(db_name);
-            datab->setDatabaseName(":memory:");
-            datab->setConnectOptions();
-            datab->open();
+            qWarning() << QString("Can't open file: %1");
+            qDebug() << datab->lastError().text();
+            return 0;
         }
 
-        for (const QString &cmd : initLst)
-        {
-            datab->exec(cmd);
-        }
         PlainDbInstance = new PlainDb(datab);
     }
     return PlainDbInstance;
@@ -63,38 +53,38 @@ PlainDb * PlainDb::getInstance()
 
 QString PlainDb::getQuery()
 {
-    QString temp =  QString ("SELECT contact.id, contact.tip, "
-                    "    (CASE contact.tip "
+    QString temp =  QString ("SELECT \"contact\".\"ID\", \"contact\".\"TIP\", "
+                    "    (CASE \"contact\".\"TIP\" "
                     "        WHEN 0 THEN "
-                    "            firm.shortname "
+                    "            \"firm\".\"shortname\" "
                     "        WHEN 1 THEN "
-                    "            man.shortname "
-                    "        ELSE 'bad type' "
+                    "            \"man\".\"shortname\" "
+                    "        ELSE null "
                     "    END), "
-                    "    contact.tel, contact.fax, contact.email, contact.http, contact.notes "
-                    "FROM contact "
-                    "LEFT JOIN firm ON contact.id = firm.id "
-                    "LEFT JOIN man ON contact.id = man.id "
-                    "WHERE (contact.tel         LIKE '%"+SeachString+"%' "
-                             "OR contact.fax     LIKE '%"+SeachString+"%' "
-                             "OR contact.email   LIKE '%"+SeachString+"%' "
-                             "OR contact.http    LIKE '%"+SeachString+"%' "
-                             "OR contact.notes   LIKE '%"+SeachString+"%' "
-                             "OR firm.sobstv     LIKE '%"+SeachString+"%' "
-                             "OR firm.name       LIKE '%"+SeachString+"%' "
-                             "OR firm.shortname  LIKE '%"+SeachString+"%' "
-                             "OR man.name        LIKE '%"+SeachString+"%' "
-                             "OR man.surname     LIKE '%"+SeachString+"%' "
-                             "OR man.patronymic  LIKE '%"+SeachString+"%' "
-                             "OR man.shortname   LIKE '%"+SeachString+"%' ) ")
+                    "    \"contact\".\"TEL\", \"contact\".\"FAX\", \"contact\".\"EMAIL\", \"contact\".\"HTTP\", \"contact\".\"NOTES\" "
+                    "FROM \"contact\" "
+                    "LEFT JOIN \"firm\" ON \"contact\".\"ID\" = \"firm\".\"id\" "
+                    "LEFT JOIN \"man\" ON \"contact\".\"ID\" = \"man\".\"id\" "
+                    "WHERE (     UPPER (\"contact\".\"TEL\")     LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"contact\".\"FAX\")     LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"contact\".\"EMAIL\")   LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"contact\".\"HTTP\")    LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"contact\".\"NOTES\")   LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"firm\".\"sobstv\")     LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"firm\".\"name\")       LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"firm\".\"shortname\")  LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"man\".\"name\")        LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"man\".\"surname\")     LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"man\".\"patronymic\")  LIKE '%"+SeachString+"%' "
+                             "OR UPPER (\"man\".\"shortname\")   LIKE '%"+SeachString+"%' ) ")
             + SeachString2;
-
     return temp;
+
 }
 
 void PlainDb::addContact(Contact * con)
 {
-    QString prepQuery = QString("INSERT INTO contact (tip, timestamp, tel, fax, adres, email, http, uplevel, notes) VALUES (:tip, :timestamp, :tel, :fax, :adres, :email, :http, :uplevel, :notes)");
+    QString prepQuery = QString("INSERT INTO \"contact\" (\"TIP\", \"TIMESTAMP\", \"TEL\", \"FAX\", \"ADRES\", \"EMAIL\", \"HTTP\", \"UPLEVEL\", \"NOTES\") VALUES (:tip, :timestamp, :tel, :fax, :adres, :email, :http, :uplevel, :notes)");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":tip",con->getTip());
@@ -122,7 +112,7 @@ void PlainDb::addContact(Contact * con)
 
 void PlainDb::updateContact(Contact * con)
 {
-    QString prepQuery = QString("UPDATE contact SET tip=:tip, timestamp=:timestamp, tel=:tel, fax=:fax, adres=:adres, email=:email, http=:http, uplevel=:uplevel, notes=:notes WHERE id =:id");
+    QString prepQuery = QString("UPDATE \"contact\" SET \"TIP\"=:tip, \"TIMESTAMP\"=:timestamp, \"TEL\"=:tel, \"FAX\"=:fax, \"ADRES\"=:adres, \"EMAIL\"=:email, \"HTTP\"=:http, \"UPLEVEL\"=:uplevel, \"NOTES\"=:notes WHERE \"ID\" =:id");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":tip",con->getTip());
@@ -149,7 +139,7 @@ void PlainDb::updateContact(Contact * con)
 
 int PlainDb::getId(Contact* con)
 {
-    QString prepQuery = QString("SELECT id FROM contact WHERE tip=:tip AND timestamp=:timestamp AND tel=:tel AND fax=:fax AND adres=:adres AND email=:email AND http=:http AND uplevel=:uplevel AND notes=:notes");
+    QString prepQuery = QString("SELECT \"ID\" FROM \"contact\" WHERE \"TIP\"=:tip AND \"TIMESTAMP\"=:timestamp AND \"TEL\"=:tel AND \"FAX\"=:fax AND \"ADRES\"=:adres AND \"EMAIL\"=:email AND \"HTTP\"=:http AND \"UPLEVEL\"=:uplevel AND \"NOTES\"=:notes");
     QSqlQuery query;
     query.clear();
     query.prepare(prepQuery);
@@ -170,8 +160,8 @@ int PlainDb::getId(Contact* con)
 
 Contact PlainDb::getContById(const int id)
 {
-    QString prepQuery = QString ("SELECT tip, adres, timestamp, tel, fax, email, http, notes, uplevel "
-                                 "FROM contact WHERE contact.id=:id ");
+    QString prepQuery = QString ("SELECT \"TIP\", \"ADRES\", \"TIMESTAMP\", \"TEL\", \"FAX\", \"EMAIL\", \"HTTP\", \"NOTES\", \"UPLEVEL\" "
+                                 "FROM \"contact\" WHERE \"contact\".\"ID\"=:id ");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",id);
@@ -180,15 +170,15 @@ Contact PlainDb::getContById(const int id)
 
     Contact tCont;
     tCont.setId(id);
-    tCont.setTip(query.record().value("tip").toInt());
-    tCont.setTel(query.record().value("tel").toString());
-    tCont.setAdr(query.record().value("adres").toString());
-    tCont.setFax(query.record().value("fax").toString());
-    tCont.setEmail(query.record().value("email").toString());
-    tCont.setHttp(query.record().value("http").toString());
-    tCont.setZametka(query.record().value("notes").toString());
-    tCont.setDate(query.record().value("timestamp").toString());
-    tCont.setUpLevel(query.record().value("uplevel").toInt());
+    tCont.setTip(query.record().value("TIP").toInt());
+    tCont.setTel(query.record().value("TEL").toString());
+    tCont.setAdr(query.record().value("ADRES").toString());
+    tCont.setFax(query.record().value("FAX").toString());
+    tCont.setEmail(query.record().value("EMAIL").toString());
+    tCont.setHttp(query.record().value("HTTP").toString());
+    tCont.setZametka(query.record().value("NOTES").toString());
+    tCont.setDate(query.record().value("TIMESTAMP").toString());
+    tCont.setUpLevel(query.record().value("UPLEVEL").toInt());
     if (tCont.getTip()==0)
     {
         getFirm(tCont);
@@ -202,7 +192,7 @@ Contact PlainDb::getContById(const int id)
 
 void PlainDb::addFirm(Contact* con)
 {
-    QString prepQuery = QString("INSERT INTO firm (id, sobstv, name, shortname) VALUES (:id, :sobstv, :name, :shortname)");
+    QString prepQuery = QString("INSERT INTO \"firm\" (\"id\", \"sobstv\", \"name\", \"shortname\") VALUES (:id, :sobstv, :name, :shortname)");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
@@ -214,7 +204,7 @@ void PlainDb::addFirm(Contact* con)
 
 void PlainDb::addMan(Contact* con)
 {
-    QString prepQuery = QString("INSERT INTO man (id, name, surname, patronymic, shortname) VALUES (:id, :name, :surname, :patronymic, :shortname)");
+    QString prepQuery = QString("INSERT INTO \"man\" (\"id\", \"name\", \"surname\", \"patronymic\", \"shortname\") VALUES (:id, :name, :surname, :patronymic, :shortname)");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
@@ -227,7 +217,7 @@ void PlainDb::addMan(Contact* con)
 
 void PlainDb::getFirm(Contact &con)
 {
-    QString prepQuery = QString("SELECT * FROM firm WHERE id = :id");
+    QString prepQuery = QString("SELECT * FROM \"firm\" WHERE \"id\" = :id");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con.getId());
@@ -240,7 +230,7 @@ void PlainDb::getFirm(Contact &con)
 
 void PlainDb::getMan(Contact& con)
 {
-    QString prepQuery = QString("SELECT name, surname, patronymic, shortname  FROM man WHERE id = :id");
+    QString prepQuery = QString("SELECT \"name\", \"surname\", \"patronymic\", \"shortname\"  FROM \"man\" WHERE \"id\" = :id");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con.getId());
@@ -254,7 +244,7 @@ void PlainDb::getMan(Contact& con)
 
 void PlainDb::updateFirm(Contact *con)
 {
-    QString prepQuery = QString("UPDATE firm SET sobstv=:sobstv, name=:name, shortname=:shortname WHERE id=:id");
+    QString prepQuery = QString("UPDATE \"firm\" SET \"sobstv\"=:sobstv, \"name\"=:name, \"shortname\"=:shortname WHERE \"id\"=:id");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
@@ -266,7 +256,7 @@ void PlainDb::updateFirm(Contact *con)
 
 void PlainDb::updateMan(Contact* con)
 {
-    QString prepQuery = QString("UPDATE man SET name=:name, surname=:surname, patronymic=:patronymic, shortname=:shortname WHERE id=:id ");
+    QString prepQuery = QString("UPDATE \"man\" SET \"name\"=:name, \"surname\"=:surname, \"patronymic\"=:patronymic, \"shortname\"=:shortname WHERE \"id\"=:id ");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
@@ -279,7 +269,7 @@ void PlainDb::updateMan(Contact* con)
 
 void PlainDb::changeContactTip(Contact * con)
 {
-    QString prepQuery = QString("UPDATE contact SET tip=:tip, timestamp=:timestamp, tel=:tel, fax=:fax, adres=:adres, email=:email, http=:http, uplevel=:uplevel, notes=:notes WHERE id =:id");
+    QString prepQuery = QString("UPDATE \"contact\" SET \"TIP\"=:tip, \"TIMESTAMP\"=:timestamp, \"TEL\"=:tel, \"FAX\"=:fax, \"ADRES\"=:adres, \"EMAIL\"=:email, \"HTTP\"=:http, \"UPLEVEL\"=:uplevel, \"NOTES\"=:notes WHERE \"ID\"=:id");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":tip",con->getTip());
@@ -308,7 +298,7 @@ void PlainDb::changeContactTip(Contact * con)
 
 void PlainDb::deleteFirm(Contact *con)
 {
-    QString prepQuery = QString("DELETE FROM firm WHERE id=:id ");
+    QString prepQuery = QString("DELETE FROM \"firm\" WHERE \"id\"=:id ");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
@@ -317,7 +307,7 @@ void PlainDb::deleteFirm(Contact *con)
 
 void PlainDb::deleteMan(Contact *con)
 {
-    QString prepQuery = QString("DELETE FROM man WHERE id=:id ");
+    QString prepQuery = QString("DELETE FROM \"man\" WHERE \"id\"=:id ");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
@@ -326,7 +316,7 @@ void PlainDb::deleteMan(Contact *con)
 
 void PlainDb::deleteContact(Contact * con)
 {
-    QString prepQuery = QString("DELETE FROM contact WHERE id=:id ");
+    QString prepQuery = QString("DELETE FROM \"contact\" WHERE \"ID\"=:id ");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
@@ -343,24 +333,24 @@ void PlainDb::deleteContact(Contact * con)
 
 void PlainDb::setSeachString(QString str)
 {
-    SeachString = str;
+    SeachString = str.toUpper();
 }
 
 void PlainDb::GetAcsList(std::vector<QString> &vec, const int selfId)
 {
     vec.clear();
-    QString prep = QString("SELECT contact.id, contact.tip, "
-                    "    (CASE contact.tip "
+    QString prep = QString("SELECT \"contact\".\"ID\", \"contact\".\"TIP\", "
+                    "    (CASE \"contact\".\"TIP\" "
                     "        WHEN 0 THEN "
-                    "            firm.shortname "
+                    "            \"firm\".\"shortname\" "
                     "        WHEN 1 THEN "
-                    "            man.shortname "
-                    "        ELSE 'bad type' "
+                    "            \"man\".\"shortname\" "
+                    "        ELSE null "
                     "    END) "
-                    "FROM contact "
-                    "LEFT JOIN firm ON contact.id = firm.id "
-                    "LEFT JOIN man ON contact.id = man.id " //);
-                    "WHERE contact.id <> :id");
+                    "FROM \"contact\" "
+                    "LEFT JOIN firm ON \"contact\".\"ID\" = \"firm\".\"id\" "
+                    "LEFT JOIN man ON \"contact\".\"ID\" = \"man\".\"id\" " //);
+                    "WHERE \"contact\".\"ID\" <> :id");
 
     QSqlQuery query;
     query.prepare(prep);
@@ -378,9 +368,9 @@ void PlainDb::GetAcsList(std::vector<QString> &vec, const int selfId)
 void PlainDb::GetContactsListByUplevel(std::vector<Contact> &vec, const int uplevel)
 {
     vec.clear();
-    QString prep = QString("SELECT contact.id "
-                    "FROM contact "
-                    "WHERE contact.uplevel = :uplevel");
+    QString prep = QString("SELECT \"contact\".\"ID\" "
+                    "FROM \"contact\" "
+                    "WHERE \"contact\".\"UPLEVEL\" = :uplevel");
 
     QSqlQuery query;
     query.prepare(prep);
@@ -398,9 +388,9 @@ void PlainDb::GetContactsListByUplevel(std::vector<Contact> &vec, const int uple
 
 bool PlainDb::HasChildByUplevel(const int uplevel)
 {
-    QString prep = QString("SELECT contact.id "
-                    "FROM contact "
-                    "WHERE contact.uplevel = :uplevel");
+    QString prep = QString("SELECT \"contact\".\"ID\" "
+                    "FROM \"contact\" "
+                    "WHERE \"contact\".\"UPLEVEL\" = :uplevel");
 
     QSqlQuery query;
     query.prepare(prep);
@@ -419,7 +409,7 @@ void PlainDb::SetFilterByListId(QStringList & list)
     {
         if (entry != list.first())
             SeachString2 += " OR ";
-        SeachString2 += QString("contact.id=%1").arg(entry);
+        SeachString2 += QString("\"contact\".\"ID\"=%1").arg(entry);
     }
     SeachString2 += ")";
 }
