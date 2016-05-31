@@ -40,11 +40,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setupMenu();
 
-    connect( ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showPass())) ;
+    connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showPass())) ;
     connect(ui->clearSearchButton, SIGNAL(clicked()),this, SLOT(clearSeachString()) );
     connect(ui->SeachString, SIGNAL(textChanged(QString)),this, SLOT(setSeachString(QString)));
     connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(filterByTree(QModelIndex)));
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
+
+    ui->clearSearchButton->setShortcut(Qt::Key_Escape);
 
     setWindowTitle(tr("Телефонная книга"));
 }
