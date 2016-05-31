@@ -30,11 +30,12 @@ PlainDb * PlainDb::getInstance()
     if (PlainDbInstance == nullptr)
     {
         qDebug() << QSqlDatabase::drivers ();
-        QString db_name = qApp->applicationDirPath() + "//TEST.FDB";
+        QString db_name = qApp->applicationDirPath() + "/TEST.FDB";
+        qDebug() << db_name;
 
         QSqlDatabase *datab = new QSqlDatabase();
-         *datab = QSqlDatabase::addDatabase("QIBASE");
-        datab->setHostName("localhost");
+        *datab = QSqlDatabase::addDatabase("QIBASE");
+        //datab->setHostName("localhost");
         datab->setDatabaseName(db_name);
         datab->setUserName("SYSDBA");
         datab->setPassword("masterkey");
