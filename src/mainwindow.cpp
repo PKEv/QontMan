@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
-#include "settings.h"
+
 
 #include <QDebug>
 
@@ -49,7 +49,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->clearSearchButton->setShortcut(Qt::Key_Escape);
 
     setWindowTitle(tr("Телефонная книга"));
+
+    const QString path = qApp->applicationDirPath() + "/settings.ini";
+    settings = new QSettings(path, QSettings::IniFormat);
 }
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    //Q_UNUSED(event);
+    QMainWindow::showEvent(event);
+    readSettings();
+}
+
 void MainWindow::setupMenu()
 {
     diaAction = new QAction(QIcon(":/img/pic/dia.ico"), tr("Диаграмма"), this);
@@ -107,6 +118,8 @@ MainWindow::~MainWindow()
     delete addAction;
     delete editAction;
     delete remAction;
+    writeSettings();
+    delete settings;
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -115,11 +128,12 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
     {
         if (!this->isVisible())
         {
-            this->showNormal();
+            this->show();
             this->activateWindow();
+            readSettings();
         }
         else
-            this->hide();
+            this->close();
     }
 }
 
@@ -130,7 +144,26 @@ void MainWindow::closeEvent(QCloseEvent *event)
         hide();
         event->ignore();
     }
+
+    writeSettings();
+
 }
+void MainWindow::readSettings()
+{
+    settings->sync();
+    QPoint pos = settings->value("pos", QPoint(200, 200)).toPoint();
+    QSize size = settings->value("size", QSize(800, 400)).toSize();
+    resize(size);
+    move(pos);
+}
+
+void MainWindow::writeSettings()
+{
+    settings->setValue("pos", pos());
+    settings->setValue("size", size());
+    settings->sync();
+}
+
 
 void MainWindow::addButton()
 {
@@ -214,7 +247,7 @@ void MainWindow::createTrayIcon()
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 
     restoreAction = new QAction(QIcon(), tr("Открыть"), this);
-    connect(restoreAction, &QAction::triggered, this, &QWidget::showNormal);
+    connect(restoreAction, &QAction::triggered, this, &QWidget::show);
 
     // cоставляем меню
     trayIconMenu = new QMenu(this);

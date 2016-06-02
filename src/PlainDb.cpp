@@ -6,8 +6,6 @@
 #include <QSqlQuery>
 #include <QDebug>
 
-#include "settings.h"
-
 static PlainDb *PlainDbInstance = nullptr;
 
 PlainDb::PlainDb()
@@ -29,7 +27,7 @@ PlainDb * PlainDb::getInstance()
 {
     if (PlainDbInstance == nullptr)
     {
-        qDebug() << QSqlDatabase::drivers ();
+        //qDebug() << QSqlDatabase::drivers ();
         QString db_name = qApp->applicationDirPath() + "/TEST.FDB";
         qDebug() << db_name;
 
@@ -232,7 +230,7 @@ void PlainDb::getFirm(Contact &con)
 
 void PlainDb::getMan(Contact& con)
 {
-    QString prepQuery = QString("SELECT \"name\", \"surname\", \"patronymic\", \"shortname\"  FROM \"man\" WHERE \"id\" = :id");
+    QString prepQuery = QString("SELECT * FROM \"man\" WHERE \"id\" = :id");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con.getId());
@@ -267,6 +265,7 @@ void PlainDb::updateMan(Contact* con)
     query.bindValue(":patronymic",con->getName3());
     query.bindValue(":shortname",con->getFullName());
     query.exec();
+    query.finish();
 }
 
 void PlainDb::changeContactTip(Contact * con)
@@ -350,8 +349,8 @@ void PlainDb::GetAcsList(std::vector<QString> &vec, const int selfId)
                     "        ELSE null "
                     "    END) "
                     "FROM \"contact\" "
-                    "LEFT JOIN firm ON \"contact\".\"ID\" = \"firm\".\"id\" "
-                    "LEFT JOIN man ON \"contact\".\"ID\" = \"man\".\"id\" " //);
+                    "LEFT JOIN \"firm\" ON \"contact\".\"ID\" = \"firm\".\"id\" "
+                    "LEFT JOIN \"man\" ON \"contact\".\"ID\" = \"man\".\"id\" " //);
                     "WHERE \"contact\".\"ID\" <> :id");
 
     QSqlQuery query;

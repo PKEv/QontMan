@@ -10,6 +10,7 @@
 #include "diagram.h"
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
+#include <QSettings>
 
 namespace Ui {
 class MainWindow;
@@ -24,8 +25,10 @@ public:
     ~MainWindow();
 
 
+
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
      void addButton();
@@ -49,6 +52,8 @@ private:
     passport *passView = nullptr;
 
     void createTrayIcon();
+    void readSettings();
+    void writeSettings();
     QAction *quitAction;
     QAction *restoreAction;
     QAction *diaAction;
@@ -58,6 +63,7 @@ private:
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
+    QSettings *settings;
 };
 
 #endif // MAINWINDOW_H
