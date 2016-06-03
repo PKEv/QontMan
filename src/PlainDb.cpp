@@ -84,7 +84,7 @@ QString PlainDb::getQuery()
 
 void PlainDb::addContact(Contact * con)
 {
-    QString prepQuery = QString("INSERT INTO \"contact\" (\"TIP\", \"TIMESTAMP\", \"TEL\", \"FAX\", \"ADRES\", \"EMAIL\", \"HTTP\", \"UPLEVEL\", \"NOTES\") VALUES (:tip, :timestamp, :tel, :fax, :adres, :email, :http, :uplevel, :notes)");
+    QString prepQuery = QString("INSERT INTO \"contact\" (\"TIP\", \"TIMESTAMP\", \"TEL\", \"FAX\", \"ADRES\", \"EMAIL\", \"HTTP\", \"UPLEVEL\", \"NOTES\") VALUES (:tip, :timestamp, :tel, :fax, :adres, :email, :http, :uplevel, :notes) returning \"ID\"");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":tip",con->getTip());
@@ -96,8 +96,14 @@ void PlainDb::addContact(Contact * con)
     query.bindValue(":http",con->getHttp());
     query.bindValue(":uplevel",con->getUpLevel());
     query.bindValue(":notes",con->getZametka());
-    query.exec();
-    int id = query.lastInsertId().toInt();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("addContact query error ") << estr;
+    }
+    query.first();
+    int id = query.value(0).toInt();
     con->setId(id);
 
     if (con->getTip() == 0 )
@@ -125,7 +131,12 @@ void PlainDb::updateContact(Contact * con)
     query.bindValue(":uplevel",con->getUpLevel());
     query.bindValue(":notes",con->getZametka());
     query.bindValue(":id",con->getId());
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("updateContact query error") << estr;
+    }
     if (con->getTip()==0)
     {
         updateFirm(con);
@@ -152,7 +163,12 @@ int PlainDb::getId(Contact* con)
     query.bindValue(":http",con->getHttp());
     query.bindValue(":uplevel",con->getUpLevel());
     query.bindValue(":notes",con->getZametka());
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("getId query error") << estr;
+    }
 
     query.first();
     return query.value(0).toInt();
@@ -165,7 +181,12 @@ Contact PlainDb::getContById(const int id)
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",id);
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("getContById query error") << estr;
+    }
     query.first();
 
     Contact tCont;
@@ -199,7 +220,12 @@ void PlainDb::addFirm(Contact* con)
     query.bindValue(":sobstv",con->getName1());
     query.bindValue(":name",con->getName2());
     query.bindValue(":shortname",con->getFullName());
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("addFirm query error") << estr;
+    }
 }
 
 void PlainDb::addMan(Contact* con)
@@ -212,7 +238,12 @@ void PlainDb::addMan(Contact* con)
     query.bindValue(":surname",con->getName2());
     query.bindValue(":patronymic",con->getName3());
     query.bindValue(":shortname",con->getFullName());
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("addMan query error ") << estr;
+    }
 }
 
 void PlainDb::getFirm(Contact &con)
@@ -251,7 +282,13 @@ void PlainDb::updateFirm(Contact *con)
     query.bindValue(":sobstv",con->getName1());
     query.bindValue(":name",con->getName2());
     query.bindValue(":shortname",con->getFullName());
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("updateFirm query error ") << estr;
+    }
+
 }
 
 void PlainDb::updateMan(Contact* con)
@@ -264,8 +301,13 @@ void PlainDb::updateMan(Contact* con)
     query.bindValue(":surname",con->getName2());
     query.bindValue(":patronymic",con->getName3());
     query.bindValue(":shortname",con->getFullName());
-    query.exec();
-    query.finish();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("updateMan query error ") << estr;
+    }
+
 }
 
 void PlainDb::changeContactTip(Contact * con)
@@ -283,7 +325,13 @@ void PlainDb::changeContactTip(Contact * con)
     query.bindValue(":uplevel",con->getUpLevel());
     query.bindValue(":notes",con->getZametka());
     query.bindValue(":id",con->getId());
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("changeContactTip query error ") << estr;
+    }
+
     if (con->getTip()==0)
     {
         deleteMan(con);
@@ -303,7 +351,13 @@ void PlainDb::deleteFirm(Contact *con)
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("deleteFirm query error ") << estr;
+    }
+
 }
 
 void PlainDb::deleteMan(Contact *con)
@@ -312,7 +366,13 @@ void PlainDb::deleteMan(Contact *con)
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("deleteMan query error ") << estr;
+    }
+
 }
 
 void PlainDb::deleteContact(Contact * con)
@@ -321,7 +381,13 @@ void PlainDb::deleteContact(Contact * con)
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("deleteContact query error ") << estr;
+    }
+
     if (con->getTip()==0)
     {
         deleteFirm(con);
@@ -356,7 +422,13 @@ void PlainDb::GetAcsList(std::vector<QString> &vec, const int selfId)
     QSqlQuery query;
     query.prepare(prep);
     query.bindValue(":id",selfId);
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("GetAcsList query error ") << estr;
+    }
+
 
     while(query.next())
     {
@@ -376,7 +448,12 @@ void PlainDb::GetContactsListByUplevel(std::vector<Contact> &vec, const int uple
     QSqlQuery query;
     query.prepare(prep);
     query.bindValue(":uplevel",uplevel);
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("GetContactsListByUplevel query error ") << estr;
+    }
 
     while(query.next())
     {
@@ -396,7 +473,12 @@ bool PlainDb::HasChildByUplevel(const int uplevel)
     QSqlQuery query;
     query.prepare(prep);
     query.bindValue(":uplevel", uplevel);
-    query.exec();
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("HasChildByUplevel query error ") << estr;
+    }
     return query.first();
 }
 

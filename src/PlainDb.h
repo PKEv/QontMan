@@ -13,7 +13,7 @@ public:
     PlainDb();
     ~PlainDb();
     static PlainDb* getInstance();
-    static void resetInstance();
+    //static void resetInstance();
     PlainDb(QSqlDatabase *db);
     QString getQuery();
 
@@ -34,6 +34,7 @@ public:
 
     QSqlDatabase *db;
 private:
+
     int getId(Contact* con);
 
     void addFirm(Contact* con);

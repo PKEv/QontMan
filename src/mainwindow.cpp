@@ -154,6 +154,13 @@ void MainWindow::readSettings()
     QPoint pos = settings->value("pos", QPoint(200, 200)).toPoint();
     QSize size = settings->value("size", QSize(800, 400)).toSize();
     resize(size);
+    ui->tableView->setColumnWidth(2, settings->value("colum1", 200).toInt());
+    ui->tableView->setColumnWidth(3, settings->value("colum2", 100).toInt());
+    ui->tableView->setColumnWidth(4, settings->value("colum3", 100).toInt());
+    ui->tableView->setColumnWidth(5, settings->value("colum4", 100).toInt());
+    ui->tableView->setColumnWidth(6, settings->value("colum5", 100).toInt());
+    ui->tableView->setColumnWidth(7, settings->value("colum6", 100).toInt());
+
     move(pos);
 }
 
@@ -161,6 +168,14 @@ void MainWindow::writeSettings()
 {
     settings->setValue("pos", pos());
     settings->setValue("size", size());
+
+    settings->setValue("colum1", ui->tableView->columnWidth(2));
+    settings->setValue("colum2", ui->tableView->columnWidth(3));
+    settings->setValue("colum3", ui->tableView->columnWidth(4));
+    settings->setValue("colum4", ui->tableView->columnWidth(5));
+    settings->setValue("colum5", ui->tableView->columnWidth(6));
+    settings->setValue("colum6", ui->tableView->columnWidth(7));
+
     settings->sync();
 }
 
