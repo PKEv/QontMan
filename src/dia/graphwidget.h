@@ -56,6 +56,7 @@ class GraphWidget : public QGraphicsView
 
 public:
     GraphWidget(QWidget *parent = 0);
+    GraphWidget(int id, QWidget *parent = 0);
     ~GraphWidget();
 
     QVector <Node*> nodes;
@@ -94,6 +95,7 @@ private:
     // шаг между элементами на диаграмме
     const int g_step = 300; // горизонт
     const int v_step = 100; // вертикаль
+    int id;
 
 };
 #endif // GRAPHWIDGET_H

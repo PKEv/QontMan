@@ -50,6 +50,56 @@
 GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent)
 {
+    /*
+    this->id = 0;
+    QGraphicsScene *scene = new QGraphicsScene(this);
+    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+   // scene->setSceneRect(-200, -200, 400, 400);
+    setScene(scene);
+    setCacheMode(CacheBackground);
+    setViewportUpdateMode(BoundingRectViewportUpdate);
+    setRenderHint(QPainter::Antialiasing);
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    //scale(qreal(2), qreal(2));
+    setMinimumSize(400, 400);
+    setDragMode(QGraphicsView::ScrollHandDrag);
+
+    fillNodes();
+    optimizNodePos();
+
+    // отображаем собранную информацию по узлам
+    Node *node = nullptr;
+    foreach (node, nodes)
+    {
+        scene->addItem(node);
+        node->setPos(node->y * node->boundingRect().height() * 2,
+                     node->x * node->boundingRect().width() * 2);
+    }
+
+    Edge *edge;
+    foreach (edge, edges)
+    {
+        scene->addItem(edge);
+    }
+    // Размер сцены
+    if (node != nullptr)
+    {
+        int w =  fieldSize.x * node->boundingRect().width() * 2;
+        int h =  fieldSize.y * node->boundingRect().width() * 2;
+        //viewport()->geometry()
+        //setSceneRect(-h, -w, h*3, w*3);
+        //scale(0.2, 0.2);
+        centerOn(h/2,w/2);
+        fitInView(-h, -w, h*3, w*3,Qt::KeepAspectRatio);
+    }
+    setAlignment(Qt::AlignLeft | Qt::AlignHCenter);
+    */
+}
+
+GraphWidget::GraphWidget(int id, QWidget *parent)
+    : QGraphicsView(parent)
+{
+    this->id = id;
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
    // scene->setSceneRect(-200, -200, 400, 400);
@@ -227,7 +277,10 @@ void GraphWidget::fillNodes()
     // заполняем nodesInfo
     std::vector<Contact> vec;
     Contact cont;
-    PlainDb::getInstance()->GetContactsListByUplevel(vec, 0);
+    if (id == 0)
+        PlainDb::getInstance()->GetContactsListByUplevel(vec, id);
+    else
+        vec.push_back(PlainDb::getInstance()->getContById(id));
 
     int x=0, y=0;
     foreach (cont, vec)

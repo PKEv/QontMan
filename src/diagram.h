@@ -15,6 +15,7 @@ class Diagram : public QDialog
 
 public:
     explicit Diagram(QWidget *parent = 0);
+    Diagram(int id, QWidget *parent = 0);
     ~Diagram();
 
 private:

@@ -105,6 +105,7 @@ void MainWindow::setupMenu()
 
 MainWindow::~MainWindow()
 {
+    writeSettings();
     if (myDia != nullptr)
         delete myDia;
     delete myTreeModel;
@@ -117,8 +118,7 @@ MainWindow::~MainWindow()
     delete diaAction;
     delete addAction;
     delete editAction;
-    delete remAction;
-    writeSettings();
+    delete remAction;    
     delete settings;
 }
 
@@ -250,7 +250,12 @@ void MainWindow::filterByTree(const QModelIndex & index)
 
 void MainWindow::showDiagram()
 {
-    myDia = new Diagram();
+    //QModelIndex ui->treeView->currentIndex()
+    NodeInfo* nodeInfo = static_cast<NodeInfo*>(ui->treeView->currentIndex().internalPointer());
+    int id  = 0;
+    if (nodeInfo != NULL && nodeInfo->parent != NULL)
+        id = nodeInfo->cont.getId();
+    myDia = new Diagram(id);
     myDia->exec();
     qDebug() << "Diagram show";
 }
