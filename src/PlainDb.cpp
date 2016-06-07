@@ -15,7 +15,8 @@ PlainDb::PlainDb()
 
 PlainDb::~PlainDb()
 {
-
+    db->close();
+    delete db;
 }
 
 PlainDb::PlainDb(QSqlDatabase *db_) : db(db_)
@@ -31,7 +32,7 @@ PlainDb * PlainDb::getInstance()
         QString db_name = qApp->applicationDirPath() + "/TEST.FDB";
         qDebug() << db_name;
 
-        QSqlDatabase *datab = new QSqlDatabase();
+        QSqlDatabase * datab = new QSqlDatabase();
         *datab = QSqlDatabase::addDatabase("QIBASE");
         //datab->setHostName("localhost");
         datab->setDatabaseName(db_name);
@@ -47,6 +48,7 @@ PlainDb * PlainDb::getInstance()
         }
 
         PlainDbInstance = new PlainDb(datab);
+
     }
     return PlainDbInstance;
 }

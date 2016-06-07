@@ -59,6 +59,8 @@ public:
     GraphWidget(int id, QWidget *parent = 0);
     ~GraphWidget();
 
+    QGraphicsScene *scene;
+
     QVector <Node*> nodes;
     QVector <Edge*> edges;
     QVector <NodeInfo*> nodesInfo;  // информация по узлу
@@ -82,6 +84,7 @@ protected:
     void scaleView(qreal scaleFactor);
 
 private:
+
     void fillNodes();
     void recursivNodesInfo(NodeInfo *parent , Node *parentNode);
     void optimizNodePos();

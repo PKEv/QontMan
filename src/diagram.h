@@ -18,6 +18,10 @@ public:
     Diagram(int id, QWidget *parent = 0);
     ~Diagram();
 
+protected:
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    void hideEvent(QHideEvent * event) Q_DECL_OVERRIDE;
+
 private:
     Ui::Diagram *ui = nullptr;
     GraphWidget *widget = nullptr;

@@ -106,13 +106,20 @@ void MainWindow::setupMenu()
 MainWindow::~MainWindow()
 {
     writeSettings();
+    /*
     if (myDia != nullptr)
         delete myDia;
+        */
     delete myTreeModel;
     delete myModel;
-    delete contView;
+    /*
+    if (contView != nullptr)
+        delete contView;
+        */
     delete ui;
-    delete passView;
+    /*
+    if (passView != nullptr)
+        delete passView;*/
     delete quitAction;
     delete restoreAction;
     delete diaAction;
@@ -120,6 +127,8 @@ MainWindow::~MainWindow()
     delete editAction;
     delete remAction;    
     delete settings;
+    delete trayIcon;
+    delete trayIconMenu;
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -184,6 +193,8 @@ void MainWindow::addButton()
 {
     contView = new ContView();
     contView->show();
+
+    connect(contView, SIGNAL(finished(int)), contView, SLOT(deleteLater()));
     connect(contView, SIGNAL(accepted()), this, SLOT(update_rec()));
 }
 
@@ -200,6 +211,8 @@ void MainWindow::showPass()
     Contact tcont = myModel->GetContact(id);
     passView = new passport(&tcont);
     passView->show();
+    connect(passView, SIGNAL(finished(int)), passView, SLOT(deleteLater()));
+
     setFocus();
 }
 
@@ -213,6 +226,7 @@ void MainWindow::viewButton()
     contView = new ContView(&tcont);
     contView->exec();
 
+    connect(contView, SIGNAL(finished(int)), contView, SLOT(deleteLater()));
     connect(contView, SIGNAL(accepted()), this, SLOT(update_rec()));
 }
 
@@ -257,6 +271,7 @@ void MainWindow::showDiagram()
         id = nodeInfo->cont.getId();
     myDia = new Diagram(id);
     myDia->exec();
+    connect(myDia, SIGNAL(finished(int)), myDia, SLOT(deleteLater()));
     qDebug() << "Diagram show";
 }
 
@@ -264,7 +279,7 @@ void MainWindow::createTrayIcon()
 {
     quitAction = new QAction(QIcon(), tr("Выход"), this);
     quitAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_Q));
-    connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
     restoreAction = new QAction(QIcon(), tr("Открыть"), this);
     connect(restoreAction, &QAction::triggered, this, &QWidget::show);

@@ -29,6 +29,10 @@ private slots:
     void on_tipSlider_valueChanged(int value);
     void autoFullName();
 
+protected:
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    void hideEvent(QHideEvent * event) Q_DECL_OVERRIDE;
+
 private:
     Ui::ContView *ui;
     void Fill();                                                // заполнение формы

@@ -44,6 +44,17 @@ Diagram::Diagram(int id, QWidget *parent) :
     mainLayout->addWidget(widget);
 }
 
+void Diagram::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event);
+    this->deleteLater();
+}
+
+void Diagram::hideEvent(QHideEvent *event)
+{
+    Q_UNUSED(event);
+    this->deleteLater();
+}
 
 Diagram::~Diagram()
 {

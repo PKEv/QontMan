@@ -56,7 +56,7 @@ GraphWidget::GraphWidget(int id, QWidget *parent)
     : QGraphicsView(parent)
 {
     this->id = id;
-    QGraphicsScene *scene = new QGraphicsScene(this);
+    scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
    // scene->setSceneRect(-200, -200, 400, 400);
     setScene(scene);
@@ -107,6 +107,7 @@ GraphWidget::~GraphWidget()
     nodes.clear();
     edges.clear();
     nodesInfo.clear();
+    delete scene;
 }
 
 /*
@@ -160,7 +161,7 @@ void GraphWidget::wheelEvent(QWheelEvent *event)
             scale(1.0 / scaleFactor, 1.0 / scaleFactor);
         }
 */
-   this->scene()->update();
+   this->update();//scene()->update();
 }
 #endif
 

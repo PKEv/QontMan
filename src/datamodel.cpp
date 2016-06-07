@@ -8,6 +8,11 @@ dataModel::dataModel(QObject *parent) :
 
 }
 
+dataModel::~dataModel()
+{
+    PlainDb::getInstance()->~PlainDb();
+}
+
 QVariant dataModel::data(const QModelIndex &index, int role) const
 {
     QVariant value = QSqlQueryModel::data(index, role);

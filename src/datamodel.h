@@ -11,6 +11,7 @@ class dataModel : public QSqlQueryModel
     Q_OBJECT
 public:
     explicit dataModel(QObject *parent);
+    ~dataModel();
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     void refresh();

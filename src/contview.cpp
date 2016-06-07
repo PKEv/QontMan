@@ -19,6 +19,17 @@ ContView::ContView(QWidget *parent) :
     Fill();
 }
 
+void ContView::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event);
+    this->deleteLater();
+}
+void ContView::hideEvent(QHideEvent * event)
+{
+    Q_UNUSED(event);
+    this->deleteLater();
+}
+
 void ContView::Connect()
 {
     signalMapper = new QSignalMapper(this);
@@ -62,6 +73,8 @@ ContView::~ContView()
 {
     delete cont;
     delete ui;
+    delete signalMapper;
+    delete signalMapper2;
 }
 
 void ContView::Fill()

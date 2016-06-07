@@ -77,13 +77,16 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext& ctxt, const QSt
 
 int main(int argc, char *argv[])
 {
+    #ifdef LOG_TO_FILE
     qInstallMessageHandler(logMessageHandler);
+    #endif
 
     Q_INIT_RESOURCE(res);
     QApplication a(argc, argv);
     QApplication::setQuitOnLastWindowClosed(false);
     MainWindow w;
 
+    #ifdef LOG_TO_FILE
     QString logFileDir = QCoreApplication::applicationDirPath() + QDir::separator();
     QString logfile = logFileDir + "LOG.log";
     FILE * mainLogFilePtr = fopen(logfile.toLocal8Bit().constData(), "a");
@@ -91,19 +94,21 @@ int main(int argc, char *argv[])
         qCritical() << "Couldn't open logfile" << logfile;
 
     logFileFile.store(mainLogFilePtr);   // atomically set the logFile
-
+    #endif
 
     qDebug() << "Test begin";
-
 
     w.show();
 
     int errorcode = a.exec();
 
-    qDebug() << "Clean exit with status" << errorcode;
-
+    #ifdef LOG_TO_FILE
     logFileFile.store(nullptr);   // atomically disable logging to file
     fclose(mainLogFilePtr);
+    #endif
+
+    qDebug() << "Clean exit with status" << errorcode;
+
 
     return errorcode;
 }

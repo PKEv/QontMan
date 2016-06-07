@@ -35,6 +35,17 @@ passport::passport(Contact * tcont, QWidget *parent):
 
     setWindowModality(Qt::ApplicationModal);
 }
+void passport::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event);
+    this->deleteLater();
+}
+
+void passport::hideEvent(QHideEvent *event)
+{
+    Q_UNUSED(event);
+    this->deleteLater();
+}
 
 passport::~passport()
 {

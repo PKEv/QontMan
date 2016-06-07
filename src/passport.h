@@ -20,6 +20,10 @@ public:
     passport(Contact * tcont, QWidget *parent = 0);
     ~passport();
 
+protected:
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    void hideEvent(QHideEvent * event) Q_DECL_OVERRIDE;
+
 private:
     void fill();
     Ui::passport *ui;
