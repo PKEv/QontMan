@@ -54,16 +54,16 @@ private:
     void createTrayIcon();
     void readSettings();
     void writeSettings();
-    QAction *quitAction;
-    QAction *restoreAction;
-    QAction *diaAction;
-    QAction *addAction;
-    QAction *editAction;
-    QAction *remAction;
+    QAction *quitAction = nullptr;
+    QAction *restoreAction = nullptr;
+    QAction *diaAction = nullptr;
+    QAction *addAction = nullptr;
+    QAction *editAction = nullptr;
+    QAction *remAction = nullptr;
 
-    QSystemTrayIcon *trayIcon;
-    QMenu *trayIconMenu;
-    QSettings *settings;
+    QSystemTrayIcon *trayIcon = nullptr;
+    QMenu *trayIconMenu = nullptr;
+    QSettings *settings = nullptr;
 };
 
 #endif // MAINWINDOW_H

@@ -34,12 +34,12 @@ protected:
     void hideEvent(QHideEvent * event) Q_DECL_OVERRIDE;
 
 private:
-    Ui::ContView *ui;
+    Ui::ContView *ui = nullptr;
     void Fill();                                                // заполнение формы
     void Connect();                                             // настройка связей
     QString GetItiems(QComboBox * comboBox);                    // чтение элемента формы в строку
     void SetItiems(QComboBox * comboBox, QString str);          // заполнение элемента данными из строки
-    Contact * cont;
+    Contact * cont = nullptr;
     QSignalMapper *signalMapper;
     QSignalMapper *signalMapper2;    
     void SetupUpLevel();

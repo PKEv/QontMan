@@ -26,8 +26,8 @@ protected:
 
 private:
     void fill();
-    Ui::passport *ui;
-    Contact * cont;
+    Ui::passport *ui = nullptr;
+    Contact * cont = nullptr;
     QLabel *shotNameLabel = nullptr;
     QLabel *telTitle = nullptr;
     QLabel *telValue = nullptr;

@@ -32,7 +32,7 @@ public:
 
     void GetAcsList(std::vector<QString> &vec, const int selfId);
 
-    QSqlDatabase *db;
+    QSqlDatabase *db = nullptr;
 private:
 
     int getId(Contact* con);

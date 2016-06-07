@@ -32,7 +32,7 @@ public:
 private:
     typedef QVector<NodeInfo> NodeInfoList;
     NodeInfoList _nodes;
-    Contact *head;
+    Contact *head = nullptr;
 
     void fetchRootDirectory();
     int findRow(const NodeInfo* nodeInfo) const;

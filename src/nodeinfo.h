@@ -26,7 +26,7 @@ public:
     }
 
     Contact cont;
-    NodeInfo *parent;
+    NodeInfo *parent = nullptr;
     QVector<NodeInfo> children;
     bool mapped;
     struct
