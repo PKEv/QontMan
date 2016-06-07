@@ -86,6 +86,10 @@ private:
     void recursivNodesInfo(NodeInfo *parent , Node *parentNode);
     void optimizNodePos();
     Node * findNodeByPos(int x, int y);
+    // замолнение структуры с указанием границ дерева детей узла
+    void FillingNodeBorders(Node * node);
+    // передача границ отображения от детей к родителям
+    void FillingNodeBorders2(Node * node);
     struct
     {
         int x=0;

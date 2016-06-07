@@ -29,6 +29,14 @@ public:
     NodeInfo *parent;
     QVector<NodeInfo> children;
     bool mapped;
+    struct
+    {
+        qreal min_x = std::numeric_limits<qreal>::max();
+        qreal max_x = 0;
+        qreal min_y = std::numeric_limits<qreal>::max();
+        qreal max_y = 0;
+
+    }graf ;
 };
 
 #endif // NODEINFO_H

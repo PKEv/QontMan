@@ -50,50 +50,6 @@
 GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent)
 {
-    /*
-    this->id = 0;
-    QGraphicsScene *scene = new QGraphicsScene(this);
-    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-   // scene->setSceneRect(-200, -200, 400, 400);
-    setScene(scene);
-    setCacheMode(CacheBackground);
-    setViewportUpdateMode(BoundingRectViewportUpdate);
-    setRenderHint(QPainter::Antialiasing);
-    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    //scale(qreal(2), qreal(2));
-    setMinimumSize(400, 400);
-    setDragMode(QGraphicsView::ScrollHandDrag);
-
-    fillNodes();
-    optimizNodePos();
-
-    // отображаем собранную информацию по узлам
-    Node *node = nullptr;
-    foreach (node, nodes)
-    {
-        scene->addItem(node);
-        node->setPos(node->y * node->boundingRect().height() * 2,
-                     node->x * node->boundingRect().width() * 2);
-    }
-
-    Edge *edge;
-    foreach (edge, edges)
-    {
-        scene->addItem(edge);
-    }
-    // Размер сцены
-    if (node != nullptr)
-    {
-        int w =  fieldSize.x * node->boundingRect().width() * 2;
-        int h =  fieldSize.y * node->boundingRect().width() * 2;
-        //viewport()->geometry()
-        //setSceneRect(-h, -w, h*3, w*3);
-        //scale(0.2, 0.2);
-        centerOn(h/2,w/2);
-        fitInView(-h, -w, h*3, w*3,Qt::KeepAspectRatio);
-    }
-    setAlignment(Qt::AlignLeft | Qt::AlignHCenter);
-    */
 }
 
 GraphWidget::GraphWidget(int id, QWidget *parent)
@@ -340,47 +296,24 @@ void GraphWidget::recursivNodesInfo(NodeInfo *parent, Node *parentNode )
 
 void GraphWidget::optimizNodePos()
 {
-    int matrix [fieldSize.x+1][fieldSize.y+1];
-
-    for ( int i = 0; i < fieldSize.x+1; ++i )
-               for ( int j = 0; j < fieldSize.y+1; ++j )
-                   matrix[ i ][ j ] = 0;
-
     Node *node;
     foreach (node, nodes)
     {
-        matrix[int(node->x)][int(node->y)]=1;
+        FillingNodeBorders(node);
     }
 
-    for ( int i = 0; i < fieldSize.x+1; ++i )
-        for ( int j = 0; j < fieldSize.y+1; ++j )
+    foreach (node, nodes)
+    {
+        FillingNodeBorders2(node);
+    }
+
+    foreach (node, nodes)
+    {
+        if (!node->nodeInfo->graf.max_y ==0) // если не последний нод
         {
-            if (matrix[ i ][ j ] == 1)
-            {
-                int jj = j+1;
-                for ( ; jj < fieldSize.y+1; ++jj )
-                {
-                    if (matrix[ i ][ jj ] == 1)
-                        break;
-                }
-                //исключаем движение крайних элементов и лишние вычисление при фактическом отсутствии движения
-                if (! ( (jj == j + 1) || (jj == fieldSize.y+1) ) )
-                {
-                    Node* node = findNodeByPos(i,j);
-                    node->y = ((jj-j)/2+j);
-                }
-                /*
-                if ( i>0 )
-                {
-                    Node* node = findNodeByPos(i,j);
-                    if (j % 2==0)
-                        node->x = (i+0.5);
-                    else
-                        node->x = (i-0.5);
-                }
-                  */
-            }
+           node->y = node->nodeInfo->graf.min_y + (node->nodeInfo->graf.max_y - node->nodeInfo->graf.min_y)/2;
         }
+    }
 }
 
 Node * GraphWidget::findNodeByPos(int x, int y)
@@ -392,4 +325,32 @@ Node * GraphWidget::findNodeByPos(int x, int y)
             return node;
     }
     return nullptr;
+}
+
+void GraphWidget::FillingNodeBorders(Node * node)
+{
+    if (node->nodeInfo->parent == nullptr)
+        return;
+    if (node->x < node->nodeInfo->parent->graf.min_x )
+        node->nodeInfo->parent->graf.min_x = node->x;
+    if (node->x > node->nodeInfo->parent->graf.max_x )
+        node->nodeInfo->parent->graf.max_x = node->x;
+    if (node->y < node->nodeInfo->parent->graf.min_y )
+        node->nodeInfo->parent->graf.min_y = node->y;
+    if (node->y > node->nodeInfo->parent->graf.max_y )
+        node->nodeInfo->parent->graf.max_y = node->y;
+}
+
+void GraphWidget::FillingNodeBorders2(Node * node)
+{
+    if (node->nodeInfo->parent == nullptr)
+        return;
+    if (node->nodeInfo->graf.min_x < node->nodeInfo->parent->graf.min_x )
+        node->nodeInfo->parent->graf.min_x = node->nodeInfo->graf.min_x;
+    if (node->nodeInfo->graf.max_x > node->nodeInfo->parent->graf.max_x )
+        node->nodeInfo->parent->graf.max_x = node->nodeInfo->graf.max_x;
+    if (node->nodeInfo->graf.min_y < node->nodeInfo->parent->graf.min_y )
+        node->nodeInfo->parent->graf.min_y = node->nodeInfo->graf.min_y;
+    if (node->nodeInfo->graf.max_y > node->nodeInfo->parent->graf.max_y )
+        node->nodeInfo->parent->graf.max_y = node->nodeInfo->graf.max_y;
 }
