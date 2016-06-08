@@ -15,7 +15,10 @@ PlainDb::PlainDb()
 
 PlainDb::~PlainDb()
 {
-    QSqlDatabase::removeDatabase(db->connectionName());
+    db->close();
+    QString name = db->connectionName();
+    delete db;
+    QSqlDatabase::removeDatabase(name);
 }
 
 PlainDb::PlainDb(QSqlDatabase *db_) : db(db_)
