@@ -8,6 +8,7 @@
 #include "datamodel.h"
 #include "treemodel.h"
 #include "diagram.h"
+#include "vcard.h"
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
 #include <QSettings>
@@ -41,6 +42,7 @@ private slots:
      void setSeachString(QString str);
      void filterByTree(const QModelIndex & index);
      void showDiagram();
+     void ExportCont();
 
 private:
     void setupMenu();
@@ -60,6 +62,7 @@ private:
     QAction *addAction = nullptr;
     QAction *editAction = nullptr;
     QAction *remAction = nullptr;
+    QAction *exportCont = nullptr;
 
     QSystemTrayIcon *trayIcon = nullptr;
     QMenu *trayIconMenu = nullptr;

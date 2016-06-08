@@ -67,6 +67,7 @@ void MainWindow::setupMenu()
     addAction = new QAction(QIcon(":/img/pic/add.ico"), tr("Добавить"), this);
     editAction = new QAction(QIcon(":/img/pic/edit.ico"), tr("Редактировать"), this);
     remAction = new QAction(QIcon(":/img/pic/rem.ico"), tr("Удалить"), this);
+    exportCont = new QAction(QIcon(), tr("Экспорт"), this);
 
     diaAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_D));
     addAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_N));
@@ -76,6 +77,7 @@ void MainWindow::setupMenu()
     connect(addAction, SIGNAL(triggered()), this, SLOT(addButton()));
     connect(editAction, SIGNAL(triggered()), this, SLOT(viewButton()));
     connect(remAction, SIGNAL(triggered()), this, SLOT(deleteButton()));
+    connect(exportCont, SIGNAL(triggered()), this, SLOT(ExportCont()));
 
     //настройка панели
     ui->toolBar->addAction(diaAction);
@@ -83,6 +85,8 @@ void MainWindow::setupMenu()
     ui->toolBar->addAction(addAction);
     ui->toolBar->addAction(editAction);
     ui->toolBar->addAction(remAction);
+    ui->toolBar->addSeparator();
+    ui->toolBar->addAction(exportCont);
 
     //настройка меню
     QMenu *fileMenu = new QMenu(tr("Меню"));
@@ -298,4 +302,15 @@ void MainWindow::createTrayIcon()
     trayIcon->setIcon(icon);
 
     trayIcon->setToolTip(tr("Телефонная книга"));
+}
+void MainWindow::ExportCont()
+{
+    if (ui->tableView->currentIndex().row()==-1)
+        return;
+    int id = myModel->GetContactId(ui->tableView->currentIndex().row());
+
+    Contact tcont = myModel->GetContact(id);
+
+    VCard vCard(tcont);
+    vCard.Export("C:\\temp.vcf");
 }

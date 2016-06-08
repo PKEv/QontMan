@@ -110,7 +110,7 @@ void passport::fill()
         faxTitle->setAlignment(Qt::AlignRight);
         QString end;
         QString str = cont->getFax();
-        end = str.split(";",QString::SkipEmptyParts).join("<br>");;
+        end = str.split(";",QString::SkipEmptyParts).join("<br>");
         faxValue = new QLabel(end);
         faxValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
         faxValue->setAlignment(Qt::AlignLeft);

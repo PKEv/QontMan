@@ -17,7 +17,8 @@ SOURCES +=  src\main.cpp\
             src/dia/edge.cpp \
             src/dia/graphwidget.cpp \
             src/dia/node.cpp \
-            src/passport.cpp
+            src/passport.cpp \
+    src/vcard.cpp
 
 HEADERS  += src\mainwindow.h \
             src\contact.h \
@@ -30,7 +31,8 @@ HEADERS  += src\mainwindow.h \
             src/dia/edge.h \
             src/dia/graphwidget.h \
             src/dia/node.h \
-            src/passport.h
+            src/passport.h \
+    src/vcard.h
 
 FORMS    += src\mainwindow.ui \
             src/contview.ui \
