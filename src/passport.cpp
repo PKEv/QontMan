@@ -123,9 +123,15 @@ void passport::fill()
         httpTitle->setAlignment(Qt::AlignRight);
         QString end;
         QString str = cont->getHttp();
-        end = str.split(";",QString::SkipEmptyParts).join("<br>");
+        QStringList temp = str.split(";",QString::SkipEmptyParts);
+        for(int i=0; i< temp.size();++i)//str, temp)
+        {
+         temp[i] = QString("<a href=\"%1\">%1</a>").arg(temp.at(i)) ;
+        }
+
+        end = temp.join("<br>");
         httpValue = new QLabel(end);
-        httpValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        httpValue->setTextInteractionFlags(Qt::TextBrowserInteraction);
         httpValue->setTextFormat(Qt::RichText);
         httpValue->setOpenExternalLinks(true);
         httpValue->setAlignment(Qt::AlignLeft);
@@ -138,9 +144,15 @@ void passport::fill()
         emlTitle->setAlignment(Qt::AlignRight);
         QString end;
         QString str = cont->getEmail();
-        end = str.split(";",QString::SkipEmptyParts).join("<br>");
+        //end = str.split(";",QString::SkipEmptyParts).join("<br>");
+        QStringList temp = str.split(";",QString::SkipEmptyParts);
+        for(int i=0; i< temp.size();++i)//str, temp)
+        {
+         temp[i] = QString("<a href=\"mailto:%1\">%1</a>").arg(temp.at(i)) ;
+        }
+        end = temp.join("<br>");
         emlValue = new QLabel(end);
-        emlValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        emlValue->setTextInteractionFlags(Qt::TextBrowserInteraction);
         emlValue->setOpenExternalLinks(true);
         emlValue->setTextFormat(Qt::RichText);
         emlValue->setAlignment(Qt::AlignLeft);
@@ -153,9 +165,15 @@ void passport::fill()
         adrTitle->setAlignment(Qt::AlignRight);
         QString end;
         QString str = cont->getAdr();
-        end = str.split(";",QString::SkipEmptyParts).join("<br>");
+        QStringList temp = str.split(";",QString::SkipEmptyParts);
+        for(int i=0; i< temp.size();++i)//str, temp)
+        {
+         temp[i] = QString("<a href=\"https://yandex.ru/maps/?text=%1\">%1</a>").arg(temp.at(i)) ;
+        }
+        end = temp.join("<br>");
         adrValue = new QLabel(end);
-        adrValue->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        adrValue->setTextInteractionFlags(Qt::TextBrowserInteraction);
+        adrValue->setOpenExternalLinks(true);
         adrValue->setAlignment(Qt::AlignLeft);
         cardLayout->addWidget(adrTitle,5,1);
         cardLayout->addWidget(adrValue,5,2);

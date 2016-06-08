@@ -4,7 +4,6 @@
 #include <QDebug>
 #include <QtSql/QtSql>
 #include <QString>
-#include <QString>
 #include "contact.h"
 
 class PlainDb

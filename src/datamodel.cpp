@@ -10,7 +10,7 @@ dataModel::dataModel(QObject *parent) :
 
 dataModel::~dataModel()
 {
-    PlainDb::getInstance()->~PlainDb();
+    delete PlainDb::getInstance();
 }
 
 QVariant dataModel::data(const QModelIndex &index, int role) const
