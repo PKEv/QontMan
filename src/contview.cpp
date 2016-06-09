@@ -60,7 +60,7 @@ void ContView::Connect()
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(autoFullName()));
 }
 
-ContView::ContView(Contact * tcont): ui(new Ui::ContView)
+ContView::ContView(Contact * tcont, QWidget *parent): ui(new Ui::ContView), QDialog(parent)
 {
     ui->setupUi(this);
     cont = new Contact(*tcont);

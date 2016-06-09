@@ -15,8 +15,14 @@ PlainDb::PlainDb()
 
 PlainDb::~PlainDb()
 {
-    db->close();
+   // QSqlDatabase *drv = db->driver();
+
     QString name = db->connectionName();
+
+    while (db->isOpen())
+        db->close();
+
+
     delete db;
     QSqlDatabase::removeDatabase(name);
 }

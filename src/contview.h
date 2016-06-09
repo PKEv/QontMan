@@ -18,7 +18,7 @@ class ContView : public QDialog
 
 public:
     explicit ContView(QWidget *parent = 0);
-    ContView(Contact * tcont);
+    ContView(Contact * tcont, QWidget *parent = 0);
     ~ContView();
     Contact* getContact();
 

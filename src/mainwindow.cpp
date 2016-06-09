@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createTrayIcon();
     trayIcon->show();
 
-    myModel = new dataModel(qApp);
+    myModel = new dataModel(this);
     //настраиваем отображение
     myModel->showAll();
     // наименования столбцов
@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->tableView->show();
 
-    myTreeModel = new TreeModel();
+    myTreeModel = new TreeModel(this);
     ui->treeView->setModel(myTreeModel);
     ui->treeView->show();
 
@@ -116,20 +116,10 @@ void MainWindow::setupMenu()
 MainWindow::~MainWindow()
 {
     writeSettings();
-    /*
-    if (myDia != nullptr)
-        delete myDia;
-        */
-    delete myTreeModel;
-    delete myModel;
-    /*
-    if (contView != nullptr)
-        delete contView;
-        */
+    //delete ui;
+   /* delete */ myTreeModel->deleteLater();
+    /*delete */ myModel->deleteLater();
     delete ui;
-    /*
-    if (passView != nullptr)
-        delete passView;*/
     delete quitAction;
     delete restoreAction;
     delete diaAction;
@@ -201,7 +191,7 @@ void MainWindow::writeSettings()
 
 void MainWindow::addButton()
 {
-    contView = new ContView();
+    contView = new ContView(this);
     contView->show();
 
     connect(contView, SIGNAL(finished(int)), contView, SLOT(deleteLater()));
@@ -219,7 +209,7 @@ void MainWindow::showPass()
     int id = myModel->GetContactId(ui->tableView->currentIndex().row());
 
     Contact tcont = myModel->GetContact(id);
-    passView = new passport(&tcont);
+    passView = new passport(&tcont, this);
     passView->show();
     connect(passView, SIGNAL(finished(int)), passView, SLOT(deleteLater()));
 
@@ -233,7 +223,7 @@ void MainWindow::viewButton()
     int id = myModel->GetContactId(ui->tableView->currentIndex().row());
 
     Contact tcont = myModel->GetContact(id);
-    contView = new ContView(&tcont);
+    contView = new ContView(&tcont, this);
     contView->exec();
 
     connect(contView, SIGNAL(finished(int)), contView, SLOT(deleteLater()));
@@ -279,7 +269,7 @@ void MainWindow::showDiagram()
     int id  = 0;
     if (nodeInfo != NULL && nodeInfo->parent != NULL)
         id = nodeInfo->cont.getId();
-    myDia = new Diagram(id);
+    myDia = new Diagram(id, this);
     myDia->exec();
     connect(myDia, SIGNAL(finished(int)), myDia, SLOT(deleteLater()));
     qDebug() << "Diagram show";
@@ -334,7 +324,7 @@ void MainWindow::ImportCont()
     Contact tcont;
     VCard::Import(fileName, &tcont);
 
-    contView = new ContView(&tcont);
+    contView = new ContView(&tcont, this);
     contView->exec();
 
     connect(contView, SIGNAL(finished(int)), contView, SLOT(deleteLater()));
