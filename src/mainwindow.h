@@ -43,6 +43,7 @@ private slots:
      void filterByTree(const QModelIndex & index);
      void showDiagram();
      void ExportCont();
+     void ImportCont();
 
 private:
     void setupMenu();
@@ -63,6 +64,7 @@ private:
     QAction *editAction = nullptr;
     QAction *remAction = nullptr;
     QAction *exportCont = nullptr;
+    QAction *importCont = nullptr;
 
     QSystemTrayIcon *trayIcon = nullptr;
     QMenu *trayIconMenu = nullptr;

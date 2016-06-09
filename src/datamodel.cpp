@@ -32,11 +32,6 @@ QVariant dataModel::data(const QModelIndex &index, int role) const
 void dataModel::showAll()
 {
     setQuery(PlainDb::getInstance()->getQuery(), *PlainDb::getInstance()->db);
-
-//    setHeaderData(2, Qt::Horizontal, QObject::tr("Short Name"));
-//    setHeaderData(1, Qt::Horizontal, QObject::tr(""));
-//    setHeaderData(2, Qt::Horizontal, QObject::tr("Last name"));
-
 }
 
 void dataModel::refresh()

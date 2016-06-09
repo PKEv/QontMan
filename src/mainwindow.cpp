@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
-
+#include <QFileDialog>
 
 #include <QDebug>
 
@@ -67,7 +67,8 @@ void MainWindow::setupMenu()
     addAction = new QAction(QIcon(":/img/pic/add.ico"), tr("Добавить"), this);
     editAction = new QAction(QIcon(":/img/pic/edit.ico"), tr("Редактировать"), this);
     remAction = new QAction(QIcon(":/img/pic/rem.ico"), tr("Удалить"), this);
-    exportCont = new QAction(QIcon(), tr("Экспорт"), this);
+    exportCont = new QAction(QIcon(":/img/pic/export.ico"), tr("Экспорт"), this);
+    importCont = new QAction(QIcon(":/img/pic/import.ico"), tr("Импорт"), this);
 
     diaAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_D));
     addAction->setShortcut( QKeySequence(Qt::CTRL + Qt::Key_N));
@@ -78,6 +79,7 @@ void MainWindow::setupMenu()
     connect(editAction, SIGNAL(triggered()), this, SLOT(viewButton()));
     connect(remAction, SIGNAL(triggered()), this, SLOT(deleteButton()));
     connect(exportCont, SIGNAL(triggered()), this, SLOT(ExportCont()));
+    connect(importCont, SIGNAL(triggered()), this, SLOT(ImportCont()));
 
     //настройка панели
     ui->toolBar->addAction(diaAction);
@@ -87,9 +89,13 @@ void MainWindow::setupMenu()
     ui->toolBar->addAction(remAction);
     ui->toolBar->addSeparator();
     ui->toolBar->addAction(exportCont);
+    ui->toolBar->addAction(importCont);
 
     //настройка меню
     QMenu *fileMenu = new QMenu(tr("Меню"));
+    fileMenu->addAction(exportCont);
+    fileMenu->addAction(importCont);
+    fileMenu->addSeparator();
     fileMenu->addAction(quitAction);
 
     QMenu *actionMenu = new QMenu( tr("Операции") );
@@ -311,6 +317,27 @@ void MainWindow::ExportCont()
 
     Contact tcont = myModel->GetContact(id);
 
-    VCard vCard(tcont);
-    vCard.Export("C:\\temp.vcf");
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Экспорт контакта: \"") + tcont.getFullName() +"\"",
+                                                    qApp->applicationDirPath() + QDir::separator() + tcont.getFullName(),
+                                                    tr("VCard (*.vcf)"));
+
+    VCard::Export(fileName, &tcont);
 }
+
+void MainWindow::ImportCont()
+{
+    QString fileName = QFileDialog::getOpenFileName( this,
+                                                    tr("Импорт контакта"),
+                                                    qApp->applicationDirPath(),
+                                                    tr("VCard (*.vcf)"));
+    Contact tcont;
+    VCard::Import(fileName, &tcont);
+
+    contView = new ContView(&tcont);
+    contView->exec();
+
+    connect(contView, SIGNAL(finished(int)), contView, SLOT(deleteLater()));
+    connect(contView, SIGNAL(accepted()), this, SLOT(update_rec()));
+}
+

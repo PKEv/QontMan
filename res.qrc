@@ -10,5 +10,7 @@
         <file>pic/dia.ico</file>
         <file>pic/edit.ico</file>
         <file>pic/rem.ico</file>
+        <file>pic/export.ico</file>
+        <file>pic/import.ico</file>
     </qresource>
 </RCC>
