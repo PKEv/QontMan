@@ -17,18 +17,14 @@ PlainDb::PlainDb()
 
 PlainDb::~PlainDb()
 {
-   // QSqlDatabase *drv = db->driver();
-
     QString name = db->connectionName();
 
     while (db->isOpen())
         db->close();
 
-
     delete db;
     QSqlDatabase::removeDatabase(name);
     fb_shutdown(0,1);
-
 }
 
 PlainDb::PlainDb(QSqlDatabase *db_) : db(db_)
@@ -395,7 +391,6 @@ void PlainDb::changeContactTip(Contact * con)
         deleteFirm(con);
         addMan(con);
     }
-
 }
 
 void PlainDb::deleteFirm(Contact *con)
@@ -410,7 +405,6 @@ void PlainDb::deleteFirm(Contact *con)
         QString estr = err.text();
         qDebug() << ("deleteFirm query error ") << estr;
     }
-
 }
 
 void PlainDb::deleteMan(Contact *con)
@@ -425,7 +419,6 @@ void PlainDb::deleteMan(Contact *con)
         QString estr = err.text();
         qDebug() << ("deleteMan query error ") << estr;
     }
-
 }
 
 void PlainDb::deleteContact(Contact * con)
@@ -514,7 +507,6 @@ void PlainDb::GetContactsListByUplevel(std::vector<Contact> &vec, const int uple
         Contact temp = getContById(id);
         vec.push_back(temp);
     }
-
 }
 
 bool PlainDb::HasChildByUplevel(const int uplevel)
