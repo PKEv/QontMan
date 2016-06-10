@@ -24,7 +24,10 @@ PlainDb::~PlainDb()
 
     delete db;
     QSqlDatabase::removeDatabase(name);
-    fb_shutdown(0,1);
+
+    while (fb_shutdown(0, fb_shutrsn_exit_called) == 0)
+    {}
+
 }
 
 PlainDb::PlainDb(QSqlDatabase *db_) : db(db_)
