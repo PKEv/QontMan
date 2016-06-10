@@ -170,12 +170,12 @@ void MainWindow::writeSettings()
     settings->setValue("pos", pos());
     settings->setValue("size", size());
 
-    settings->setValue("colum1", ui->tableView->columnWidth(2));
-    settings->setValue("colum2", ui->tableView->columnWidth(3));
-    settings->setValue("colum3", ui->tableView->columnWidth(4));
-    settings->setValue("colum4", ui->tableView->columnWidth(5));
-    settings->setValue("colum5", ui->tableView->columnWidth(6));
-    settings->setValue("colum6", ui->tableView->columnWidth(7));
+    settings->setValue("colum1", ui->tableView->columnWidth(2) ? ui->tableView->columnWidth(2) : 1);
+    settings->setValue("colum2", ui->tableView->columnWidth(3) ? ui->tableView->columnWidth(3) : 1);
+    settings->setValue("colum3", ui->tableView->columnWidth(4) ? ui->tableView->columnWidth(4) : 1);
+    settings->setValue("colum4", ui->tableView->columnWidth(5) ? ui->tableView->columnWidth(5) : 1);
+    settings->setValue("colum5", ui->tableView->columnWidth(6) ? ui->tableView->columnWidth(6) : 1);
+    settings->setValue("colum6", ui->tableView->columnWidth(7) ? ui->tableView->columnWidth(7) : 1);
 
     settings->sync();
 }
