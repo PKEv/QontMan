@@ -6,6 +6,8 @@
 #include <QSqlQuery>
 #include <QDebug>
 
+#include "ibase.h"
+
 static PlainDb *PlainDbInstance = nullptr;
 
 PlainDb::PlainDb()
@@ -25,6 +27,8 @@ PlainDb::~PlainDb()
 
     delete db;
     QSqlDatabase::removeDatabase(name);
+    fb_shutdown(0,1);
+
 }
 
 PlainDb::PlainDb(QSqlDatabase *db_) : db(db_)
@@ -32,20 +36,59 @@ PlainDb::PlainDb(QSqlDatabase *db_) : db(db_)
 
 }
 
+bool PlainDb::CreateDB(QString db_name)
+{
+    QString filePath = db_name;
+    QString userName = "SYSDBA";
+    QString password = "MASTERKEY";
+
+    QString databasePath_ = db_name;
+
+    QString queryString;
+    queryString += "CREATE DATABASE";
+    queryString += " \'" + filePath + "\'";
+    queryString += " USER \'" + userName + "\'";
+    queryString += " PASSWORD \'" + password + "\'";
+    //queryString += " DEFAULT CHARACTER SET UNICODE_FSS";
+
+    ISC_STATUS_ARRAY status;
+    isc_db_handle   databaseHandle = NULL;
+    isc_tr_handle   transactionHandle = NULL;
+
+    unsigned short g_nFbDialect = SQL_DIALECT_V6;
+
+    if (isc_dsql_execute_immediate(status, &databaseHandle, &transactionHandle, 0, queryString.toStdString().c_str (), g_nFbDialect, NULL))
+    {
+        long SQLCODE = isc_sqlcode(status);
+        return false;
+    }
+
+    isc_commit_transaction( status, &transactionHandle );
+    return true;
+}
+
 PlainDb * PlainDb::getInstance()
 {
     if (PlainDbInstance == nullptr)
     {
         //qDebug() << QSqlDatabase::drivers ();
-        QString db_name = qApp->applicationDirPath() + "/TEST.FDB";
+        QString db_name = qApp->applicationDirPath() + QDir::separator()+ "DATA.FDB";
         qDebug() << db_name;
+        if (!QFile::exists(db_name))
+        {
+            if (!CreateDB(db_name))
+            {
+                qWarning() << QString("Can't create DB");
+                qApp->quit();
+            }
+        }
 
         QSqlDatabase * datab = new QSqlDatabase();
         *datab = QSqlDatabase::addDatabase("QIBASE");
         //datab->setHostName("localhost");
         datab->setDatabaseName(db_name);
         datab->setUserName("SYSDBA");
-        datab->setPassword("masterkey");
+        datab->setPassword("MASTERKEY");
 
 
         if (!datab->open())

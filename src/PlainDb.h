@@ -33,6 +33,7 @@ public:
 
     QSqlDatabase *db = nullptr;
 private:
+    bool static CreateDB(QString db_name);
 
     int getId(Contact* con);
 
