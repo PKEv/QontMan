@@ -23,6 +23,7 @@ public:
     Contact getContById(const int id);
 
     void setSeachString(QString str);
+    void SetOrderString(int col);
 
     void GetContactsListByUplevel(std::vector<Contact> &vec, const int uplevel);
     bool HasChildByUplevel(const int uplevel);
@@ -48,8 +49,9 @@ private:
 
     void deleteFirm(Contact *con);
     void deleteMan(Contact *con);
-    QString SeachString;
-    QString SeachString2;
+    QString SeachString = "";
+    QString SeachString2 = "";
+    QString orderString = "";
 };
 
 #endif // PlainDb_H

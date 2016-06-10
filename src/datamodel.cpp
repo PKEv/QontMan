@@ -114,3 +114,8 @@ void dataModel::SetFilterByListId(QStringList &list)
 {
     PlainDb::getInstance()->SetFilterByListId(list);
 }
+
+void dataModel::SetOrderColum(int col)
+{
+    PlainDb::getInstance()->SetOrderString(col);
+}

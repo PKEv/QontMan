@@ -44,6 +44,7 @@ private slots:
      void showDiagram();
      void ExportCont();
      void ImportCont();
+     void headTableClicked(int logicalIndex);
 
 private:
     void setupMenu();

@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // скрываем служебные колонки
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->setColumnHidden(1, true);
+    QHeaderView *headTable = ui->tableView->horizontalHeader();
+    connect(headTable, SIGNAL(sectionClicked(int)), this, SLOT(headTableClicked(int)));
 
     myTreeModel = new TreeModel(this);
     ui->treeView->setModel(myTreeModel);
@@ -323,3 +325,8 @@ void MainWindow::ImportCont()
     connect(contView, SIGNAL(accepted()), this, SLOT(update_rec()));
 }
 
+void MainWindow::headTableClicked(int logicalIndex)
+{
+    myModel->SetOrderColum(logicalIndex);
+    myModel->refresh();
+}

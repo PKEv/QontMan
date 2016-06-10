@@ -21,7 +21,7 @@ public:
     void setSeachString(QString str);
     void SetFilterByListId(QStringList &list);
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-
+    void SetOrderColum(int col);
     void showAll();
 };
 

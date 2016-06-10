@@ -27,7 +27,6 @@ PlainDb::~PlainDb()
 
     while (fb_shutdown(0, fb_shutrsn_exit_called) == 0)
     {}
-
 }
 
 PlainDb::PlainDb(QSqlDatabase *db_) : db(db_)
@@ -112,7 +111,7 @@ QString PlainDb::getQuery()
                     "        WHEN 1 THEN "
                     "            \"man\".\"shortname\" "
                     "        ELSE null "
-                    "    END), "
+                    "    END)  AS FULL_NAME, "
                     "    \"contact\".\"TEL\", \"contact\".\"FAX\", \"contact\".\"EMAIL\", \"contact\".\"HTTP\", \"contact\".\"NOTES\" "
                     "FROM \"contact\" "
                     "LEFT JOIN \"firm\" ON \"contact\".\"ID\" = \"firm\".\"id\" "
@@ -129,7 +128,7 @@ QString PlainDb::getQuery()
                              "OR UPPER (\"man\".\"surname\")     LIKE '%"+SeachString+"%' "
                              "OR UPPER (\"man\".\"patronymic\")  LIKE '%"+SeachString+"%' "
                              "OR UPPER (\"man\".\"shortname\")   LIKE '%"+SeachString+"%' ) ")
-            + SeachString2;
+            + SeachString2 + orderString;
     return temp;
 
 }
@@ -543,4 +542,36 @@ void PlainDb::SetFilterByListId(QStringList & list)
         SeachString2 += QString("\"contact\".\"ID\"=%1").arg(entry);
     }
     SeachString2 += ")";
+}
+
+void PlainDb::SetOrderString(int col)
+{
+    QString order = "ASC";
+    if (orderString.contains(order))
+    {
+        order = "DESC";
+    }
+    orderString.clear();
+    switch (col) {
+    case 2:
+        orderString = " ORDER BY FULL_NAME " + order;
+        break;
+    case 3:
+        orderString = " ORDER BY \"contact\".\"TEL\" " + order;
+        break;
+    case 4:
+        orderString = " ORDER BY \"contact\".\"FAX\" " + order;
+        break;
+    case 5:
+        orderString = " ORDER BY \"contact\".\"EMAIL\" " + order;
+        break;
+    case 6:
+        orderString = " ORDER BY \"contact\".\"HTTP\" " + order;
+        break;
+    case 7:
+        orderString = " ORDER BY \"contact\".\"NOTES\" " + order;
+        break;
+    default:
+        break;
+    }
 }
