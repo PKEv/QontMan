@@ -16,23 +16,15 @@ MainWindow::MainWindow(QWidget *parent) :
     createTrayIcon();
     trayIcon->show();
 
-    myModel = new dataModel(this);
+    myModel = new dataModel();
     //настраиваем отображение
     myModel->showAll();
-    // наименования столбцов
-    myModel->setHeaderData(2, Qt::Horizontal, tr("Имя"), Qt::DisplayRole);
-    myModel->setHeaderData(3, Qt::Horizontal, tr("Телефон"), Qt::DisplayRole);
-    myModel->setHeaderData(4, Qt::Horizontal, tr("Факс"), Qt::DisplayRole);
-    myModel->setHeaderData(5, Qt::Horizontal, tr("Эл.почта"), Qt::DisplayRole);
-    myModel->setHeaderData(6, Qt::Horizontal, tr("Сайт"), Qt::DisplayRole);
-    myModel->setHeaderData(7, Qt::Horizontal, tr("Заметка"), Qt::DisplayRole);
     // подключаем модель
     ui->tableView->setModel( myModel );
+    ui->tableView->show();
     // скрываем служебные колонки
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->setColumnHidden(1, true);
-
-    ui->tableView->show();
 
     myTreeModel = new TreeModel(this);
     ui->treeView->setModel(myTreeModel);

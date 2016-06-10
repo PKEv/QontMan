@@ -46,3 +46,7 @@ DISTFILES +=
 RESOURCES += \
             res.qrc
 RC_FILE     += resources.rc
+
+INCLUDEPATH += "c:\Firebird\include"
+
+LIBS+=-LC:\Firebird\bin -lfbclient

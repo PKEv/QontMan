@@ -10,16 +10,17 @@ class dataModel : public QSqlQueryModel
 {
     Q_OBJECT
 public:
-    explicit dataModel(QObject *parent);
+    explicit dataModel(QObject *parent=0);
     ~dataModel();
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
     void refresh();
     int GetContactId(int row);
     Contact GetContact(int id);
     void deleteContact(int row);
     void setSeachString(QString str);
     void SetFilterByListId(QStringList &list);
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
     void showAll();
 };
