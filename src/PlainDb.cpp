@@ -382,22 +382,25 @@ void PlainDb::updateMan(Contact* con)
 
 void PlainDb::updateImage(Contact* con)
 {
+    //сначало проверим есть аватар уже
     QByteArray inByteArray;
     QBuffer inBuffer( &inByteArray );
     inBuffer.open( QIODevice::WriteOnly );
-    //con->getIcon().save( &inBuffer, "PNG" ); // write inPixmap into inByteArray in PNG format
-
-    QString prepQuery = QString("UPDATE \"IMAGE\" SET \"image\"=:image WHERE \"id\"=:id ");
+    QString prepQuery = QString("SELECT \"image\" FROM \"IMAGE\" WHERE \"id\"=:id ");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id", con->getId());
-    query.bindValue(":image", inByteArray);
-    if(!query.exec())
+    if( !query.exec() )
     {
         QSqlError err = query.lastError();
         QString estr = err.text();
         qDebug() << ("updateImage query error ") << estr;
     }
+    query.first();
+    //принимаем решение обновлять или добавлять
+    if (query.result()->isValid())
+
+
 
 }
 
