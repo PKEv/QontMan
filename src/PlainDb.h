@@ -40,6 +40,7 @@ private:
 
     void addFirm(Contact* con);
     void addMan(Contact* con);
+    void addImage(Contact* con);
 
     void getFirm(Contact &con);
     void getMan(Contact &con);
@@ -51,6 +52,7 @@ private:
 
     void deleteFirm(Contact *con);
     void deleteMan(Contact *con);
+    void deleteImage(Contact *con);
     QString SeachString = "";
     QString SeachString2 = "";
     QString orderString = "";

@@ -197,7 +197,7 @@ void PlainDb::updateContact(Contact * con)
     {
         updateMan(con);
     }
-
+    updateImage(con);
 }
 
 int PlainDb::getId(Contact* con)
@@ -260,6 +260,7 @@ Contact PlainDb::getContById(const int id)
     {
         getMan(tCont);
     }
+    getImage(tCont);
     return tCont;
 }
 
@@ -290,6 +291,21 @@ void PlainDb::addMan(Contact* con)
     query.bindValue(":surname",con->getName2());
     query.bindValue(":patronymic",con->getName3());
     query.bindValue(":shortname",con->getFullName());
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("addMan query error ") << estr;
+    }
+}
+
+void PlainDb::addImage(Contact* con)
+{
+    QString prepQuery = QString("INSERT INTO \"IMAGE\" (\"id\", \"image\") VALUES (:id, :image)");
+    QSqlQuery query;
+    query.prepare(prepQuery);
+    query.bindValue(":id",con->getId());
+    query.bindValue(":image",con->getIcon());
     if(!query.exec())
     {
         QSqlError err = query.lastError();
@@ -394,14 +410,26 @@ void PlainDb::updateImage(Contact* con)
     {
         QSqlError err = query.lastError();
         QString estr = err.text();
-        qDebug() << ("updateImage query error ") << estr;
+        qDebug() << ("updateImage query SELECT error ") << estr;
     }
     query.first();
     //принимаем решение обновлять или добавлять
-    if (query.result()->isValid())
-
-
-
+    if (!query.result()->isValid())
+        addImage(con);
+    else
+    {
+        QString prepQuery = QString("UPDATE \"IMAGE\" SET \"image\"=:image WHERE \"id\"=:id ");
+        QSqlQuery query;
+        query.prepare(prepQuery);
+        query.bindValue(":id",con->getId());
+        query.bindValue(":image",con->getIcon());
+        if(!query.exec())
+        {
+            QSqlError err = query.lastError();
+            QString estr = err.text();
+            qDebug() << ("updateImage query UPDATE error ") << estr;
+        }
+    }
 }
 
 void PlainDb::changeContactTip(Contact * con)
@@ -466,6 +494,21 @@ void PlainDb::deleteMan(Contact *con)
     }
 }
 
+void PlainDb::deleteImage(Contact *con)
+{
+    QString prepQuery = QString("DELETE FROM \"IMAGE\" WHERE \"id\"=:id ");
+    QSqlQuery query;
+    query.prepare(prepQuery);
+    query.bindValue(":id",con->getId());
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("deleteMan query error ") << estr;
+    }
+}
+
+
 void PlainDb::deleteContact(Contact * con)
 {
     QString prepQuery = QString("DELETE FROM \"contact\" WHERE \"ID\"=:id ");
@@ -487,6 +530,7 @@ void PlainDb::deleteContact(Contact * con)
     {
         deleteMan(con);
     }
+    deleteImage(con);
 }
 
 void PlainDb::setSeachString(QString str)
