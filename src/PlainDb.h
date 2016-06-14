@@ -43,9 +43,11 @@ private:
 
     void getFirm(Contact &con);
     void getMan(Contact &con);
+    void getImage(Contact& con);
 
     void updateFirm(Contact *con);
     void updateMan(Contact* con);
+    void updateImage(Contact* con);
 
     void deleteFirm(Contact *con);
     void deleteMan(Contact *con);

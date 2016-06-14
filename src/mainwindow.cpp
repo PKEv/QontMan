@@ -110,10 +110,9 @@ void MainWindow::setupMenu()
 MainWindow::~MainWindow()
 {
     writeSettings();
-    //delete ui;
-   /* delete */ myTreeModel->deleteLater();
-    /*delete */ myModel->deleteLater();
     delete ui;
+    myTreeModel->deleteLater();
+    myModel->deleteLater();
     delete quitAction;
     delete restoreAction;
     delete diaAction;

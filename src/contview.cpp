@@ -2,7 +2,7 @@
 #include "contview.h"
 #include "ui_contview.h"
 #include "PlainDb.h"
-
+#include <QFileDialog>
 
 ContView::ContView(QWidget *parent) :
     QDialog(parent),
@@ -17,6 +17,32 @@ ContView::ContView(QWidget *parent) :
     cont = new Contact;
     Connect();
     Fill();
+}
+
+void ContView::ClearAvatar()
+{
+    QByteArray temp;
+    temp.clear();
+    cont->setIcon(temp);
+    on_tipSlider_valueChanged(ui->tipSlider->value());
+}
+
+void ContView::SetAvatar()
+{
+    QString fileName = QFileDialog::getOpenFileName( this,
+                                                    tr("Укажите файл с изображением"),
+                                                    qApp->applicationDirPath(),
+                                                    tr("Изображения (*.png *.jpg *.bmp)"));
+    QFile file(fileName);
+
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    QByteArray inByteArray = file.readAll();
+    cont->setIcon(inByteArray);
+    QPixmap image;
+    image.loadFromData(inByteArray);
+    ui->imgLabel->setFixedSize(size);
+    ui->imgLabel->setPixmap(image.scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
 }
 
 void ContView::closeEvent(QCloseEvent *event)
@@ -58,6 +84,11 @@ void ContView::Connect()
     connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(plusButton(QWidget *)));
     connect(signalMapper2, SIGNAL(mapped(QWidget*)), this, SLOT(minusButton(QWidget *)));
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(autoFullName()));
+
+    openAction = new QAction(QIcon(),tr("Назначить аватар"), this);
+    clearAction = new QAction(QIcon(),tr("Удалить аватар"), this);
+    connect(clearAction, SIGNAL(triggered(bool)), this, SLOT(ClearAvatar()) );
+    connect(openAction, SIGNAL(triggered(bool)), this, SLOT(SetAvatar()) );
 }
 
 ContView::ContView(Contact * tcont, QWidget *parent): ui(new Ui::ContView), QDialog(parent)
@@ -94,6 +125,7 @@ void ContView::Fill()
     ui->tipSlider->setValue(cont->getTip());
     on_tipSlider_valueChanged(cont->getTip());
     ui->lineEdit->setPlaceholderText(tr("Имя отображаемое в базе"));
+
     SetupUpLevel();
 }
 
@@ -168,6 +200,11 @@ void ContView::on_buttonBox_clicked(QAbstractButton *button)
         cont->setName3(ui->name3Edit->text());
         cont->setTip(ui->tipSlider->value());
         cont->setDate(QDate::currentDate().toString("dd.MM.yyyy"));
+        QFile file(":/img/pic/avatar/index.png");
+        if (!file.open(QIODevice::ReadOnly))
+            return;
+        QByteArray inByteArray = file.readAll();
+        cont->setIcon(inByteArray);
 
         cont->setUpLevel(GetUpLevel());
         if (tipChanged == false)
@@ -224,22 +261,6 @@ void ContView::SetItiems(QComboBox * comboBox, QString str)
 
     QStringList temp = str.split(";",QString::SkipEmptyParts);
     comboBox->addItems(temp);
-    /*
-    int t = str.indexOf(";");
-    QString temp;
-    while (t>0)
-    {
-        temp = str;
-        temp.remove(t,temp.length());
-        comboBox->addItem(temp);
-        temp = str;
-        str.remove(0,t+1); // del ";"
-        t = str.indexOf(";");
-    }
-    if (!str.isEmpty())
-    {
-        comboBox->addItem(str);
-    }*/
 }
 
 void ContView::on_tipSlider_valueChanged(int value)
@@ -250,6 +271,11 @@ void ContView::on_tipSlider_valueChanged(int value)
         ui->name3Edit->setVisible(false);
         ui->name1Edit->setPlaceholderText(tr("Форма собственности"));
         ui->name2Edit->setPlaceholderText(tr("Наименование"));
+
+        if (!cont->getIcon().isEmpty()) // загрузка изображения если нет в базе
+        {
+
+        }
     }
     else
     {
@@ -258,7 +284,29 @@ void ContView::on_tipSlider_valueChanged(int value)
         ui->name1Edit->setPlaceholderText(tr("Имя"));
         ui->name2Edit->setPlaceholderText(tr("Фамилия"));
         ui->name3Edit->setPlaceholderText(tr("Отчество"));
+
+        if (!cont->getIcon().isEmpty()) // загрузка изображения если нет в базе
+        {
+
+        }
     }
+    if (cont->getIcon().isEmpty()) // загрузка изображения если нет в базе
+    {
+        QFile file;
+        if (value==0)
+            file.setFileName(":/img/pic/avatar/index2.png");
+        else
+            file.setFileName(":/img/pic/avatar/index.png");
+
+        if (!file.open(QIODevice::ReadOnly))
+            return;
+        QByteArray inByteArray = file.readAll();
+        QPixmap image;
+        image.loadFromData(inByteArray);
+        ui->imgLabel->setFixedSize(size);
+        ui->imgLabel->setPixmap(image.scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
+    }
+
 }
 
 void ContView::autoFullName()
@@ -288,4 +336,13 @@ void ContView::autoFullName()
              ui->lineEdit->setText((name2 + " "+name1 + " " + name3).trimmed());
 
     }
+}
+
+void ContView::on_imgLabel_customContextMenuRequested(const QPoint &pos)
+{
+    QMenu menu(this);
+    menu.addAction(openAction);
+    menu.addSeparator();
+    menu.addAction(clearAction);
+    menu.exec(mapToParent(pos) + ui->imgLabel->pos());
 }

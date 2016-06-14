@@ -157,12 +157,12 @@ bool Contact::operator ==(const Contact& another) const
     return false;
 }
 
-void Contact::setIcon(QPixmap &pixmap)
+void Contact::setIcon(QByteArray &pixmap)
 {
     icon = pixmap;
 }
 
-QIcon Contact::getIcon()
+QByteArray Contact::getIcon()
 {
     return icon;
 }

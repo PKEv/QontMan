@@ -53,8 +53,8 @@ public:
     void setName3(QString tName3);
     QString getName3();
 
-    void setIcon(QPixmap &pixmap);
-    QIcon getIcon();
+    void setIcon(QByteArray &pixmap);
+    QByteArray getIcon();
 
     bool operator ==(const Contact &another) const;
 
@@ -75,7 +75,7 @@ private:
     QString name1{""};
     QString name2{""};
     QString name3{""};
-    QIcon icon;
+    QByteArray icon;
 };
 
 #endif // CONTACT_H

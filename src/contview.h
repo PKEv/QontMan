@@ -1,10 +1,11 @@
-#ifndef CONTVIEW_H
+﻿#ifndef CONTVIEW_H
 #define CONTVIEW_H
 
 #include <QDialog>
 #include <QComboBox>
 #include <QSignalMapper>
 #include <QDate>
+#include <QMenu>
 #include "contact.h"
 #include <qabstractbutton.h>
 
@@ -28,13 +29,17 @@ private slots:
     void minusButton(QWidget *comboBox);
     void on_tipSlider_valueChanged(int value);
     void autoFullName();
+    void ClearAvatar();
+    void SetAvatar();
+
+    void on_imgLabel_customContextMenuRequested(const QPoint &pos);
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
     void hideEvent(QHideEvent * event) Q_DECL_OVERRIDE;
 
 private:
-    Ui::ContView *ui = nullptr;
+    Ui::ContView *ui ;//= nullptr;
     void Fill();                                                // заполнение формы
     void Connect();                                             // настройка связей
     QString GetItiems(QComboBox * comboBox);                    // чтение элемента формы в строку
@@ -44,6 +49,9 @@ private:
     QSignalMapper *signalMapper2;    
     void SetupUpLevel();
     int GetUpLevel();
+    QSize size = QSize(50,50);
+    QAction *openAction = nullptr;
+    QAction *clearAction = nullptr;
 };
 
 #endif // CONTVIEW_H

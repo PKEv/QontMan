@@ -165,6 +165,7 @@ void PlainDb::addContact(Contact * con)
     {
         addMan(con);
     }
+    updateImage(con);
 }
 
 void PlainDb::updateContact(Contact * con)
@@ -324,6 +325,25 @@ void PlainDb::getMan(Contact& con)
     con.setFullName(query.record().value("shortname").toString());
 }
 
+void PlainDb::getImage(Contact& con)
+{
+    QString prepQuery = QString("SELECT * FROM \"IMAGE\" WHERE \"id\" = :id");
+    QSqlQuery query;
+    query.prepare(prepQuery);
+    query.bindValue(":id",con.getId());
+    query.exec();
+    query.first();
+    if (query.isNull(0))
+    {
+        //con.setIcon(QByteArray());
+        return;
+    }
+    QByteArray outByteArray = query.value( 0 ).toByteArray();
+    //QPixmap outPixmap = QPixmap();
+    //outPixmap.loadFromData( outByteArray );
+    con.setIcon(outByteArray);
+}
+
 void PlainDb::updateFirm(Contact *con)
 {
     QString prepQuery = QString("UPDATE \"firm\" SET \"sobstv\"=:sobstv, \"name\"=:name, \"shortname\"=:shortname WHERE \"id\"=:id");
@@ -357,6 +377,26 @@ void PlainDb::updateMan(Contact* con)
         QSqlError err = query.lastError();
         QString estr = err.text();
         qDebug() << ("updateMan query error ") << estr;
+    }
+}
+
+void PlainDb::updateImage(Contact* con)
+{
+    QByteArray inByteArray;
+    QBuffer inBuffer( &inByteArray );
+    inBuffer.open( QIODevice::WriteOnly );
+    //con->getIcon().save( &inBuffer, "PNG" ); // write inPixmap into inByteArray in PNG format
+
+    QString prepQuery = QString("UPDATE \"IMAGE\" SET \"image\"=:image WHERE \"id\"=:id ");
+    QSqlQuery query;
+    query.prepare(prepQuery);
+    query.bindValue(":id", con->getId());
+    query.bindValue(":image", inByteArray);
+    if(!query.exec())
+    {
+        QSqlError err = query.lastError();
+        QString estr = err.text();
+        qDebug() << ("updateImage query error ") << estr;
     }
 
 }
