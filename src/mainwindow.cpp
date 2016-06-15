@@ -314,6 +314,9 @@ void MainWindow::ImportCont()
                                                     tr("Импорт контакта"),
                                                     qApp->applicationDirPath(),
                                                     tr("VCard (*.vcf)"));
+    if (!QFile(fileName).exists())
+        return;
+
     Contact tcont;
     VCard::Import(fileName, &tcont);
 

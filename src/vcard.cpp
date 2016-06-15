@@ -57,7 +57,7 @@ void VCard::Import(const QString fileName, Contact * con)
     line = in.readLine();
     if (!QString::compare(line,VC_VERSION, Qt::CaseInsensitive) == 0)
     {
-        QMessageBox::information(0, QObject::tr("Ошибка"), QObject::tr("Неверная структура файла"));
+        QMessageBox::information(0, QObject::tr("Ошибка"), QObject::tr("Неверная структура (версия) файла"));
         return;
     }
     line = in.readLine();
@@ -68,7 +68,7 @@ void VCard::Import(const QString fileName, Contact * con)
         {
             con->setFullName(fields.at(1));
         }
-        else if (QString(fields.at(0)).compare(VC_NAME, Qt::CaseInsensitive) == 0 )
+        else if (QString(fields.at(0)).split(";").at(0).compare(VC_NAME, Qt::CaseInsensitive) == 0 )
         {
             QStringList nameFields = QString(fields.at(1)).split(";");
             if (nameFields.size() >= 1)
@@ -78,35 +78,41 @@ void VCard::Import(const QString fileName, Contact * con)
             if (nameFields.size() >= 3)
                 con->setName3(nameFields.at(2));
         }
-        else if (QString(fields.at(0)).compare(VC_ADDRESS, Qt::CaseInsensitive) == 0 )
+        else if (QString(fields.at(0)).split(";").at(0).compare(VC_ADDRESS, Qt::CaseInsensitive) == 0 )
         {
             QStringList fieldsTemp = con->getAdr().split(";", QString::SkipEmptyParts);
             fieldsTemp.push_back(fields.at(1));
             con->setAdr(fieldsTemp.join(";"));
         }
-        else if (QString(fields.at(0)).compare(VC_EMAIL, Qt::CaseInsensitive) == 0 )
+        else if (QString(fields.at(0)).split(";").at(0).compare(VC_EMAIL, Qt::CaseInsensitive) == 0 )
         {
             QStringList fieldsTemp = con->getEmail().split(";", QString::SkipEmptyParts);
             fieldsTemp.push_back(fields.at(1));
             con->setEmail(fieldsTemp.join(";"));
         }
-        else if (QString(fields.at(0)).compare(VC_NOTE, Qt::CaseInsensitive) == 0 )
+        else if (QString(fields.at(0)).split(";").at(0).compare(VC_NOTE, Qt::CaseInsensitive) == 0 )
         {
             con->setZametka(fields.at(1));
         }
-        else if (QString(fields.at(0)).compare(VC_TELEPHONE, Qt::CaseInsensitive) == 0 )
+        else if (QString(fields.at(0)).split(";").at(0).compare(VC_TELEPHONE, Qt::CaseInsensitive) == 0 )
         {
             QStringList fieldsTemp = con->getTel().split(";", QString::SkipEmptyParts);
             fieldsTemp.push_back(fields.at(1));
             con->setTel(fieldsTemp.join(";"));
         }
-        else if (QString(fields.at(0)).compare(VC_URL, Qt::CaseInsensitive) == 0 )
+        else if (QString(fields.at(0)).split(";").at(0).compare(VC_URL, Qt::CaseInsensitive) == 0 )
         {
             fields.removeAt(0);
             QString http = fields.join(":");
             QStringList fieldsTemp = con->getHttp().split(";", QString::SkipEmptyParts);
             fieldsTemp.push_back(http);
             con->setHttp(fieldsTemp.join(";"));
+        }
+        else if (QString(fields.at(0)).split(";").at(0).compare(VC_PHOTO, Qt::CaseInsensitive) == 0 )
+        {
+            QString data = QString(fields.at(1));
+            QByteArray temp = QByteArray(data.toLocal8Bit().constData());
+            con->setIcon(temp);
         }
 
         line = in.readLine();
