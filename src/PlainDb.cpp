@@ -301,7 +301,7 @@ void PlainDb::addMan(Contact* con)
 
 void PlainDb::addImage(Contact* con)
 {
-    QString prepQuery = QString("INSERT INTO \"IMAGE\" (\"id\", \"image\") VALUES (:id, :image)");
+    QString prepQuery = QString("INSERT INTO \"IMAGE\" (\"ID\", \"IMAGE\") VALUES (:id, :image)");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());
@@ -343,7 +343,7 @@ void PlainDb::getMan(Contact& con)
 
 void PlainDb::getImage(Contact& con)
 {
-    QString prepQuery = QString("SELECT * FROM \"IMAGE\" WHERE \"id\" = :id");
+    QString prepQuery = QString("SELECT \"IMAGE\" FROM \"IMAGE\" WHERE \"ID\" = :id");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con.getId());
@@ -399,10 +399,7 @@ void PlainDb::updateMan(Contact* con)
 void PlainDb::updateImage(Contact* con)
 {
     //сначало проверим есть аватар уже
-    QByteArray inByteArray;
-    QBuffer inBuffer( &inByteArray );
-    inBuffer.open( QIODevice::WriteOnly );
-    QString prepQuery = QString("SELECT \"image\" FROM \"IMAGE\" WHERE \"id\"=:id ");
+    QString prepQuery = QString("SELECT COUNT (*) FROM \"IMAGE\" WHERE \"ID\"=:id ");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id", con->getId());
@@ -414,11 +411,12 @@ void PlainDb::updateImage(Contact* con)
     }
     query.first();
     //принимаем решение обновлять или добавлять
-    if (!query.result()->isValid())
+    int tt =query.value(0).toInt();
+    if ( query.value(0).toInt() <= 0 )//result()->isValid())
         addImage(con);
     else
     {
-        QString prepQuery = QString("UPDATE \"IMAGE\" SET \"image\"=:image WHERE \"id\"=:id ");
+        QString prepQuery = QString("UPDATE \"IMAGE\" SET \"IMAGE\"=:image WHERE \"ID\"=:id ");
         QSqlQuery query;
         query.prepare(prepQuery);
         query.bindValue(":id",con->getId());
@@ -496,7 +494,7 @@ void PlainDb::deleteMan(Contact *con)
 
 void PlainDb::deleteImage(Contact *con)
 {
-    QString prepQuery = QString("DELETE FROM \"IMAGE\" WHERE \"id\"=:id ");
+    QString prepQuery = QString("DELETE FROM \"IMAGE\" WHERE \"ID\"=:id ");
     QSqlQuery query;
     query.prepare(prepQuery);
     query.bindValue(":id",con->getId());

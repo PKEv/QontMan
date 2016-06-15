@@ -200,11 +200,6 @@ void ContView::on_buttonBox_clicked(QAbstractButton *button)
         cont->setName3(ui->name3Edit->text());
         cont->setTip(ui->tipSlider->value());
         cont->setDate(QDate::currentDate().toString("dd.MM.yyyy"));
-        QFile file(":/img/pic/avatar/index.png");
-        if (!file.open(QIODevice::ReadOnly))
-            return;
-        QByteArray inByteArray = file.readAll();
-        cont->setIcon(inByteArray);
 
         cont->setUpLevel(GetUpLevel());
         if (tipChanged == false)
@@ -287,7 +282,10 @@ void ContView::on_tipSlider_valueChanged(int value)
 
         if (!cont->getIcon().isEmpty()) // загрузка изображения если нет в базе
         {
-
+            QPixmap image;
+            image.loadFromData(cont->getIcon());
+            ui->imgLabel->setFixedSize(size);
+            ui->imgLabel->setPixmap(image.scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
         }
     }
     if (cont->getIcon().isEmpty()) // загрузка изображения если нет в базе
@@ -306,7 +304,6 @@ void ContView::on_tipSlider_valueChanged(int value)
         ui->imgLabel->setFixedSize(size);
         ui->imgLabel->setPixmap(image.scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
     }
-
 }
 
 void ContView::autoFullName()
@@ -334,7 +331,6 @@ void ContView::autoFullName()
                 ui->lineEdit->setText(name1);
         else
              ui->lineEdit->setText((name2 + " "+name1 + " " + name3).trimmed());
-
     }
 }
 

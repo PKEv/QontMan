@@ -190,19 +190,22 @@ void passport::fill()
         cardLayout->addWidget(zamTitle,6,1);
         cardLayout->addWidget(zamValue,6,2);
     }
-    if (cont->getIcon().isNull())
-    {
-        icon = new QLabel();
-        QPixmap pic;
+    icon = new QLabel();
+    QPixmap pic;
+    if (cont->getIcon().isEmpty())
+    {        
         if (cont->getTip()!=0)
             pic.load(":/img/pic/avatar/index.png");
         else
             pic.load(":/img/pic/avatar/index2.png");
-
-        pic = pic.scaled(80,80,Qt::IgnoreAspectRatio, Qt::FastTransformation);
-        icon->setPixmap(pic);
-        icon->setAlignment(Qt::AlignCenter);
-        //icon->setScaledContents(true);
-        cardLayout->addWidget(icon,1,0,6,1);
     }
+    else
+    {
+        pic.loadFromData(cont->getIcon());
+    }
+    pic = pic.scaled(size,Qt::IgnoreAspectRatio, Qt::FastTransformation);
+    icon->setPixmap(pic);
+    icon->setAlignment(Qt::AlignCenter);
+    //icon->setScaledContents(true);
+    cardLayout->addWidget(icon,1,0,6,1);
 }

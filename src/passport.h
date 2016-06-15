@@ -42,6 +42,7 @@ private:
     QLabel *zamTitle = nullptr;
     QLabel *zamValue = nullptr;
     QLabel   *icon = nullptr;
+    QSize size = QSize(80,80);
 
 };
 
