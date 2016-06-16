@@ -1,6 +1,7 @@
 #ifndef VCARD_H
 #define VCARD_H
 
+#include <QTextStream>
 #include "contact.h"
 
 #define VC_SEPARATOR_TOKEN ';'
@@ -8,7 +9,10 @@
 #define VC_END_LINE_TOKEN '\n'
 #define VC_BEGIN_TOKEN "BEGIN:VCARD"
 #define VC_VERSION     "VERSION:3.0"
+#define VC_VER         "VERSION"
 #define VC_END_TOKEN   "END:VCARD"
+#define VC_Quoted_Printable "ENCODING=QUOTED-PRINTABLE"
+
 
 #define VC_ADDRESS              "ADR"
 #define VC_AGENT                "AGENT"
@@ -36,6 +40,7 @@
 #define VC_TIME_ZONE            "TZ"
 #define VC_TITLE                "TITLE"
 #define VC_URL                  "URL"
+#define VC_CUSTOM               "X-"
 
 
 class VCard
@@ -45,7 +50,13 @@ public:
     ~VCard();
     void static Export(const QString fileName, Contact * con);
     void static Import(const QString fileName, Contact * con);
+    //void static ReadLine(QTextStream &in, QString &line);
+    bool static ContainKey(const QString &line);
+    void static ReadLine(QTextStream &in, QString &line);
+    QString static RemoveLineWraping(const QString &line);
 private:
+
+    QString static DecodeQuotedPrintable(const QString &input);
 
 };
 

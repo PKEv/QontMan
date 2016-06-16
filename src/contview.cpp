@@ -266,11 +266,6 @@ void ContView::on_tipSlider_valueChanged(int value)
         ui->name3Edit->setVisible(false);
         ui->name1Edit->setPlaceholderText(tr("Форма собственности"));
         ui->name2Edit->setPlaceholderText(tr("Наименование"));
-
-        if (!cont->getIcon().isEmpty()) // загрузка изображения если нет в базе
-        {
-
-        }
     }
     else
     {
@@ -279,31 +274,39 @@ void ContView::on_tipSlider_valueChanged(int value)
         ui->name1Edit->setPlaceholderText(tr("Имя"));
         ui->name2Edit->setPlaceholderText(tr("Фамилия"));
         ui->name3Edit->setPlaceholderText(tr("Отчество"));
-
-        if (!cont->getIcon().isEmpty()) // загрузка изображения если нет в базе
-        {
-            QPixmap image;
-            image.loadFromData(cont->getIcon());
-            ui->imgLabel->setFixedSize(size);
-            ui->imgLabel->setPixmap(image.scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
-        }
     }
     if (cont->getIcon().isEmpty()) // загрузка изображения если нет в базе
     {
-        QFile file;
-        if (value==0)
-            file.setFileName(":/img/pic/avatar/index2.png");
-        else
-            file.setFileName(":/img/pic/avatar/index.png");
-
-        if (!file.open(QIODevice::ReadOnly))
-            return;
-        QByteArray inByteArray = file.readAll();
+        LoadDefImage(value);
+    }
+    else
+    {
         QPixmap image;
-        image.loadFromData(inByteArray);
+        if (!image.loadFromData(cont->getIcon()))
+        {
+            LoadDefImage(value);
+            return;
+        }
         ui->imgLabel->setFixedSize(size);
         ui->imgLabel->setPixmap(image.scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
     }
+}
+
+void ContView::LoadDefImage(int value)
+{
+    QFile file;
+    if (value == 0)
+        file.setFileName(":/img/pic/avatar/index2.png");
+    else
+        file.setFileName(":/img/pic/avatar/index.png");
+
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    QByteArray inByteArray = file.readAll();
+    QPixmap image;
+    image.loadFromData(inByteArray);
+    ui->imgLabel->setFixedSize(size);
+    ui->imgLabel->setPixmap(image.scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
 }
 
 void ContView::autoFullName()

@@ -318,6 +318,7 @@ void MainWindow::ImportCont()
         return;
 
     Contact tcont;
+    tcont.setTip(1); // импортируем Физ лицо только
     VCard::Import(fileName, &tcont);
 
     contView = new ContView(&tcont, this);

@@ -42,6 +42,7 @@ private:
     Ui::ContView *ui ;//= nullptr;
     void Fill();                                                // заполнение формы
     void Connect();                                             // настройка связей
+    void LoadDefImage(int value);                                        // загрузка стандартной картинки
     QString GetItiems(QComboBox * comboBox);                    // чтение элемента формы в строку
     void SetItiems(QComboBox * comboBox, QString str);          // заполнение элемента данными из строки
     Contact * cont = nullptr;

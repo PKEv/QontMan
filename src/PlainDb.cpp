@@ -411,7 +411,7 @@ void PlainDb::updateImage(Contact* con)
     }
     query.first();
     //принимаем решение обновлять или добавлять
-    int tt =query.value(0).toInt();
+//    int tt =query.value(0).toInt();
     if ( query.value(0).toInt() <= 0 )//result()->isValid())
         addImage(con);
     else
