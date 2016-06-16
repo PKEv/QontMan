@@ -17,4 +17,8 @@ QontMan
 
 Программа написана с использованием QT, для сборки не требуются дополнительные библиотеки, требуется собранный плагин для поддержки FireBird.
 
+----
+
+![Screenshot 01](https://github.com/PKEv/QontMan/blob/master/image/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA.PNG)
+![Screenshot 02](https://github.com/PKEv/QontMan/blob/master/image/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA1.PNG)
 
