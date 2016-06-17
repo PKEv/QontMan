@@ -30,6 +30,7 @@ public:
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
     void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
      void addButton();
@@ -45,6 +46,7 @@ private slots:
      void ExportCont();
      void ImportCont();
      void headTableClicked(int logicalIndex);
+
 
 private:
     void setupMenu();

@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     const QString path = qApp->applicationDirPath() + "/settings.ini";
     settings = new QSettings(path, QSettings::IniFormat);
+    installEventFilter(this);
 }
 
 void MainWindow::showEvent(QShowEvent *event)
@@ -53,6 +54,20 @@ void MainWindow::showEvent(QShowEvent *event)
     //Q_UNUSED(event);
     QMainWindow::showEvent(event);
     readSettings();
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    Q_UNUSED(obj);
+    if( event->type() == QEvent::WindowStateChange )
+        if( windowState() == Qt::WindowMinimized )
+        {
+            //setWindowState();
+            this->hide();
+            event->ignore();
+            return true;
+        }
+    return false;
 }
 
 void MainWindow::setupMenu()
