@@ -6,6 +6,8 @@
 #include <QDir>
 #include <QDateTime>
 
+#include "RunGuard/RunGuard.cpp"
+
 
 static QAtomicPointer<FILE> logFileFile = nullptr;
 static QList<QByteArray>* logBuffer = new QList<QByteArray>();   //Store log messages until log file opened
@@ -75,11 +77,17 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext& ctxt, const QSt
     }
 }
 
+
+
 int main(int argc, char *argv[])
 {
     #ifdef LOG_TO_FILE
     qInstallMessageHandler(logMessageHandler);
     #endif
+
+    RunGuard guard( "some_random_key" );
+    if ( !guard.tryToRun() )
+            return 0;
 
     Q_INIT_RESOURCE(res);
     QApplication a(argc, argv);
