@@ -59,14 +59,17 @@ void MainWindow::showEvent(QShowEvent *event)
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj);
-    if( event->type() == QEvent::WindowStateChange )
+    if( event->type() == QEvent::WindowStateChange  )
+    {
+        QWindowStateChangeEvent* pEvent = static_cast< QWindowStateChangeEvent* >( event );
         if( windowState() == Qt::WindowMinimized )
         {
-            //setWindowState();
             this->hide();
+            setWindowState(pEvent->oldState());
             event->ignore();
             return true;
         }
+    }
     return false;
 }
 
