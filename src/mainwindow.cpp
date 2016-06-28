@@ -263,6 +263,7 @@ void MainWindow::clearSeachString()
 
 void MainWindow::setSeachString(QString str)
 {
+    str = str.replace(QRegExp("'"), "").trimmed();
     myModel->setSeachString(str);
     myModel->refresh();
 }
