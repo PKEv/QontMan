@@ -42,7 +42,7 @@ void ContView::SetAvatar()
     QPixmap image;
     image.loadFromData(inByteArray);
     ui->imgLabel->setFixedSize(size);
-    ui->imgLabel->setPixmap(image.scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
+    ui->imgLabel->setPixmap(image.scaled(size, Qt::KeepAspectRatio, Qt::FastTransformation));
 }
 
 void ContView::closeEvent(QCloseEvent *event)
@@ -288,7 +288,7 @@ void ContView::on_tipSlider_valueChanged(int value)
             return;
         }
         ui->imgLabel->setFixedSize(size);
-        ui->imgLabel->setPixmap(image.scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
+        ui->imgLabel->setPixmap(image.scaled(size, Qt::KeepAspectRatio, Qt::FastTransformation));
     }
 }
 
@@ -306,7 +306,7 @@ void ContView::LoadDefImage(int value)
     QPixmap image;
     image.loadFromData(inByteArray);
     ui->imgLabel->setFixedSize(size);
-    ui->imgLabel->setPixmap(image.scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
+    ui->imgLabel->setPixmap(image.scaled(size, Qt::KeepAspectRatio, Qt::FastTransformation));
 }
 
 void ContView::autoFullName()

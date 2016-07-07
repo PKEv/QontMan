@@ -203,7 +203,7 @@ void passport::fill()
     {
         pic.loadFromData(cont->getIcon());
     }
-    pic = pic.scaled(size,Qt::IgnoreAspectRatio, Qt::FastTransformation);
+    pic = pic.scaled(size,Qt::KeepAspectRatio, Qt::FastTransformation);
     icon->setPixmap(pic);
     icon->setAlignment(Qt::AlignCenter);
     //icon->setScaledContents(true);
